@@ -1,0 +1,55 @@
+/* Stili base generali */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;   /* es. fondo scuro */
+    color: #fff;              /* testo chiaro su sfondo scuro */
+    font-family: 'Arial', sans-serif;
+    /* altre proprietà generali */
+}
+
+header, footer {
+    text-align: center;
+    padding: 10px;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* dimensioni, margini, padding */
+    min-height: calc(100vh - /* altezza header/footer */ 100px);
+}
+
+#game-area {
+    width: 800px;
+    height: 600px;
+    background-color: #111;
+    position: relative;
+    overflow: hidden;
+}
+
+#ui {
+    margin-top: 10px;
+    /* stili per HUD, pulsanti, messaggi */
+}
+
+/* Esempio classe generica per pulsanti */
+.button {
+    background-color: #333;
+    color: #fff;
+    border: 2px solid #555;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* Stilizzazione pulsante al passaggio del mouse */
+.button:hover {
+    background-color: #444;
+}
+
+/* Nascondi elementi (utile per cambiare scena) */
+.hidden {
+    display: none;
+}
