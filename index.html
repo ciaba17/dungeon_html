@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Il mio dungeon crawler</title>
+    <title>dungeon html</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <!-- Header o menu iniziale -->
-    <header id="header">
-        <h1>Il mio gioco</h1>
         <div id="menu">
-        <!-- Pulsanti iniziali: “Inizia”, “Carica”, ecc. -->
+        <!-- Pulsanti menu: “Inizia”, “Carica”, ecc. -->
         </div>
-    </header>
-    <!-- Area principale del gioco -->
-    <main id="main">
-        <div id="game-area">
-        <!-- Qui le scene, immagini, sfondi, sprite -->
-        </div>
-        <div id="ui">
-        <!-- HUD, pulsanti, messaggi -->
-        </div>
-    </main>
 
-    <!-- Footer se serve -->
-    <footer id="footer">
-        <!-- Info, versioni, autore -->
-    </footer>
+    <!-- Area principale del gioco -->
+    <div id="main">
+        <div id="ui">
+            <div id="textbox">
+                <div id="textbox-content">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse auctor sapien ut ipsum
+                    suscipit tempus. Morbi nibh purus, aliquam eget dolor ac, laoreet fringilla augue. Class
+                    aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                </div>
+            </div>
+        </div>
+
+        <canvas id="game-area">
+        <!-- Qui le scene, immagini, sfondi, sprite -->
+        </canvas>
+    </div>
 
     <script src="js/main.js"></script>
     <script src="js/scenes.js"></script>

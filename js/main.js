@@ -2,7 +2,7 @@
 const gameState = {
     currentScene: null,
     playerHP: 100,
-  // altre proprietà che vuoi tracciare
+  // altre proprietà da tracciare
 };
 
 // Funzione che inizializza il gioco
