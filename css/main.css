@@ -1,9 +1,8 @@
 @font-face {
     font-family: 'Font';          /* il nome che userai nel CSS */
-    src: url('../assets/CloisterBlack.ttf') format('truetype');
+    src: url('../assets/font.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-
 }
 
 body {
@@ -17,30 +16,7 @@ body {
     /* altre proprietà generali */
 }
 
-#textbox {
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 30%;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 1);
-    border: 6px double #fff; /* double per il doppio bordo */
-    color: #fff;
-    font-size: 40px;
-    overflow: hidden;
-}
 
-#textbox-content {
-    white-space: normal;          /* permette di andare a capo */
-    overflow-wrap: break-word;    /* forza l'andata a capo se la parola è troppo lunga */
-    word-break: break-word;  
-}
-
-#ui {
-    /* stili per HUD, pulsanti, messaggi */
-}
 
 /* Esempio classe generica per pulsanti */
 .button {

@@ -1,0 +1,92 @@
+#ui {
+    
+}
+
+#bottom-ui {
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    width: 75%;
+    height: 25%;
+    background-color: rgba(0, 0, 0);
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo... */
+}
+
+#player-head {
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    width: 16%; /* larghezza dell'immagine */
+    height: 100%; /* altezza dell'immagine */
+    background-image: url("../assets/images/char.jpeg");
+    background-size: cover; /* adatta l'immagine alle dimensioni del div */
+    border: 6px double #fff; /* double per il doppio bordo */
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo... */
+}
+
+#textbox {
+    position: absolute;
+    right: 0%;
+    width: 84%;
+    height: 100%;
+    padding: 1%;
+    background-color: rgba(0, 0, 0, 1);
+    border: 6px double #fff; /* Double per il doppio bordo */
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    overflow: hidden;
+}
+
+#textbox-content {
+    white-space: normal;          /* permette di andare a capo */
+    overflow-wrap: break-word;    /* forza l'andata a capo se la parola è troppo lunga */
+    word-break: break-word;  
+    font-size: 250%;
+}
+
+
+
+
+#right-ui {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    width: 25%;
+    height: 100%;
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+}
+
+#map {
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    width: 100%;
+    height: 50%;
+    background-color: rgba(0, 0, 0);
+    border: 6px double #fff; /* Double per il doppio bordo */
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+}
+
+
+#inventory {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    width: 100%;
+    height: 50%;
+    background-color: rgba(0, 0, 0);
+    border: 6px double #fff; /* Double per il doppio bordo */
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+}
+
+
+#inventory-title {
+    position: absolute;
+    top: 0%;
+    width: 100%;
+    height: 16%;
+    background-color: rgba(0, 0, 0);
+    border-bottom: 6px double #fff; /* bordo inferiore */
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    text-align:center; /* centra il testo orizzontalmente */
+    font-size: 250%;
+}

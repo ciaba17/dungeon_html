@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>dungeon html</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <!-- Echoes of the deep dungeon -->
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/ui.css" />
+
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 </head>
 <body>
@@ -15,9 +18,21 @@
     <!-- Area principale del gioco -->
     <div id="main">
         <div id="ui">
-            <div id="textbox">
-                <div id="textbox-content"></div>
+            <div id="bottom-ui">
+                <div id="player-head"></div>
+
+                <div id="textbox">
+                    <div id="textbox-content"></div>
+                </div>
             </div>
+            
+            <div id="right-ui">
+                <div id="map"></div>
+                <div id="inventory">
+                    <div id="inventory-title">Inventario</div>
+                </div>
+            </div>
+            
         </div>
 
         <canvas id="game-area">
