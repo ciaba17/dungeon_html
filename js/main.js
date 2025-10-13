@@ -1,6 +1,5 @@
-// Variabili globali che servono nel gioco
-let dialoghi = {};  // oggetto per i dialoghi caricati da JSON
-
+import {globals} from './utils/globals.js';
+import {mostraDialoghi} from './game/ui.js';
 
 const gameState = {
     currentScene: null,
@@ -16,13 +15,10 @@ async function initGame() {
 
     // Carica i dialoghi da un file JSON
     const response = await fetch("../assets/dialoghi.json") 
-    if (dialoghi = await response.json())
-        console.log("Dialoghi caricati:", dialoghi); // verifica caricamento
+    if (globals.dialoghi = await response.json())
+        console.log("Dialoghi caricati:", globals.dialoghi); // verifica caricamento
     else
         console.log("Errore: Dialoghi non caricati correttamente");
-        
-
-    mostraDialoghi("test1");
 }
 
 // Funzione per cambiare scena
@@ -33,54 +29,12 @@ function changeScene(sceneName) {
     // ui.updateForScene(sceneName);
 }
 
-// Quando la pagina è caricata, avvia il gioco
-window.addEventListener("DOMContentLoaded", () => {
-    initGame();
+// MAIN
+window.addEventListener("DOMContentLoaded", async () => {
+    await initGame();
+
+    mostraDialoghi("test1");
+
 });
 
-
-function mostraDialoghi(id) {
-    const textbox = document.getElementById("textbox");
-    const textboxContent = document.getElementById("textbox-content");
-    const dialogo = dialoghi[id];
-    const TEXTSPEED = 50 
-    let i = 0;
-    let j = 0;
-    let intervallo;
-
-
-    function avanzaTesto() { // Aggiunge il prossimo carattere al testo
-        textboxContent.textContent += dialogo[i][j]
-        j++;
-        if (j >= dialogo[i].length) { // Fine del testo corrente
-            clearInterval(intervallo);
-        }
-    }
-    
-    function mostraDialogo() { // Mostra il dialogo corrente
-        if (i <= dialogo.length) {
-            textboxContent.textContent = "";
-            j = 0;
-            intervallo = setInterval(avanzaTesto, TEXTSPEED); // Crea intervallo per avanzare il testo ogni TEXTSPEED ms
-        }
-    }
-    
-    // Gestione del click per avanzare il dialogo
-    textbox.onclick = () => {
-        if (i >= dialogo.length) return; // Fine dialogo
-
-        // Se il testo non è ancora completo, completalo al click
-        if (j < dialogo[i].length) {
-            textboxContent.textContent = dialogo[i];
-            j = dialogo[i].length;
-            clearInterval(intervallo); // Cancella l'intervallo
-        }
-        else { // Altrimenti passa al prossimo dialogo
-            i++;
-            mostraDialogo();
-        }
-    }
-
-    mostraDialogo(); // Mostra il primo dialogo
-}
 
