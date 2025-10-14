@@ -19,6 +19,12 @@ async function initGame() {
         console.log("Dialoghi caricati:", globals.dialoghi); // verifica caricamento
     else
         console.log("Errore: Dialoghi non caricati correttamente");
+
+    // Inizializza variavili globali
+    globals.canvas = document.getElementById('canvas');
+    globals.tileSize = 64; // esempio, dimensione di una piastrella
+
+
 }
 
 // Funzione per cambiare scena

@@ -1,39 +1,30 @@
-@font-face {
-    font-family: 'Font';          /* il nome che userai nel CSS */
+@font-face { /* definizione del font personalizzato */
+    font-family: 'Font';
     src: url('../assets/font.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
 }
 
 body {
-    cursor: crosshair; /* esempio di cursore personalizzato */
+    cursor: crosshair; /* cursore personalizzato */
     margin: 0;
     padding: 0;
     background-color: rgba(0, 0, 0, 1);
-    color: #fff;
-    font-family: 'Font', sans-serif; /* font personalizzato */
+    color: #fff; /* colore del testo */
+    font-family: 'Font'; /* font personalizzato */
     user-select: none; /* impedisce la selezione del testo */
-    /* altre proprietà generali */
-
 }
 
 
-
-/* Esempio classe generica per pulsanti */
-.button {
-    background-color: #333;
-    color: #fff;
-    border: 2px solid #555;
-    padding: 8px 16px;
-    cursor: pointer;
+#game-container {
+    display: flex;
+    justify-content: center; /* centra orizzontalmente */
+    align-items: center; /* centra verticalmente */
+    width: 75%;
+    height: 75vh; /* altezza basata sulla viewport */
+    overflow: hidden; /* nasconde eventuali overflow */
 }
 
-/* Stilizzazione pulsante al passaggio del mouse */
-.button:hover {
-    background-color: #444;
-}
-
-/* Nascondi elementi (utile per cambiare scena) */
-.hidden {
-    display: none;
+#game-area {
+    height: 100%;
+    aspect-ratio: 4 / 3; /* mantiene il rapporto 4:3 */
+    background-color: #fff;
 }
