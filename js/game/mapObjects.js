@@ -20,7 +20,7 @@ export function mapToWalls(id) {
 
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[i].length; j++) {
-            if (map[i][j] == 1) { // Supponendo che '1' rappresenti un muro
+            if (map[i][j] == 1) { // 1 Rappresenta un muro
                 walls.push(new Wall(j * globals.tileSize, i * globals.tileSize));
             }
         }
