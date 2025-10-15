@@ -10,7 +10,5 @@ export const globals = {
     rayNumber: 100,
     fov: 60,
 
-    tileSize: 24, // Dimensione di una piastrella in pixel
-
-    
+    tileSize: 25, // Dimensione di una piastrella in pixel
 };

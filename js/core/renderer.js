@@ -1,5 +1,6 @@
 import { globals } from '../utils/globals.js';
 import { walls } from '../game/mapObjects.js';
+import { player } from '../game/player.js';
 
 function scaleCanvas(ctx) {
     // Le dimensioni del canvas concettuale diventano quelle del canvas fisico (in pixel dello schermo effettivi)
@@ -34,4 +35,5 @@ export function render() {
 
     // Disegna gli oggetti
     drawWalls(ctx, walls);
+    player.draw(ctx);
 }

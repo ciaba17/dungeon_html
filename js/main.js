@@ -1,8 +1,9 @@
-import {globals} from './utils/globals.js';
-import {mostraDialoghi} from './game/ui.js';
+import { globals } from './utils/globals.js';
+import { mostraDialoghi } from './game/ui.js';
 import { render } from './core/renderer.js';
 import { inputHandler } from './core/input.js';
 import { mapToWalls } from './game/mapObjects.js';
+import { player } from './game/player.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -31,7 +32,9 @@ async function initGame() {
 
 function gameloop() {
     inputHandler(); // Gestione input (da implementare)
+    player.update(); // Aggiorna lo stato del giocatore
     render();
+    requestAnimationFrame(gameloop); // Chiede il prossimo frame
 }
 
 
