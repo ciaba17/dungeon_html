@@ -5,9 +5,10 @@ export const globals = {
     // Oggetti vuoti che saranno popolati durante l'inizializzazione del gioco
     dialoghi: {},
     maps: {}, 
-    canvas: null,
+    gameCanvas: null,
+    mapCanvas: null,
 
     tileSize: 25, // Dimensione di una piastrella in pixel
 
-    rayNumber : 100,
+    rayNumber : 400,
 };

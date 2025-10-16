@@ -7,6 +7,7 @@ import { player } from './game/player.js';
 import { raycast } from './core/raycaster.js';
 import { createRays } from './core/raycaster.js';
 import { scaleCanvas } from './core/renderer.js';
+import { renderer } from './core/renderer.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -28,13 +29,20 @@ async function initGame() {
     mapToWalls("map1"); 
 
     // Inizializza il canvas
-    globals.canvas = document.getElementById("game-area");
+    globals.gameCanvas = document.getElementById("game-area");
+    globals.mapCanvas = document.getElementById("game-map");
+
+    // Crea contesti 2D di rendering
+    renderer.gameCtx = globals.gameCanvas.getContext('2d');
+    renderer.mapCtx = globals.mapCanvas.getContext('2d');
 
     // Crea i raggi per il raycasting
     createRays();
 
     // Setta il canvas alla giusta scala
-    scaleCanvas();
+    scaleCanvas(globals.gameCanvas, renderer.gameCtx);
+    scaleCanvas(globals.mapCanvas, renderer.mapCtx);
+
 }
 
 
