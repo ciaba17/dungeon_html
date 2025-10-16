@@ -5,6 +5,8 @@ import { inputHandler } from './core/input.js';
 import { mapToWalls } from './game/mapObjects.js';
 import { player } from './game/player.js';
 import { raycast } from './core/raycaster.js';
+import { createRays } from './core/raycaster.js';
+import { scaleCanvas } from './core/renderer.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -27,14 +29,23 @@ async function initGame() {
 
     // Inizializza il canvas
     globals.canvas = document.getElementById("game-area");
+
+    // Crea i raggi per il raycasting
+    createRays();
+
+    // Setta il canvas alla giusta scala
+    scaleCanvas();
 }
 
 
 function gameloop() {
     inputHandler(); // Gestione input (da implementare)
+    // Update
     player.update(); // Aggiorna lo stato del giocatore
     raycast();
+    // Draw
     render();
+
     requestAnimationFrame(gameloop); // Chiede il prossimo frame
 }
 
