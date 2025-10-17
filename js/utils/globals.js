@@ -11,4 +11,9 @@ export const globals = {
     tileSize: 25, // Dimensione di una piastrella in pixel
 
     rayNumber : 400,
+
+
+    FPS_LIMIT: 60,
+    lastTime: 0,
+    interval: 0,
 };

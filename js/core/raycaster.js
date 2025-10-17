@@ -19,29 +19,66 @@ class Ray {
     }
 
     cast(walls) {
-        // resetta la posizione di partenza ogni volta
-        this.position = [player.x, player.y];
-        this.distance = 0;
+        // Posizione del player nella griglia
+        let mapX = Math.floor(player.x / globals.tileSize);
+        let mapY = Math.floor(player.y / globals.tileSize);
 
-        while (this.distance < MAX_DISTANCE) {
-            this.position[0] += this.direction[0] * STEP;
-            this.position[1] += this.direction[1] * STEP;
-            this.distance += STEP;
+        // Direzione del raggio
+        let rayDirX = Math.cos(this.angle);
+        let rayDirY = Math.sin(this.angle);
 
+        // Distanza dal player al prossimo lato della griglia
+        let sideDistX, sideDistY;
+
+        // Distanza che il raggio percorre per attraversare una cella
+        let deltaDistX = Math.abs(1 / rayDirX) * globals.tileSize;
+        let deltaDistY = Math.abs(1 / rayDirY) * globals.tileSize;
+
+        // Step indica se il raggio va positivo o negativo nella griglia
+        let stepX = rayDirX < 0 ? -1 : 1;
+        let stepY = rayDirY < 0 ? -1 : 1;
+
+        // Calcola le distanze iniziali ai lati della cella
+        if (rayDirX < 0) sideDistX = (player.x - mapX * globals.tileSize) * deltaDistX / globals.tileSize;
+        else sideDistX = ((mapX + 1) * globals.tileSize - player.x) * deltaDistX / globals.tileSize;
+
+        if (rayDirY < 0) sideDistY = (player.y - mapY * globals.tileSize) * deltaDistY / globals.tileSize;
+        else sideDistY = ((mapY + 1) * globals.tileSize - player.y) * deltaDistY / globals.tileSize;
+
+        let hit = false;
+        let distance = 0;
+
+        while (!hit && distance < MAX_DISTANCE) {
+            // Avanza verso il lato più vicino
+            if (sideDistX < sideDistY) {
+                mapX += stepX;
+                distance = sideDistX;
+                sideDistX += deltaDistX;
+            } else {
+                mapY += stepY;
+                distance = sideDistY;
+                sideDistY += deltaDistY;
+            }
+
+            // Calcola la posizione reale
+            this.position[0] = player.x + rayDirX * distance;
+            this.position[1] = player.y + rayDirY * distance;
+
+            // Controlla se la nuova cella contiene un muro
             for (let wall of walls) {
-                if (
-                    this.position[0] >= wall.x &&
-                    this.position[0] <= wall.x + globals.tileSize &&
-                    this.position[1] >= wall.y &&
-                    this.position[1] <= wall.y + globals.tileSize
-                ) {
-                    this.correctedDistance = this.distance * Math.cos((this.angle - player.angle * Math.PI / 180)); // Correzione fish-eye in radianti
-                    return; // Esce dal ciclo: collisione trovata 
+                let wallMapX = Math.floor(wall.x / globals.tileSize);
+                let wallMapY = Math.floor(wall.y / globals.tileSize);
+                if (mapX === wallMapX && mapY === wallMapY) {
+                    hit = true;
+                    break;
                 }
             }
         }
-    }
 
+        // Correzione fish-eye
+        this.correctedDistance = distance * Math.cos(this.angle - player.angle * Math.PI / 180);
+    }
+    
     draw(ctx) {
         ctx.lineWidth = 1;
         ctx.beginPath();

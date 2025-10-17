@@ -14,14 +14,16 @@ async function initGame() {
 
     // Carica i dialoghi
     let response = await fetch("../assets/dialoghi.json") 
-    if (globals.dialoghi = await response.json())
+    globals.dialoghi = await response.json();
+    if (globals.dialoghi != null)
         console.log("Dialoghi caricati:", globals.dialoghi); // verifica caricamento
     else
         console.log("Errore: Dialoghi non caricati correttamente");
 
     // Carica le mappe
     response = await fetch("../assets/maps.json")
-    if (globals.maps = await response.json())
+    globals.maps = await response.json();
+    if (globals.maps != null)
         console.log("Mappe caricate:", globals.maps); // verifica caricamento
     else
         console.log("Errore: Mappe non caricate correttamente");
@@ -45,16 +47,21 @@ async function initGame() {
 
 }
 
-
-function gameloop() {
-    inputHandler(); // Gestione input (da implementare)
-    // Update
-    player.update(); // Aggiorna lo stato del giocatore
-    raycast();
-    // Draw
-    render();
+    
+    
+function gameloop(time) {
+    if (time - globals.lastTime >= globals.interval) {
+        globals.lastTime = time;
+        inputHandler(); // Gestione input (da implementare)
+        // Update
+        player.update(); // Aggiorna lo stato del giocatore
+        raycast();
+        // Draw
+        render();
+    }   
 
     requestAnimationFrame(gameloop); // Chiede il prossimo frame
+
 }
 
 
@@ -63,6 +70,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     await initGame();
 
     mostraDialoghi("test1");
+
+    globals.interval = 1000 / globals.FPS_LIMIT;
     requestAnimationFrame(gameloop);
 
 });

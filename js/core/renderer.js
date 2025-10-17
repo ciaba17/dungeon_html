@@ -13,18 +13,20 @@ function drawWalls2D(ctx, walls) { // Disegna tutti i muri
 }
 
 function drawWalls3D(ctx) {
-    for (let [i, ray] of rays.entries()) { // Si utilizza entries per avere l'indice del raggio
+    const pixelWidth = globals.SCREEN_WIDTH / globals.rayNumber;
+    ctx.beginPath();
+    for (let [i, ray] of rays.entries()) { // Si utilizza entries per avere l'indice e il raggio per ogni iterazione dell'array
         const wallLength = 20000/ray.correctedDistance;
-        const pixelWidth = globals.SCREEN_WIDTH / globals.rayNumber;
         ctx.lineWidth = pixelWidth
-        ctx.beginPath();
+        //let a = 255/ray.correctedDistance * 80
+        //ctx.strokeStyle = "rgb(" + a + ", " + a + ", " + a + ")";
+        ctx.strokeStyle = "white";
         ctx.moveTo(i * pixelWidth, globals.SCREEN_HEIGHT/2 - wallLength/2);
         ctx.lineTo(i * pixelWidth, globals.SCREEN_HEIGHT/2 + wallLength/2);
-        let a = 255/ray.correctedDistance * 80
-        console.log(a)
-        ctx.strokeStyle = "rgb(" + a + ", " + a + ", " + a + ")";
-        ctx.stroke();
     }
+    
+    ctx.stroke();
+
 }
 
 
@@ -69,5 +71,6 @@ export function scaleCanvas(canvas, ctx) { // Scala il canvas per adattarlo alla
 
 
 window.addEventListener("resize", () => {
-    scaleCanvas(ctx);
+    scaleCanvas(globals.gameCanvas, renderer.gameCtx);
+    scaleCanvas(globals.mapCanvas, renderer.mapCtx);
 });

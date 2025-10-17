@@ -98,6 +98,14 @@
     background-color: rgba(0, 0, 0);
     border: 6px double #fff; /* Double per il doppio bordo */
     box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    display: flex;
+    justify-content: center;
+}
+
+#game-map {
+    height: 100%;
+    aspect-ratio: 4 / 3; /* mantiene il rapporto 4:3 */
+    background-color: #fff;
 }
 
 #inventory {
