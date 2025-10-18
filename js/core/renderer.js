@@ -1,4 +1,4 @@
-import { globals } from '../utils/globals.js';
+import { globals, textures } from '../utils/globals.js';
 import { walls } from '../game/mapObjects.js';
 import { player } from '../game/player.js';
 import { rays } from './raycaster.js';
@@ -7,26 +7,35 @@ export const renderer = {
     gameCtx: null,
     mapCtx: null,
 }
+const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2) / Math.tan((globals.fov * Math.PI / 180) / 2); // Distanza virtuale tra il giocatore e lo schermo di proiezione
+
 
 function drawWalls2D(ctx, walls) { // Disegna tutti i muri
     walls.forEach(wall => wall.draw(ctx));
 }
 
-function drawWalls3D(ctx) {
-    const pixelWidth = globals.SCREEN_WIDTH / globals.rayNumber;
-    ctx.beginPath();
-    for (let [i, ray] of rays.entries()) { // Si utilizza entries per avere l'indice e il raggio per ogni iterazione dell'array
-        const wallLength = 20000/ray.correctedDistance;
-        ctx.lineWidth = pixelWidth
-        //let a = 255/ray.correctedDistance * 80
-        //ctx.strokeStyle = "rgb(" + a + ", " + a + ", " + a + ")";
-        ctx.strokeStyle = "white";
-        ctx.moveTo(i * pixelWidth, globals.SCREEN_HEIGHT/2 - wallLength/2);
-        ctx.lineTo(i * pixelWidth, globals.SCREEN_HEIGHT/2 + wallLength/2);
-    }
-    
-    ctx.stroke();
+function drawWalls3D(ctx, wallSlices) {
+    const sliceWidth = globals.SCREEN_WIDTH / globals.rayNumber;
+    for (let i = 0; i < rays.length; i++) {
+        const slice = wallSlices[i];
+        const top = globals.SCREEN_HEIGHT / 2 - slice.height / 2;
+        const bottom = globals.SCREEN_HEIGHT / 2 + slice.height / 2;
 
+        console.log(textures.wallTexture.complete, textures.wallTexture.width, textures.wallTexture.height, slice.textureX);
+
+        if(slice.texture) {
+            // Disegna parte della texture corrispondente
+            ctx.drawImage(
+                slice.texture,
+                slice.textureX, 0, 1, slice.texture.height, // parte della texture
+                i * sliceWidth, top, sliceWidth, slice.height // sullo schermo
+            );
+        } else {
+            // fallback colore semplice
+            ctx.fillStyle = "white";
+            ctx.fillRect(i * sliceWidth, top, sliceWidth, slice.height);
+        }
+    }
 }
 
 
@@ -46,7 +55,19 @@ export function render() {
     player.draw(mapCtx);
     rays.forEach(ray => ray.draw(mapCtx));
 
-    drawWalls3D(gameCtx)
+
+    // Dati per il rendering
+    const wallSlices = rays.map(ray => {
+        const wallHeight = (globals.tileSize / ray.distance) * distanceProjectionPlane; // Altezza del muro
+        return {
+            x: null, // Posizione sullo schermo in pixel
+            texture: textures.wallTexture,
+            height: wallHeight,
+            distance: ray.correctedDistance,
+            textureX: ray.hitX % globals.tileSize // Posizione sulla texture orizzontale
+        }
+    });
+    drawWalls3D(gameCtx, wallSlices);
 }
 
 

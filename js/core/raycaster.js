@@ -7,7 +7,6 @@ export let rays = [];
 const STEP = 1; // Passo di avanzamento del raggio
 const MAX_DISTANCE = 800; // Distanza massima di lancio del raggio
 
-let fov = 60;
 
 class Ray {
     constructor() {
@@ -75,8 +74,12 @@ class Ray {
             }
         }
 
+        const dx = this.position[0] - player.x;
+        const dy = this.position[1] - player.y;
+        this.distance = Math.sqrt(dx * dx + dy * dy);
+
         // Correzione fish-eye
-        this.correctedDistance = distance * Math.cos(this.angle - player.angle * Math.PI / 180);
+        this.correctedDistance = this.distance * Math.cos(this.angle - player.angle * Math.PI / 180);
     }
     
     draw(ctx) {
@@ -94,7 +97,7 @@ export function raycast() { // Lancia tutti i raggi ad ogni frame
         const ray = rays[i];
 
         // Calcolo dell’angolo del raggio in base all'angolo del giocatore(gradi) e al FOV
-        ray.angle = (player.angle + (i * (fov / globals.rayNumber) - fov / 2)) * Math.PI / 180; // in radianti
+        ray.angle = (player.angle + (i * (globals.fov / globals.rayNumber) - globals.fov / 2)) * Math.PI / 180; // in radianti
 
         // Ricalcola la direzione del raggio
         ray.direction = [Math.cos(ray.angle), Math.sin(ray.angle)];
@@ -108,7 +111,7 @@ export function createRays() { // Crea i raggi iniziali
     rays = []; // resetta l’array se si ricreano i raggi
     for (let i = 0; i < globals.rayNumber; i++) {
         const ray = new Ray();
-        ray.angle = (player.angle + (i * (fov / globals.rayNumber) - fov / 2)) * Math.PI / 180;
+        ray.angle = (player.angle + (i * (globals.fov / globals.rayNumber) - globals.fov / 2)) * Math.PI / 180;
         ray.direction = [Math.cos(ray.angle), Math.sin(ray.angle)];
         rays.push(ray);
     }

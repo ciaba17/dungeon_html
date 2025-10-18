@@ -12,8 +12,23 @@ export const globals = {
 
     rayNumber : 400,
 
-
+    fov: 60, // In gradi
     FPS_LIMIT: 60,
     lastTime: 0,
     interval: 0,
+};
+
+
+export const textures = {
+    wallTexture : new Image(),
+}
+
+textures.wallTexture.src = "../assets/images/wallTexture.png";  // Prova a caricare il file
+
+textures.wallTexture.onload = function() {
+    console.log("Immagine caricata con successo!");
+};
+
+textures.wallTexture.onerror = function() {
+    console.error("Errore: impossibile caricare l'immagine.");
 };
