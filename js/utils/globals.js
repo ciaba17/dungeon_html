@@ -8,7 +8,7 @@ export const globals = {
     gameCanvas: null,
     mapCanvas: null,
 
-    tileSize: 25, // Dimensione di una piastrella in pixel
+    tileSize: 32, // Dimensione di una piastrella in pixel
 
     rayNumber : 400,
 

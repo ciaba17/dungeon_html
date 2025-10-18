@@ -64,7 +64,7 @@ export function render() {
             texture: textures.wallTexture,
             height: wallHeight,
             distance: ray.correctedDistance,
-            textureX: ray.hitX % globals.tileSize // Posizione sulla texture orizzontale
+            textureX: ray.distance % globals.tileSize // Posizione sulla texture orizzontale
         }
     });
     drawWalls3D(gameCtx, wallSlices);
