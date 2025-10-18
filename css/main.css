@@ -3,6 +3,7 @@
     src: url('../assets/font.ttf') format('truetype');
 }
 
+
 html,body {
     cursor: crosshair; /* cursore personalizzato */
     margin: 0;

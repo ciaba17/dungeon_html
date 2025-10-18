@@ -20,18 +20,15 @@ function drawWalls3D(ctx, wallSlices) {
         const slice = wallSlices[i];
         const top = globals.SCREEN_HEIGHT / 2 - slice.height / 2;
         const bottom = globals.SCREEN_HEIGHT / 2 + slice.height / 2;
-
-        console.log(textures.wallTexture.complete, textures.wallTexture.width, textures.wallTexture.height, slice.textureX);
-
         if(slice.texture) {
             // Disegna parte della texture corrispondente
             ctx.drawImage(
                 slice.texture,
-                slice.textureX, 0, 1, slice.texture.height, // parte della texture
-                i * sliceWidth, top, sliceWidth, slice.height // sullo schermo
+                slice.textureX, 0, 1, slice.texture.height, // Parte della texture
+                i * sliceWidth, top, sliceWidth, slice.height // Sullo schermo
             );
         } else {
-            // fallback colore semplice
+            // Fallback colore semplice
             ctx.fillStyle = "white";
             ctx.fillRect(i * sliceWidth, top, sliceWidth, slice.height);
         }
@@ -45,8 +42,11 @@ export function render() {
     const mapCtx = renderer.mapCtx; 
 
     // Pulisce gli schermi
-    gameCtx.fillStyle = 'black';
-    gameCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    gameCtx.fillStyle = "rgba(134, 134, 134, 1)";
+    gameCtx.fillRect(0, globals.SCREEN_HEIGHT/2, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT/2);
+    gameCtx.fillStyle = "rgba(101, 170, 235, 1)";
+    gameCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT/2);
+    
     mapCtx.fillStyle = 'black';
     mapCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
 
@@ -64,7 +64,7 @@ export function render() {
             texture: textures.wallTexture,
             height: wallHeight,
             distance: ray.correctedDistance,
-            textureX: ray.distance % globals.tileSize // Posizione sulla texture orizzontale
+            textureX: Math.floor(((ray.hitVertical ? ray.hitY : ray.hitX) % globals.tileSize) / globals.tileSize * textures.wallTexture.width), // Posizione sulla texture orizzontale
         }
     });
     drawWalls3D(gameCtx, wallSlices);

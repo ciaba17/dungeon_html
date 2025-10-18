@@ -5,7 +5,7 @@ import { globals } from "../utils/globals.js";
 export let rays = [];
 
 const STEP = 1; // Passo di avanzamento del raggio
-const MAX_DISTANCE = 800; // Distanza massima di lancio del raggio
+const MAX_DISTANCE = 1000; // Distanza massima di lancio del raggio
 
 
 class Ray {
@@ -17,55 +17,46 @@ class Ray {
     }
 
     cast(walls) {
-        // Posizione del player nella griglia
         let startX = Math.floor(player.x / globals.tileSize);
         let startY = Math.floor(player.y / globals.tileSize);
 
-        // Direzione del raggio
         let rayDirX = Math.cos(this.angle);
         let rayDirY = Math.sin(this.angle);
 
-        // Distanza dal player al prossimo lato della griglia
-        let sideDistX, sideDistY;
-
-        // Distanza che il raggio percorre per attraversare una cella
         let deltaDistX = Math.abs(1 / rayDirX) * globals.tileSize;
         let deltaDistY = Math.abs(1 / rayDirY) * globals.tileSize;
 
-        // Step indica se il raggio va positivo o negativo nella griglia
         let stepX = rayDirX < 0 ? -1 : 1;
         let stepY = rayDirY < 0 ? -1 : 1;
 
-        // Calcola le distanze iniziali ai lati della cella
-        if (rayDirX < 0) sideDistX = (player.x - startX * globals.tileSize) * deltaDistX / globals.tileSize;
-        else sideDistX = ((startX + 1) * globals.tileSize - player.x) * deltaDistX / globals.tileSize;
+        let sideDistX, sideDistY;
+        if (rayDirX < 0)
+            sideDistX = (player.x - startX * globals.tileSize) * Math.abs(1 / rayDirX);
+        else
+            sideDistX = ((startX + 1) * globals.tileSize - player.x) * Math.abs(1 / rayDirX);
 
-        if (rayDirY < 0) sideDistY = (player.y - startY * globals.tileSize) * deltaDistY / globals.tileSize;
-        else sideDistY = ((startY + 1) * globals.tileSize - player.y) * deltaDistY / globals.tileSize;
+        if (rayDirY < 0)
+            sideDistY = (player.y - startY * globals.tileSize) * Math.abs(1 / rayDirY);
+        else
+            sideDistY = ((startY + 1) * globals.tileSize - player.y) * Math.abs(1 / rayDirY);
 
         let hit = false;
-        let distance = 0;
+        let side = 0; // 0 = X, 1 = Y
 
-        while (!hit && distance < MAX_DISTANCE) {
-            // Avanza verso il lato più vicino
+        while (!hit && this.distance < MAX_DISTANCE) {
             if (sideDistX < sideDistY) {
-                startX += stepX;
-                distance = sideDistX;
                 sideDistX += deltaDistX;
+                startX += stepX;
+                side = 0;
             } else {
-                startY += stepY;
-                distance = sideDistY;
                 sideDistY += deltaDistY;
+                startY += stepY;
+                side = 1;
             }
 
-            // Calcola la posizione reale
-            this.position[0] = player.x + rayDirX * distance;
-            this.position[1] = player.y + rayDirY * distance;
-
-            // Controlla se la nuova cella contiene un muro
             for (let wall of walls) {
-                let wallMapX = Math.floor(wall.x / globals.tileSize);
-                let wallMapY = Math.floor(wall.y / globals.tileSize);
+                const wallMapX = Math.floor(wall.x / globals.tileSize);
+                const wallMapY = Math.floor(wall.y / globals.tileSize);
                 if (startX === wallMapX && startY === wallMapY) {
                     hit = true;
                     break;
@@ -73,14 +64,21 @@ class Ray {
             }
         }
 
-        const dx = this.position[0] - player.x;
-        const dy = this.position[1] - player.y;
-        this.distance = Math.sqrt(dx * dx + dy * dy);
+        if (side === 0) {
+            this.distance = (startX - player.x / globals.tileSize + (1 - stepX) / 2) / rayDirX * globals.tileSize;
+            this.hitX = player.x + rayDirX * this.distance;
+            this.hitY = player.y + rayDirY * this.distance;
+            this.hitVertical = true;
+        } else {
+            this.distance = (startY - player.y / globals.tileSize + (1 - stepY) / 2) / rayDirY * globals.tileSize;
+            this.hitX = player.x + rayDirX * this.distance;
+            this.hitY = player.y + rayDirY * this.distance;
+            this.hitVertical = false;
+        }
 
-        // Correzione fish-eye
-        this.correctedDistance = this.distance * Math.cos(this.angle - player.angle * Math.PI / 180);
-    }
-    
+        this.correctedDistance = this.distance * Math.cos(this.angle - (player.angle * Math.PI / 180));
+    }   
+
     draw(ctx) {
         ctx.lineWidth = 1;
         ctx.beginPath();
