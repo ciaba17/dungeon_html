@@ -23,11 +23,10 @@ html,body {
     align-items: center; /* centra verticalmente */
     width: 75%;
     height: 75vh; /* altezza basata sulla viewport */
-    overflow: hidden; /* nasconde eventuali overflow */
 }
 
 #game-area {
     height: 100%;
     aspect-ratio: 4 / 3; /* mantiene il rapporto 4:3 */
-    background-color: #fff;
+    background-color: #ffffff;
 }

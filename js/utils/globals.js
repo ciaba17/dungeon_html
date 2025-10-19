@@ -9,8 +9,9 @@ export const globals = {
     mapCanvas: null,
 
     tileSize: 32, // Dimensione di una piastrella in pixel
+    tileNumber: 32,
 
-    rayNumber : 400,
+    rayNumber : 300,
 
     fov: 60, // In gradi
     FPS_LIMIT: 60,

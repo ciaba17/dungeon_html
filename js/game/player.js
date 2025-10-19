@@ -3,8 +3,9 @@ import { walls } from "./mapObjects.js";
 import { globals } from "../utils/globals.js";
 
 const SPEED = globals.tileSize;
-const ROTATION_SPEED = 5; // gradi per frame
+const ROTATION_SPEED = 1; // gradi per frame
 const TOTAL_ROTATION = 90;
+
 class Player {
     constructor(x, y, angle) {
         // Allinea alla griglia

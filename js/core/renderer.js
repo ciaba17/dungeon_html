@@ -48,9 +48,9 @@ export function render() {
     gameCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT/2);
     
     mapCtx.fillStyle = 'black';
-    mapCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    mapCtx.fillRect(0, 0, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
 
-    // Disegna gli oggetti
+    // Disegna gli oggetti nella minimappa
     drawWalls2D(mapCtx, walls);
     player.draw(mapCtx);
     rays.forEach(ray => ray.draw(mapCtx));
@@ -72,26 +72,26 @@ export function render() {
 
 
 
-export function scaleCanvas(canvas, ctx) { // Scala il canvas per adattarlo alla finestra mantenendo le proporzioni
+export function scaleCanvas(canvas, ctx, width, height) { // Scala il canvas per adattarlo alla finestra mantenendo le proporzioni
     // Le dimensioni del canvas concettuale diventano quelle del canvas fisico (in pixel dello schermo effettivi)
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
     // Fattori di scala rispetto al mondo logico
-    const scaleX = canvas.width / globals.SCREEN_WIDTH;
-    const scaleY = canvas.height / globals.SCREEN_HEIGHT;
+    const scaleX = canvas.width / width;
+    const scaleY = canvas.height / height;
     const scale = Math.min(scaleX, scaleY); // Usa la scala minore per mantenere le proporzioni
 
     // Centra il mondo
-    const offsetX = (canvas.width - globals.SCREEN_WIDTH * scale) / 2;
-    const offsetY = (canvas.height - globals.SCREEN_HEIGHT * scale) / 2;
+    const offsetX = (canvas.width - width * scale) / 2;
+    const offsetY = (canvas.height - height * scale) / 2;
 
     // Imposta la trasformazione
-    ctx.setTransform(scale, 0, 0, scale, offsetX / scale, offsetY / scale);
+    ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
 }
 
 
 window.addEventListener("resize", () => {
-    scaleCanvas(globals.gameCanvas, renderer.gameCtx);
-    scaleCanvas(globals.mapCanvas, renderer.mapCtx);
+    scaleCanvas(globals.gameCanvas, renderer.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    scaleCanvas(globals.mapCanvas, renderer.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
 });

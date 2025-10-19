@@ -91,7 +91,7 @@
 }
 
 
-#map {
+#map-container {
     position: relative;
     width: 100%;
     height: 40%;
@@ -100,12 +100,12 @@
     box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 #game-map {
-    height: 100%;
-    aspect-ratio: 4 / 3; /* mantiene il rapporto 4:3 */
     background-color: #fff;
+    width: 70%;
 }
 
 #inventory {

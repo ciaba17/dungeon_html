@@ -42,8 +42,8 @@ async function initGame() {
     createRays();
 
     // Setta il canvas alla giusta scala
-    scaleCanvas(globals.gameCanvas, renderer.gameCtx);
-    scaleCanvas(globals.mapCanvas, renderer.mapCtx);
+    scaleCanvas(globals.gameCanvas, renderer.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    scaleCanvas(globals.mapCanvas, renderer.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
 
 }
 
