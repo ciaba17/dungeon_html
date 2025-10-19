@@ -1,5 +1,5 @@
 import { inputState } from "../core/input.js";
-import { walls } from "./mapObjects.js";
+import { walls } from "./objects.js";
 import { globals } from "../utils/globals.js";
 
 const SPEED = globals.tileSize;
@@ -20,7 +20,7 @@ class Player {
 
     update() {
     // Movimento
-    const animateMovement = (deltaX, deltaY, steps = 9) => {
+    const animateMovement = (deltaX, deltaY, steps = 50) => {
         let frame = 0;
         this.canMove = false;
         const intervallo = setInterval(() => {

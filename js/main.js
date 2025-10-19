@@ -1,13 +1,11 @@
 import { globals } from './utils/globals.js';
 import { mostraDialoghi } from './game/ui.js';
-import { render } from './core/renderer.js';
 import { inputHandler } from './core/input.js';
-import { mapToWalls } from './game/mapObjects.js';
+import { mapToWalls } from './game/objects.js';
 import { player } from './game/player.js';
-import { raycast } from './core/raycaster.js';
-import { createRays } from './core/raycaster.js';
-import { scaleCanvas } from './core/renderer.js';
-import { renderer } from './core/renderer.js';
+import { raycast, createRays } from './core/raycaster.js';
+import { context, render } from './core/renderer.js';
+import { scaleCanvas, fitGameMap } from './core/scaling.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -35,15 +33,15 @@ async function initGame() {
     globals.mapCanvas = document.getElementById("game-map");
 
     // Crea contesti 2D di rendering
-    renderer.gameCtx = globals.gameCanvas.getContext('2d');
-    renderer.mapCtx = globals.mapCanvas.getContext('2d');
+    context.gameCtx = globals.gameCanvas.getContext('2d');
+    context.mapCtx = globals.mapCanvas.getContext('2d');
 
     // Crea i raggi per il raycasting
     createRays();
 
-    // Setta il canvas alla giusta scala
-    scaleCanvas(globals.gameCanvas, renderer.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
-    scaleCanvas(globals.mapCanvas, renderer.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
+    scaleCanvas(globals.gameCanvas, context.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    fitGameMap(); // Da chiamare prima di scalare la mappa
+    scaleCanvas(globals.mapCanvas, context.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
 
 }
 

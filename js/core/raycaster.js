@@ -1,4 +1,4 @@
-import { walls } from "../game/mapObjects.js";
+import { walls } from "../game/objects.js";
 import { player } from "../game/player.js";
 import { globals } from "../utils/globals.js";
 
@@ -61,22 +61,25 @@ class Ray {
                 side = 1;
             }
 
-            for (let wall of walls) {
-                const wallMapX = Math.floor(wall.x / globals.tileSize);
+            for (let wall of walls) { // Cicla tutti i muri
+                // Posizione dei muri sulla griglia
+                const wallMapX = Math.floor(wall.x / globals.tileSize); 
                 const wallMapY = Math.floor(wall.y / globals.tileSize);
-                if (startX === wallMapX && startY === wallMapY) {
-                    hit = true;
+
+                if (startX === wallMapX && startY === wallMapY) {// Se il ,muro si trova nella stessa casella del raggio
+                    hit = true; // Il raggio ha colpito un muro
                     break;
                 }
             }
         }
 
-        if (side === 0) {
-            this.distance = (startX - player.x / globals.tileSize + (1 - stepX) / 2) / rayDirX * globals.tileSize;
+        if (side === 0) { // Se il muro che ha colpito è verticale
+            this.distance = (startX - player.x / globals.tileSize + (1 - stepX) / 2) / rayDirX * globals.tileSize; // Calcola la distanza tra player e impatto
+            // Coordinate della collisione raggio-muro
             this.hitX = player.x + rayDirX * this.distance;
             this.hitY = player.y + rayDirY * this.distance;
-            this.hitVertical = true;
-        } else {
+            this.hitVertical = true; // Segna che il raggio ha colpito un muro verticale
+        } else { // Se il muro che ha colpito è orizzontale
             this.distance = (startY - player.y / globals.tileSize + (1 - stepY) / 2) / rayDirY * globals.tileSize;
             this.hitX = player.x + rayDirX * this.distance;
             this.hitY = player.y + rayDirY * this.distance;
@@ -103,8 +106,7 @@ export function raycast() { // Lancia tutti i raggi ad ogni frame
         // Calcolo dell’angolo del raggio in base all'angolo del giocatore(gradi) e al FOV
         ray.angle = (player.angle + (i * (globals.fov / globals.rayNumber) - globals.fov / 2)) * Math.PI / 180; // in radianti
 
-        // Lancia il raggio
-        ray.cast(walls);
+        ray.cast(walls); // Lancia il raggio
     }
 }
 
