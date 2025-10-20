@@ -6,6 +6,7 @@ import { player } from './game/player.js';
 import { raycast, createRays } from './core/raycaster.js';
 import { context, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
+import { enemies } from './game/enemies.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -51,9 +52,14 @@ function gameloop(time) {
     if (time - globals.lastTime >= globals.interval) {
         globals.lastTime = time;
         inputHandler(); // Gestione input (da implementare)
+
         // Update
         player.update(); // Aggiorna lo stato del giocatore
+        enemies.forEach(monster => {
+            monster.followPlayer(player);
+        });
         raycast();
+
         // Draw
         render();
     }   
@@ -71,7 +77,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     globals.interval = 1000 / globals.FPS_LIMIT;
     requestAnimationFrame(gameloop);
-
 });
 
 

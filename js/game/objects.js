@@ -29,18 +29,19 @@ export function mapToWalls(id) {
     }
 }
 
-class Object {
+export class Entity {
     constructor(x, y, z = 0, scale, name, texture) { // z = altezza oggetto
         this.x = x * globals.tileSize - globals.tileSize / 2; 
         this.y = y * globals.tileSize - globals.tileSize / 2;
         this.z = z - 10; // altezza in pixel o unità virtuali
-        this.scale = scale;
+        this.scale = scale / 10;
         this.name = name;
         this.texture = texture;
     }
 
     draw3D(ctx) {
-        const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2 ) / Math.tan((globals.fov * Math.PI / 180) / 2); // Distanza virtuale tra il giocatore e lo schermo di proiezione
+        // Distanza virtuale tra il giocatore e lo schermo di proiezione DA METTERE IN GLOBALS
+        const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2 ) / Math.tan((globals.fov * Math.PI / 180) / 2); 
 
         // Distanza oggetto-giocatore
         let dx = this.x - player.x;
@@ -70,11 +71,12 @@ class Object {
         let spriteScreenX = (globals.SCREEN_WIDTH / 2 ) * (1 + transformX / transformY) - spriteWidth / 2;
         let spriteScreenY = globals.SCREEN_HEIGHT / 2 - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
 
+        // Disegna a schermo
         ctx.drawImage(this.texture, spriteScreenX, spriteScreenY, spriteWidth, spriteHeight);
     }
 
     draw2D(ctx) {
-        ctx.fillStyle = "green"; // verde brillante
+        ctx.fillStyle = "green";
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, 8, 0, Math.PI * 2); // x, y, raggio, inizio, fine
@@ -84,5 +86,3 @@ class Object {
 }
 
 
-
-export const oggetto = new Object(7, 9, 0, 0.1, "test", textures.test);

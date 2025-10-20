@@ -4,7 +4,7 @@ import { player } from '../game/player.js';
 import { rays } from './raycaster.js';
 
 //PROVVISORIO
-import { oggetto } from '../game/objects.js';
+import { enemies } from '../game/enemies.js';
 
 export const context = {
     gameCtx: null,
@@ -73,11 +73,12 @@ export function render() {
     drawWalls2D(mapCtx, walls);
     player.draw(mapCtx);
     rays.forEach(ray => ray.draw(mapCtx));
-    oggetto.draw2D(mapCtx);
-
-
+    enemies.forEach(monster => {monster.draw2D(mapCtx)});
+    
+    // Disegna la vista 3D
     drawWalls3D(gameCtx);
-    oggetto.draw3D(gameCtx);
+    enemies.forEach(monster => {monster.draw3D(gameCtx)});
+
 }
 
 
