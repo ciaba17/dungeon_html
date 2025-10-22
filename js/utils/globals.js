@@ -2,6 +2,9 @@ export const globals = {
     SCREEN_WIDTH: 800, 
     SCREEN_HEIGHT: 600,
 
+    MAP_WIDTH: 400,
+    MAP_HEIGHT : 300,
+
     // Oggetti vuoti che saranno popolati durante l'inizializzazione del gioco
     dialoghi: {},
     maps: {}, 
@@ -10,6 +13,7 @@ export const globals = {
 
     tileSize: 32, // Dimensione di una piastrella in pixel
     tileNumber: 32,
+    mapZoom : 1,
 
     rayNumber : 400,
 

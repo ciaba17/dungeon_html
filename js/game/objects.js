@@ -1,6 +1,5 @@
 import { globals, textures } from '../utils/globals.js';
 import { player } from './player.js';
-import { rays } from '../core/raycaster.js';
 
 export const walls = [];
 
@@ -104,5 +103,4 @@ export class Entity {
         ctx.fill();
     }
 }
-
 

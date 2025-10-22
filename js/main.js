@@ -43,7 +43,7 @@ async function initGame() {
     // Resizing iniziale
     scaleCanvas(globals.gameCanvas, contexts.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
     fitGameMap(); // Da chiamare prima di scalare la mappa
-    scaleCanvas(globals.mapCanvas, contexts.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
+    scaleCanvas(globals.mapCanvas, contexts.mapCtx, globals.MAP_WIDTH, globals.MAP_HEIGHT);
 
     contexts.gameCtx.imageSmoothingEnabled = false;
 
@@ -97,7 +97,7 @@ function drawFPS(ctx) {
 }
 
 
-// Main
+// Avvio
 window.addEventListener("DOMContentLoaded", async () => {
     await initGame();
 

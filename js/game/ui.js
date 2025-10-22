@@ -46,8 +46,3 @@ export function mostraDialoghi(id) {
     mostraDialogo(); // Mostra il primo dialogo
 }
 
-const interact = document.getElementById("interact-btn");
-interact.onclick = () => {
-    player.interact();
-
-}

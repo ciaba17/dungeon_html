@@ -21,4 +21,4 @@ export class Enemy extends Entity {
 
 
 globals.entities.push(new Entity(10, 10, 0, 0.1, "oggettoTest", textures.test, true));
-globals.entities.push(new Enemy(5, 5, 0, 1, 'Skeleton', textures.test, true));
+globals.entities.push(new Enemy(6, 5, 0, 1, 'Skeleton', textures.test, true));

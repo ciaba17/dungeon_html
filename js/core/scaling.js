@@ -15,28 +15,41 @@ export function scaleCanvas(canvas, ctx, width, height) { // Scala il canvas per
     const offsetX = (canvas.width - width * scale) / 2;
     const offsetY = (canvas.height - height * scale) / 2;
 
-    // Imposta la trasformazione
+
     ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
+    
 }
 
-export function fitGameMap() { // Garantisce che canvas rimanga nel suo container e con il suo aspect ratio
+export function fitGameMap() { 
     const container = document.getElementById('map-container');
 
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
 
-    // Lato massimo che può usare senza uscire dal container
-    const size = Math.min(containerWidth * 0.7, containerHeight); // 70% larghezza o altezza disponibile
+    // Mantieni l'aspect ratio della minimappa (lato più piccolo)
+    const mapAspect = (globals.MAP_WIDTH) / (globals.MAP_HEIGHT);
+    let finalWidth, finalHeight;
 
-    globals.mapCanvas.style.width = size + 'px';
-    globals.mapCanvas.style.height = size + 'px';
+    if (containerWidth / containerHeight > mapAspect) {
+        // container più largo: limita l'altezza
+        finalHeight = containerHeight;
+        finalWidth = containerHeight * mapAspect;
+    } else {
+        // container più stretto: limita la larghezza
+        finalWidth = containerWidth;
+        finalHeight = containerWidth / mapAspect;
+    }
+
+    globals.mapCanvas.style.width = finalWidth + 'px';
+    globals.mapCanvas.style.height = finalHeight + 'px';
 }
+
+
 
 window.addEventListener("resize", () => {
     scaleCanvas(globals.gameCanvas, contexts.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
     fitGameMap(); // Da chiamare prima di scalare la mappa
-    scaleCanvas(globals.mapCanvas, contexts.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
-
+    scaleCanvas(globals.mapCanvas, contexts.mapCtx, globals.MAP_WIDTH, globals.MAP_HEIGHT);
 });
 
 

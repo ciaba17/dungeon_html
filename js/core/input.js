@@ -1,4 +1,5 @@
 import { globals } from '../utils/globals.js';
+import { contexts } from './renderer.js';
 
 export const inputState = new Map([ // Mappa di stato degli input
     ["up", false],
@@ -25,4 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
             inputState[dir] = true;
         });
     }
+
+    const interact = document.getElementById("interact-btn");
+    interact.onclick = () => {
+    player.interact();
+    }
 });
+
+

@@ -49,15 +49,18 @@ export function render() {
     const mapCtx = contexts.mapCtx; 
 
     // Pulisce gli schermi
-    //gameCtx.fillStyle = "rgba(134, 134, 134, 1)";
     gameCtx.fillStyle = "rgba(0, 0, 0, 1)";
-    gameCtx.fillRect(0, globals.SCREEN_HEIGHT/2, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT/2);
-    //gameCtx.fillStyle = "rgba(101, 170, 235, 1)";
-    gameCtx.fillStyle = "rgba(0, 0, 0, 1)";
-    gameCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT/2);
+    gameCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
     
+    const mapContainer = document.getElementById("map-container")
     mapCtx.fillStyle = 'black';
-    mapCtx.fillRect(0, 0, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
+    mapCtx.fillRect(0, 0, globals.MAP_WIDTH, globals.MAP_HEIGHT);
+
+    mapCtx.save(); // Salva lo stato corrente del contesto
+    const mapCenterX = mapContainer.clientWidth / 2;
+    const mapCenterY = mapContainer.clientHeight / 2;
+    mapCtx.scale(globals.mapZoom, globals.mapZoom);
+    mapCtx.translate(mapCenterX - player.x, mapCenterY - player.y); // Trasla il contesto in modo che il player sia al centro
 
     // Disegna gli oggetti nella minimappa
     drawWalls2D(mapCtx, walls);
@@ -65,6 +68,8 @@ export function render() {
     rays.forEach(ray => ray.draw(mapCtx));
     globals.entities.forEach(entity => {entity.draw2D(mapCtx)});
     globals.entities.forEach(obj => {obj.draw2D(mapCtx)})
+
+    mapCtx.restore(); // Ripristina lo stato originale
     
     // Disegna la vista 3D
     drawWalls3D(gameCtx);
