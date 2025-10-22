@@ -25,6 +25,8 @@ export const globals = {
     entities: [],
 
     deltaTime : null,
+
+    mouseY : 0,
 };
 
 

@@ -13,6 +13,7 @@ export const inputState = new Map([ // Mappa di stato degli input
 
 
 export function inputHandler() {
+    
 };
 
 
@@ -34,3 +35,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowUp') {
+        globals.mouseY += 20
+    }
+    if (event.key === 'ArrowDown') {
+        globals.mouseY -= 20
+    }
+});
+
+
+document.addEventListener('mousemove', function(event) {
+    const x = event.clientX;
+
+});

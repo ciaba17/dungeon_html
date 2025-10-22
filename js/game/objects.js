@@ -67,7 +67,7 @@ export class Entity {
 
 
         const spriteScreenX = (globals.SCREEN_WIDTH / 2) * (1 + transformX / transformY) - spriteWidth / 2;
-        const spriteScreenY = globals.SCREEN_HEIGHT / 2 - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
+        const spriteScreenY = globals.SCREEN_HEIGHT / 2 + globals.mouseY - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
 
         // Se lo sprite è completamente fuori schermo, non disegnarlo
         if (spriteScreenX + spriteWidth < 0 || spriteScreenX > globals.SCREEN_WIDTH) return;
