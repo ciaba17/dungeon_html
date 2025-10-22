@@ -1,99 +1,120 @@
 import { inputState } from "../core/input.js";
 import { walls } from "./objects.js";
 import { globals } from "../utils/globals.js";
+import { mostraDialoghi } from "./ui.js";
 
-const SPEED = globals.tileSize;
-const ROTATION_SPEED = 1; // gradi per frame
-const TOTAL_ROTATION = 90;
+const SPEED = 3 * globals.tileSize;     // unità al secondo
+const ROTATION_SPEED = 180;             // gradi al secondo
 
 class Player {
     constructor(x, y, angle) {
-        // Allinea alla griglia
-        this.x = x * globals.tileSize - globals.tileSize / 2; 
+        this.x = x * globals.tileSize - globals.tileSize / 2;
         this.y = y * globals.tileSize - globals.tileSize / 2;
+        this.angle = angle; // in gradi
 
-        this.angle = angle; // In gradi
-        this.canMove = true;
-        this.intervallo;
-        this.animationSpeed = 5; // In ms
+        // Movimento attivo
+        this.moving = false;
+        this.rotating = false;
+
+        this.targetX = this.x;
+        this.targetY = this.y;
+        this.targetAngle = this.angle;
     }
 
     update() {
-    // Movimento
-    const animateMovement = (deltaX, deltaY, steps = 50) => {
-        let frame = 0;
-        this.canMove = false;
-        const intervallo = setInterval(() => {
-            this.x += deltaX / steps;
-            this.y += deltaY / steps;
-            frame++;
-            if (frame >= steps) {
-                clearInterval(intervallo);
-                this.canMove = true;
+        // Se non sta muovendo né ruotando, leggi input
+        if (!this.moving && !this.rotating) {
+            if (inputState.up) {
+                this.targetX = this.x + globals.tileSize * Math.cos(this.angle * Math.PI / 180);
+                this.targetY = this.y + globals.tileSize * Math.sin(this.angle * Math.PI / 180);
+                this.moving = true;
+                inputState.up = false;
             }
-        }, this.animationSpeed);
-    };
-
-    const animateRotation = (deltaAngle, steps = 9) => {
-        let frame = 0;
-        this.canMove = false;
-        const intervallo = setInterval(() => {
-            this.angle += deltaAngle / steps;
-            frame++;
-            if (frame >= steps) {
-                clearInterval(intervallo);
-                this.canMove = true;
+            if (inputState.down) {
+                this.targetX = this.x - globals.tileSize * Math.cos(this.angle * Math.PI / 180);
+                this.targetY = this.y - globals.tileSize * Math.sin(this.angle * Math.PI / 180);
+                this.moving = true;
+                inputState.down = false;
             }
-        }, this.animationSpeed);
-    };
+            if (inputState.left) {
+                this.targetX = this.x + globals.tileSize * Math.cos((this.angle - 90) * Math.PI / 180);
+                this.targetY = this.y + globals.tileSize * Math.sin((this.angle - 90) * Math.PI / 180);
+                this.moving = true;
+                inputState.left = false;
+            }
+            if (inputState.right) {
+                this.targetX = this.x + globals.tileSize * Math.cos((this.angle + 90) * Math.PI / 180);
+                this.targetY = this.y + globals.tileSize * Math.sin((this.angle + 90) * Math.PI / 180);
+                this.moving = true;
+                inputState.right = false;
+            }
+            if (inputState.turnLeft) {
+                this.targetAngle = this.angle - 90;
+                this.rotating = true;
+                inputState.turnLeft = false;
+            }
+            if (inputState.turnRight) {
+                this.targetAngle = this.angle + 90;
+                this.rotating = true;
+                inputState.turnRight = false;
+            }
+        }
 
-    // Rotazioni
-    if (inputState.turnLeft && this.canMove) {
-        animateRotation(-TOTAL_ROTATION, TOTAL_ROTATION / ROTATION_SPEED);
-        inputState.turnLeft = false;
-    }   
+        // Movimento verso il target
+        if (this.moving) {
+            const dx = this.targetX - this.x;
+            const dy = this.targetY - this.y;
+            const dist = Math.hypot(dx, dy);
+            const step = SPEED * globals.deltaTime;
 
-    if (inputState.turnRight && this.canMove) {
-        animateRotation(TOTAL_ROTATION, TOTAL_ROTATION / ROTATION_SPEED);
-        inputState.turnRight = false;
+            if (dist <= step) {
+                this.x = this.targetX;
+                this.y = this.targetY;
+                this.moving = false;
+            } else {
+                this.x += (dx / dist) * step;
+                this.y += (dy / dist) * step;
+            }
+        }
+
+        // Rotazione verso il target
+        if (this.rotating) {
+            let diff = this.targetAngle - this.angle;
+            if (diff > 180) diff -= 360;
+            if (diff < -180) diff += 360;
+
+            const step = ROTATION_SPEED * globals.deltaTime;
+            if (Math.abs(diff) <= step) {
+                this.angle = this.targetAngle;
+                this.rotating = false;
+            } else {
+                this.angle += Math.sign(diff) * step;
+            }
+
+            if (this.angle < 0) this.angle += 360;
+            if (this.angle >= 360) this.angle -= 360;
+        }
     }
 
-    // Movimenti lineari
-    if (inputState.up && this.canMove) {
-        animateMovement(SPEED * Math.cos(this.angle * Math.PI / 180),
-                        SPEED * Math.sin(this.angle * Math.PI / 180));
-        inputState.up = false;
-    }
-    if (inputState.down && this.canMove) {
-        animateMovement(-SPEED * Math.cos(this.angle * Math.PI / 180),
-                        -SPEED * Math.sin(this.angle * Math.PI / 180));
-        inputState.down = false;
-    }
-    if (inputState.left && this.canMove) {
-        animateMovement(SPEED * Math.cos((this.angle - 90) * Math.PI / 180),
-                        SPEED * Math.sin((this.angle - 90) * Math.PI / 180));
-        inputState.left = false;
-    }
-    if (inputState.right && this.canMove) {
-        animateMovement(SPEED * Math.cos((this.angle + 90) * Math.PI / 180),
-                        SPEED * Math.sin((this.angle + 90) * Math.PI / 180));
-        inputState.right = false;
-    }
-
-    // Mantiene l'angolo tra 0 e 360
-    if (this.angle < 0) this.angle += 360;
-    if (this.angle >= 360) this.angle -= 360;
+    interact() {
+        // Calcola la posizione davanti al giocatore
+        const interactDistance = globals.tileSize;
+        const interactX = this.x + interactDistance * Math.cos(this.angle * Math.PI / 180);
+        const interactY = this.y + interactDistance * Math.sin(this.angle * Math.PI / 180);
+        // Controlla se c'è un oggetto interagibile in quella posizione
+        for (let entity of globals.entities) {
+            if (interactX === entity.x && interactY === entity.y && entity.interactable) {
+                mostraDialoghi("test2");
+            }
+        }
     }
 
     draw(context) {
-        context.fillStyle = 'red';
+        context.fillStyle = "red";
         context.beginPath();
         context.arc(this.x, this.y, 10, 0, Math.PI * 2);
         context.fill();
     }
-
-
 }
 
-export const player = new Player(7, 7, 0); // Posizione iniziale e angolo
-
+export const player = new Player(7, 7, 0);

@@ -1,4 +1,5 @@
 import { globals } from '../utils/globals.js';
+import { player } from './player.js';
 
 export function mostraDialoghi(id) {
     const textbox = document.getElementById("textbox");
@@ -45,3 +46,8 @@ export function mostraDialoghi(id) {
     mostraDialogo(); // Mostra il primo dialogo
 }
 
+const interact = document.getElementById("interact-btn");
+interact.onclick = () => {
+    player.interact();
+
+}

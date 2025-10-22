@@ -4,9 +4,9 @@ import { inputHandler } from './core/input.js';
 import { mapToWalls } from './game/objects.js';
 import { player } from './game/player.js';
 import { raycast, createRays } from './core/raycaster.js';
-import { context, render } from './core/renderer.js';
+import { contexts, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
-import { enemies } from './game/enemies.js';
+import { Enemy } from './game/enemies.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -34,38 +34,66 @@ async function initGame() {
     globals.mapCanvas = document.getElementById("game-map");
 
     // Crea contesti 2D di rendering
-    context.gameCtx = globals.gameCanvas.getContext('2d');
-    context.mapCtx = globals.mapCanvas.getContext('2d');
+    contexts.gameCtx = globals.gameCanvas.getContext('2d');
+    contexts.mapCtx = globals.mapCanvas.getContext('2d');
 
     // Crea i raggi per il raycasting
     createRays();
 
-    scaleCanvas(globals.gameCanvas, context.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    // Resizing iniziale
+    scaleCanvas(globals.gameCanvas, contexts.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
     fitGameMap(); // Da chiamare prima di scalare la mappa
-    scaleCanvas(globals.mapCanvas, context.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
+    scaleCanvas(globals.mapCanvas, contexts.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
+
+    contexts.gameCtx.imageSmoothingEnabled = false;
+
 
 }
 
-    
-    
+let lastTime = performance.now();
+let fps = 0;
+let frameCount = 0;
+let fpsTimer = 0;
+const interval = 1000 / globals.FPS_LIMIT;
+
 function gameloop(time) {
-    if (time - globals.lastTime >= globals.interval) {
-        globals.lastTime = time;
-        inputHandler(); // Gestione input (da implementare)
+    const delta = time - lastTime;
+    globals.deltaTime = Math.min(delta / 1000, 0.1); // Calcola delta limitandone il valore masssimo a 0.1 secondi
+    lastTime = time;
 
-        // Update
-        player.update(); // Aggiorna lo stato del giocatore
-        enemies.forEach(monster => {
-            monster.followPlayer(player);
-        });
-        raycast();
+    // Calcolo FPS
+    fpsTimer += delta;
+    frameCount++;
+    if (fpsTimer >= 1000) { // ogni secondo
+        fps = frameCount;
+        frameCount = 0;
+        fpsTimer = 0;
+    }
 
-        // Draw
-        render();
-    }   
+    lastTime = time;
+    inputHandler();
 
-    requestAnimationFrame(gameloop); // Chiede il prossimo frame
+    // Update
+    player.update();
+    globals.entities.forEach(entity => {
+        if (entity instanceof Enemy) {
+            entity.followPlayer(player);
+        }
+    });
 
+    raycast();
+
+    // Draw
+    render();
+    drawFPS(contexts.gameCtx);
+
+    requestAnimationFrame(gameloop);
+}
+
+function drawFPS(ctx) {
+    ctx.fillStyle = "white";
+    ctx.font = "16px monospace";
+    ctx.fillText(`FPS: ${fps}`, 10, 20);
 }
 
 
@@ -75,7 +103,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     mostraDialoghi("test1");
 
-    globals.interval = 1000 / globals.FPS_LIMIT;
     requestAnimationFrame(gameloop);
 });
 

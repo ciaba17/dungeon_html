@@ -11,12 +11,16 @@ export const globals = {
     tileSize: 32, // Dimensione di una piastrella in pixel
     tileNumber: 32,
 
-    rayNumber : 300,
+    rayNumber : 400,
 
     fov: 60, // In gradi
     FPS_LIMIT: 60,
-    lastTime: 0,
-    interval: 0,
+
+    wallSlices: [],
+
+    entities: [],
+
+    deltaTime : null,
 };
 
 

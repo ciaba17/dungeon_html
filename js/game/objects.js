@@ -1,5 +1,6 @@
 import { globals, textures } from '../utils/globals.js';
 import { player } from './player.js';
+import { rays } from '../core/raycaster.js';
 
 export const walls = [];
 
@@ -30,58 +31,77 @@ export function mapToWalls(id) {
 }
 
 export class Entity {
-    constructor(x, y, z = 0, scale, name, texture) { // z = altezza oggetto
+    constructor(x, y, z = 0, scale, name, texture, interactable) {
         this.x = x * globals.tileSize - globals.tileSize / 2; 
         this.y = y * globals.tileSize - globals.tileSize / 2;
-        this.z = z - 10; // altezza in pixel o unità virtuali
+        this.z = z - 10;
         this.scale = scale / 10;
         this.name = name;
         this.texture = texture;
+        this.interactable = interactable;
+        this.onScreen = true;
     }
 
     draw3D(ctx) {
-        // Distanza virtuale tra il giocatore e lo schermo di proiezione DA METTERE IN GLOBALS
-        const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2 ) / Math.tan((globals.fov * Math.PI / 180) / 2); 
+        const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2) / Math.tan((globals.fov * Math.PI / 180) / 2);
 
-        // Distanza oggetto-giocatore
         let dx = this.x - player.x;
         let dy = this.y - player.y;
 
-        // Direzione del giocatore
-        let dirX = Math.cos(player.angle * Math.PI / 180);
-        let dirY = Math.sin(player.angle * Math.PI / 180);
+        const dirX = Math.cos(player.angle * Math.PI / 180);
+        const dirY = Math.sin(player.angle * Math.PI / 180);
 
-        // Calcolo del piano della camera: serve a sapere la larghezza del campo visivo
         const fovScale = globals.fov / 100;
         const planeX = -Math.sin(player.angle * Math.PI / 180) * fovScale;  
         const planeY = Math.cos(player.angle * Math.PI / 180) * fovScale;
 
-        // Trasforma da coordinate a spazio sulla camera (non sul canvas))
-        let invDet = 1 / (planeX * dirY - dirX * planeY);
-        let transformX = invDet * (dirY * dx - dirX * dy);
-        let transformY = invDet * (-planeY * dx + planeX * dy);
+        const invDet = 1 / (planeX * dirY - dirX * planeY);
+        const transformX = invDet * (dirY * dx - dirX * dy);
+        const transformY = invDet * (-planeY * dx + planeX * dy);
 
-        if (transformY <= 0) return; // dietro il player, non disegnare
+        if (transformY <= 0) return; // dietro il player
+        const depth = Math.max(transformY, 0.1); // evita valori troppo piccoli
 
-        // Dimensioni dello sprite
-        let spriteHeight = Math.abs(this.texture.height / transformY * distanceProjectionPlane * this.scale);
-        let spriteWidth = Math.abs(this.texture.width / transformY * distanceProjectionPlane * this.scale);
-        
-        // Posizione x e y sul canvas
-        let spriteScreenX = (globals.SCREEN_WIDTH / 2 ) * (1 + transformX / transformY) - spriteWidth / 2;
-        let spriteScreenY = globals.SCREEN_HEIGHT / 2 - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
+        // Calcola dimensioni sprite proporzionali alla distanza
+        let spriteHeight = this.texture.height / depth * distanceProjectionPlane * this.scale;
+        let spriteWidth  = this.texture.width  / depth * distanceProjectionPlane * this.scale;
 
-        // Disegna a schermo
-        ctx.drawImage(this.texture, spriteScreenX, spriteScreenY, spriteWidth, spriteHeight);
+
+        const spriteScreenX = (globals.SCREEN_WIDTH / 2) * (1 + transformX / transformY) - spriteWidth / 2;
+        const spriteScreenY = globals.SCREEN_HEIGHT / 2 - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
+
+        // Se lo sprite è completamente fuori schermo, non disegnarlo
+        if (spriteScreenX + spriteWidth < 0 || spriteScreenX > globals.SCREEN_WIDTH) return;
+
+
+        // Disegna lo sprite a colonne per depth
+        const textureWidth = this.texture.width;
+        for (let x = 0; x < spriteWidth; x++) {
+
+
+            let screenX = Math.floor(spriteScreenX + x);
+            if (screenX < 0 || screenX >= globals.SCREEN_WIDTH) continue;
+            const sliceIndex = Math.floor(screenX * globals.wallSlices.length / globals.SCREEN_WIDTH);
+            if (!globals.wallSlices[sliceIndex]) continue;
+            // controlla la distanza con il depth buffer dei muri
+            if (transformY < globals.wallSlices[sliceIndex].distance) {
+                // colonna corrispondente nella texture
+                const textureX = Math.floor((x / spriteWidth) * textureWidth);
+                ctx.drawImage(
+                    this.texture,
+                    textureX, 0, 1, this.texture.height, // 1px verticale dalla texture
+                    screenX, spriteScreenY, 1, spriteHeight // disegna scalato
+                );
+            }
+        }
     }
+
 
     draw2D(ctx) {
         ctx.fillStyle = "green";
-
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 8, 0, Math.PI * 2); // x, y, raggio, inizio, fine
+        ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
         ctx.fill();
-
     }
 }
 

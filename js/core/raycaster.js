@@ -3,7 +3,8 @@ import { player } from "../game/player.js";
 import { globals } from "../utils/globals.js";
 
 export let rays = [];
-export let wallDistances = [];
+export let wallDistances = []; // Distanze dei muri colpiti dai raggi per ordine di rendering
+
 const MAX_DISTANCE = 5000; // Distanza massima di lancio del raggio
 
 
@@ -52,7 +53,7 @@ class Ray {
         let side = 0; // 0 = X, 1 = Y
 
         // Ciclo di avanzamento del raggio
-        while (!hit && this.distance < MAX_DISTANCE) { 
+        while (!hit) { 
             if (sideDistX < sideDistY) { // Se il raggio colpisce prima la cella in verticale
                 sideDistX += deltaDistX; // Aggiorna la distanza al prossimo bordo verticale
                 startX += stepX; // Il raggio avanza di una cella

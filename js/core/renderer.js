@@ -3,13 +3,12 @@ import { walls } from '../game/objects.js';
 import { player } from '../game/player.js';
 import { rays } from './raycaster.js';
 
-//PROVVISORIO
-import { enemies } from '../game/enemies.js';
 
-export const context = {
+export const contexts = {
     gameCtx: null,
     mapCtx: null,
 }
+
 const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2) / Math.tan((globals.fov * Math.PI / 180) / 2); // Distanza virtuale tra il giocatore e lo schermo di proiezione
 
 
@@ -19,12 +18,11 @@ function drawWalls2D(ctx, walls) { // Disegna tutti i muri
 
 function drawWalls3D(ctx) {
     // Dati per il rendering
-    const wallSlices = rays.map(ray => {
-        const wallHeight = (globals.tileSize / ray.distance) * distanceProjectionPlane; // Altezza del muro
+    globals.wallSlices = []; // Resetta l'array delle slice dei muri
+    globals.wallSlices = rays.map(ray => {
         return {
-            x: null, // Posizione sullo schermo in pixel
             texture: textures.wallTexture,
-            height: wallHeight,
+            height: (globals.tileSize / ray.distance) * distanceProjectionPlane, // Altezza del muro
             distance: ray.correctedDistance,
             textureX: Math.floor(((ray.hitVertical ? ray.hitY : ray.hitX) % globals.tileSize) / globals.tileSize * textures.wallTexture.width), // Posizione sulla texture orizzontale
         }
@@ -32,31 +30,23 @@ function drawWalls3D(ctx) {
 
     const sliceWidth = globals.SCREEN_WIDTH / globals.rayNumber; // Larghezza di una linea del muro
     for (let i = 0; i < rays.length; i++) {
-        const slice = wallSlices[i];
+        const slice = globals.wallSlices[i];
         const top = globals.SCREEN_HEIGHT / 2 - slice.height / 2;
-        const bottom = globals.SCREEN_HEIGHT / 2 + slice.height / 2;
-        if(slice.texture) {
-            // Disegna parte della texture corrispondente
-            ctx.drawImage(
-                slice.texture,
-                slice.textureX, 0, 1, slice.texture.height, // Parte della texture
-                i * sliceWidth, top, sliceWidth, slice.height // Sullo schermo
-            );
-        } else {
-            // Fallback colore semplice
-            ctx.fillStyle = "white";
-            ctx.fillRect(i * sliceWidth, top, sliceWidth, slice.height);
-        }
+        ctx.drawImage(
+            slice.texture,
+            slice.textureX, 0, 1, slice.texture.height, // Parte della texture
+            i * sliceWidth, top, sliceWidth, slice.height // Sullo schermo
+        );
+
+        
     }
 }
 
 
 
-
-
 export function render() {
-    const gameCtx = context.gameCtx; 
-    const mapCtx = context.mapCtx; 
+    const gameCtx = contexts.gameCtx; 
+    const mapCtx = contexts.mapCtx; 
 
     // Pulisce gli schermi
     //gameCtx.fillStyle = "rgba(134, 134, 134, 1)";
@@ -73,11 +63,13 @@ export function render() {
     drawWalls2D(mapCtx, walls);
     player.draw(mapCtx);
     rays.forEach(ray => ray.draw(mapCtx));
-    enemies.forEach(monster => {monster.draw2D(mapCtx)});
+    globals.entities.forEach(entity => {entity.draw2D(mapCtx)});
+    globals.entities.forEach(obj => {obj.draw2D(mapCtx)})
     
     // Disegna la vista 3D
     drawWalls3D(gameCtx);
-    enemies.forEach(monster => {monster.draw3D(gameCtx)});
+    globals.entities.sort((a, b) => a.distance - b.distance);
+    globals.entities.forEach(entity => {entity.draw3D(gameCtx)})
 
 }
 

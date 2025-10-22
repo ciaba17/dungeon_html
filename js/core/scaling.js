@@ -1,5 +1,5 @@
 import { globals } from "../utils/globals.js";
-import { context } from "./renderer.js";
+import { contexts } from "./renderer.js";
 
 export function scaleCanvas(canvas, ctx, width, height) { // Scala il canvas per adattarlo alla finestra mantenendo le proporzioni
     // Le dimensioni del canvas concettuale diventano quelle del canvas fisico (in pixel dello schermo effettivi)
@@ -33,9 +33,9 @@ export function fitGameMap() { // Garantisce che canvas rimanga nel suo containe
 }
 
 window.addEventListener("resize", () => {
-    scaleCanvas(globals.gameCanvas, context.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    scaleCanvas(globals.gameCanvas, contexts.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
     fitGameMap(); // Da chiamare prima di scalare la mappa
-    scaleCanvas(globals.mapCanvas, context.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
+    scaleCanvas(globals.mapCanvas, contexts.mapCtx, globals.tileSize * globals.tileNumber, globals.tileSize * globals.tileNumber);
 
 });
 
