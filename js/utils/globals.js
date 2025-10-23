@@ -29,8 +29,10 @@ export const globals = {
 
     deltaTime : null,
 
-    mouseY : 0,
+    offsetY : 0,
 
+    textBoxContent: null,
+    statsDisplay: null,
 };
 
 

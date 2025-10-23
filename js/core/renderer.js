@@ -2,6 +2,7 @@ import { globals, textures } from '../utils/globals.js';
 import { walls } from '../game/objects.js';
 import { player } from '../game/player.js';
 import { rays } from './raycaster.js';
+import { renderCombat } from '../game/combat.js';
 
 
 export const contexts = {
@@ -31,7 +32,7 @@ function drawWalls3D(ctx) {
     const sliceWidth = globals.SCREEN_WIDTH / globals.rayNumber; // Larghezza di una linea del muro
     for (let i = 0; i < rays.length; i++) {
         const slice = globals.wallSlices[i];
-        const top = globals.SCREEN_HEIGHT / 2 + globals.mouseY - slice.height / 2;
+        const top = globals.SCREEN_HEIGHT / 2 + globals.offsetY - slice.height / 2;
         ctx.drawImage(
             slice.texture,
             slice.textureX, 0, 1, slice.texture.height, // Parte della texture
@@ -62,20 +63,23 @@ export function render() {
     mapCtx.scale(globals.mapZoom, globals.mapZoom);
     mapCtx.translate(mapCenterX - player.x, mapCenterY - player.y); // Trasla il contesto in modo che il player sia al centro
 
-    // Disegna gli oggetti nella minimappa
-    drawWalls2D(mapCtx, walls);
-    player.draw(mapCtx);
-    rays.forEach(ray => ray.draw(mapCtx));
-    globals.entities.forEach(entity => {entity.draw2D(mapCtx)});
-    globals.entities.forEach(obj => {obj.draw2D(mapCtx)})
+    if (globals.gameState === 0) {
+        // Disegna gli oggetti nella minimappa
+        drawWalls2D(mapCtx, walls);
+        player.draw(mapCtx);
+        rays.forEach(ray => ray.draw(mapCtx));
+        globals.entities.forEach(entity => {entity.draw2D(mapCtx)});
+        globals.entities.forEach(obj => {obj.draw2D(mapCtx)})
 
-    mapCtx.restore(); // Ripristina lo stato originale
-    
-    // Disegna la vista 3D
-    drawWalls3D(gameCtx);
-    globals.entities.sort((a, b) => a.distance - b.distance);
-    globals.entities.forEach(entity => {entity.draw3D(gameCtx)})
-
+        mapCtx.restore(); // Ripristina lo stato originale
+        
+        // Disegna la vista 3D
+        drawWalls3D(gameCtx);
+        globals.entities.sort((a, b) => a.distance - b.distance);
+        globals.entities.forEach(entity => {entity.draw3D(gameCtx)})
+    } else if (globals.gameState === 1) {
+        renderCombat(gameCtx);
+    }
 }
 
 

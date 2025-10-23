@@ -39,10 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'ArrowUp') {
-        globals.mouseY += 20
+        globals.offsetY += 20
     }
     if (event.key === 'ArrowDown') {
-        globals.mouseY -= 20
+        globals.offsetY -= 20
     }
 });
 

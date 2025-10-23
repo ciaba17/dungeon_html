@@ -67,7 +67,7 @@ export class Entity {
 
 
         const spriteScreenX = (globals.SCREEN_WIDTH / 2) * (1 + transformX / transformY) - spriteWidth / 2;
-        const spriteScreenY = globals.SCREEN_HEIGHT / 2 + globals.mouseY - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
+        const spriteScreenY = globals.SCREEN_HEIGHT / 2 + globals.offsetY - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
 
         // Se lo sprite è completamente fuori schermo, non disegnarlo
         if (spriteScreenX + spriteWidth < 0 || spriteScreenX > globals.SCREEN_WIDTH) return;
@@ -82,14 +82,14 @@ export class Entity {
             if (screenX < 0 || screenX >= globals.SCREEN_WIDTH) continue;
             const sliceIndex = Math.floor(screenX * globals.wallSlices.length / globals.SCREEN_WIDTH);
             if (!globals.wallSlices[sliceIndex]) continue;
-            // controlla la distanza con il depth buffer dei muri
+            // Controlla la distanza con il depth buffer dei muri
             if (transformY < globals.wallSlices[sliceIndex].distance) {
-                // colonna corrispondente nella texture
+                // Colonna corrispondente nella texture
                 const textureX = Math.floor((x / spriteWidth) * textureWidth);
                 ctx.drawImage(
                     this.texture,
                     textureX, 0, 1, this.texture.height, // 1px verticale dalla texture
-                    screenX, spriteScreenY, 1, spriteHeight // disegna scalato
+                    screenX, spriteScreenY, 1, spriteHeight // Disegna scalato
                 );
             }
         }

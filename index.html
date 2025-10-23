@@ -20,8 +20,18 @@
         <div id="ui">
             <div id="bottom-ui">
                 <div id="player-head"></div>
-                <div id="textbox">
-                    <div id="textbox-content"></div>
+                <div id="info-container">
+                    <div id="textbox-content" style="display: none;"></div> <!-- Disattivata all'inizio -->
+                    <div id="stats-display">
+                        <div class="stat-bar" id="hp-bar">
+                            <div class="bar-fill" id="hp-fill"></div>
+                            <span class="bar-text" id="hp-text">100 / 100</span>
+                        </div>
+                        <div class="stat-bar" id="mana-bar">
+                            <div class="bar-fill" id="mana-fill"></div>
+                            <span class="bar-text" id="mana-text">50 / 50</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             

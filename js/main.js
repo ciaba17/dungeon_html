@@ -48,6 +48,9 @@ async function initGame() {
     contexts.gameCtx.imageSmoothingEnabled = false;
 
 
+    globals.textBoxContent = document.getElementById("textbox-content");
+    globals.statsDisplay = document.getElementById("stats-display");
+
 }
 
 // Variabili necessarie per la gestione del gameloop in base al tempo reale

@@ -2,8 +2,8 @@ import { globals } from '../utils/globals.js';
 import { player } from './player.js';
 
 export function mostraDialoghi(id) {
-    const textbox = document.getElementById("textbox");
-    const textboxContent = document.getElementById("textbox-content");
+    const container = document.getElementById("info-container");
+    const textboxContent = globals.textBoxContent;
     const dialogo = globals.dialoghi[id];
     const TEXTSPEED = 50 
     let i = 0;
@@ -28,7 +28,7 @@ export function mostraDialoghi(id) {
     }
     
     // Gestione del click per avanzare il dialogo
-    textbox.onclick = () => {
+    container.onclick = () => {
         if (i >= dialogo.length) return; // Fine dialogo
         
         // Se il testo non è ancora completo, completalo al click
