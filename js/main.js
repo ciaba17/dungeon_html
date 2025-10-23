@@ -50,6 +50,7 @@ async function initGame() {
 
 }
 
+// Variabili necessarie per la gestione del gameloop in base al tempo reale
 let lastTime = performance.now();
 let fps = 0;
 let frameCount = 0;

@@ -5,6 +5,9 @@ export const globals = {
     MAP_WIDTH: 400,
     MAP_HEIGHT : 300,
 
+    gameState: 0, // 0 Visuale 3D in cui puoi cammianre e interagire, 1 combattimento
+    enemyOnCombat: null,
+
     // Oggetti vuoti che saranno popolati durante l'inizializzazione del gioco
     dialoghi: {},
     maps: {}, 
@@ -27,6 +30,7 @@ export const globals = {
     deltaTime : null,
 
     mouseY : 0,
+
 };
 
 

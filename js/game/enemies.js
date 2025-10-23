@@ -11,14 +11,21 @@ export class Enemy extends Entity {
         const dy = player.y - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > 0) {
+        if (distance > 2) {
             const speed = 0.5; // Velocità del mostro
             this.x += (dx / distance) * speed;
             this.y += (dy / distance) * speed;
+        } else {
+            globals.gameState = 1; // Il gioco va in stato di combattimento
+            globals.enemyOnCombat = this; // Salva il nemico che ha toccato il player per il combattimento
         }
+    }
+
+    drawOnCombat(ctx) {
+        ctx.drawImage(this.texture, globals.SCREEN_WIDTH / 2 - this.texture.width / 2, globals.SCREEN_HEIGHT / 2 - this.texture.height / 2);
     }
 }
 
 
-globals.entities.push(new Entity(10, 10, 0, 0.1, "oggettoTest", textures.test, true));
+globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.test, true));
 globals.entities.push(new Enemy(6, 5, 0, 1, 'Skeleton', textures.test, true));
