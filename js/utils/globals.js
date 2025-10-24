@@ -33,6 +33,8 @@ export const globals = {
 
     textBoxContent: null,
     statsDisplay: null,
+    moveControls: null,
+    combatControls: null,
 };
 
 

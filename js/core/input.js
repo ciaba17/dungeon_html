@@ -45,9 +45,3 @@ document.addEventListener('keydown', function(event) {
         globals.offsetY -= 20
     }
 });
-
-
-document.addEventListener('mousemove', function(event) {
-    const x = event.clientX;
-
-});
