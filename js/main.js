@@ -7,13 +7,13 @@ import { raycast, createRays } from './core/raycaster.js';
 import { contexts, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
 import { Enemy } from './game/enemies.js';
-import { bgMusic } from './core/audio.js';
+import { combat } from './game/combat.js'; // Resolved import
 
 async function initGame() {
     console.log("Inizio il gioco");
 
     // Carica i dialoghi
-    let response = await fetch("../assets/dialoghi.json") 
+    let response = await fetch("../assets/dialoghi.json");
     globals.dialoghi = await response.json();
     if (globals.dialoghi != null)
         console.log("Dialoghi caricati:", globals.dialoghi); // verifica caricamento
@@ -21,14 +21,15 @@ async function initGame() {
         console.log("Errore: Dialoghi non caricati correttamente");
 
     // Carica le mappe
-    response = await fetch("../assets/maps.json")
+    response = await fetch("../assets/maps.json");
     globals.maps = await response.json();
     if (globals.maps != null)
         console.log("Mappe caricate:", globals.maps); // verifica caricamento
     else
         console.log("Errore: Mappe non caricate correttamente");
+    
     // Crea i muri dalla mappa
-    mapToWalls("map1"); 
+    mapToWalls("map1");
 
     // Inizializza il canvas
     globals.gameCanvas = document.getElementById("game-area");
@@ -48,24 +49,27 @@ async function initGame() {
 
     contexts.gameCtx.imageSmoothingEnabled = false;
 
-
     globals.textBoxContent = document.getElementById("textbox-content");
     globals.statsDisplay = document.getElementById("stats-display");
+    globals.combatControls = document.getElementById("combat-controls"); // Resolved addition
+    globals.moveControls = document.getElementById("move-controls"); // Resolved addition
 }
 
-
-
-
 // Variabili necessarie per la gestione del gameloop in base al tempo reale
-let lastTime = performance.now();
+let lastTime = performance.now(); // Prende il tempo attuale in ms
 let fps = 0;
 let frameCount = 0;
 let fpsTimer = 0;
-const interval = 1000 / globals.FPS_LIMIT;
+
+function drawFPS(ctx) {
+    ctx.fillStyle = "white";
+    ctx.font = "16px monospace";
+    ctx.fillText(`FPS: ${fps}`, 10, 20);
+}
 
 function gameloop(time) {
-    const delta = time - lastTime;
-    globals.deltaTime = Math.min(delta / 1000, 0.1); // Calcola delta limitandone il valore masssimo a 0.1 secondi
+    const delta = time - lastTime; // Tempo trascorso dall'ultimo frame in ms
+    globals.deltaTime = Math.min(delta / 1000, 0.1); // Calcola delta limitandone il valore massimo a 0.1 secondi
     lastTime = time;
 
     // Calcolo FPS
@@ -81,12 +85,19 @@ function gameloop(time) {
     inputHandler();
 
     // Update
-    player.update();
-    globals.entities.forEach(entity => {
-        if (entity instanceof Enemy) {
-            entity.followPlayer(player);
-        }
-    });
+    switch(globals.gameState) {
+        case 0:
+            player.update();
+            globals.entities.forEach(entity => {
+                if (entity instanceof Enemy) {
+                    entity.followPlayer(player);
+                }
+            });
+            break;
+        case 1:
+            combat(delta); // Resolved addition
+            break;
+    }
 
     raycast();
 
@@ -97,13 +108,6 @@ function gameloop(time) {
     requestAnimationFrame(gameloop);
 }
 
-function drawFPS(ctx) {
-    ctx.fillStyle = "white";
-    ctx.font = "16px monospace";
-    ctx.fillText(`FPS: ${fps}`, 10, 20);
-}
-
-
 // Avvio
 window.addEventListener("DOMContentLoaded", async () => {
     await initGame();
@@ -112,5 +116,3 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     requestAnimationFrame(gameloop);
 });
-
-

@@ -104,7 +104,7 @@
     box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
 }
 
-#controls {
+#move-controls {
     position: relative;
     width: 100%;
     height: 30%;
@@ -150,7 +150,7 @@
     box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
 }
 
-.control-btn {
+.move-btn {
     position: relative;
     width: 40%; /* Larghezza del bottone */
     background-color: rgb(0, 0, 0); /* Colore di sfondo leggermente visibile */
@@ -163,6 +163,35 @@
     cursor: pointer;  /* mantiene il cursore a mano */
 }
 
+#combat-controls {
+    position: relative;
+    width: 100%;
+    height: 30%;
+    background-color: rgba(0, 0, 0);
+    border: 6px double #fff; /* Double per il doppio bordo */
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    display: flex; /* Usa Flexbox per il layout */
+    justify-content: space-around; /* Spazio uniforme tra i bottoni */
+    align-items: center; /* Centra verticalmente */
+    padding: 3%;
+    gap: 2%;
+}
+
+.combat-btn {
+    position: relative;
+    width: 25%; /* Larghezza del bottone */
+    background-color: rgb(0, 0, 0); /* Colore di sfondo leggermente visibile */
+    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    font-size: 5vmin;
+    color: #fff;
+    cursor: pointer; /* Cambia il cursore quando si passa sopra il bottone */
+    border: 2px solid #fff; /* Bordo bianco */
+    cursor: pointer;  /* mantiene il cursore a mano */
+    aspect-ratio: 1 / 1;
+    
+    background-size: cover; /* Copre tutta l'area */
+    background-position: center; /* Centra l'immagine */
+}
 
 #map-container {
     position: relative;
