@@ -5,4 +5,4 @@ bgMusic.volume = 0.1
 
 document.addEventListener('click', () => {
     bgMusic.play()
-}); // play solo al primo click
+});

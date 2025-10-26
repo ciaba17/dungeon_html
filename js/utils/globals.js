@@ -15,7 +15,6 @@ export const globals = {
     mapCanvas: null,
 
     tileSize: 32, // Dimensione di una piastrella in pixel
-    tileNumber: 32,
     mapZoom : 1,
 
     rayNumber : 400,

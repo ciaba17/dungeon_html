@@ -22,30 +22,22 @@ class Player {
     }
 
     update() {
-        // Se non sta muovendo né ruotando, leggi input
+        // Se non sta muovendo ne ruotando, leggi input
         if (!this.moving && !this.rotating) {
             if (inputState.movement.up) {
-                this.targetX = this.x + globals.tileSize * Math.cos(this.angle * Math.PI / 180);
-                this.targetY = this.y + globals.tileSize * Math.sin(this.angle * Math.PI / 180);
-                this.moving = true;
+                this.moveIfFree(0);
                 inputState.movement.up = false;
             }
             if (inputState.movement.down) {
-                this.targetX = this.x - globals.tileSize * Math.cos(this.angle * Math.PI / 180);
-                this.targetY = this.y - globals.tileSize * Math.sin(this.angle * Math.PI / 180);
-                this.moving = true;
+                this.moveIfFree(180);
                 inputState.movement.down = false;
             }
             if (inputState.movement.left) {
-                this.targetX = this.x + globals.tileSize * Math.cos((this.angle - 90) * Math.PI / 180);
-                this.targetY = this.y + globals.tileSize * Math.sin((this.angle - 90) * Math.PI / 180);
-                this.moving = true;
+                this.moveIfFree(-90);
                 inputState.movement.left = false;
             }
             if (inputState.movement.right) {
-                this.targetX = this.x + globals.tileSize * Math.cos((this.angle + 90) * Math.PI / 180);
-                this.targetY = this.y + globals.tileSize * Math.sin((this.angle + 90) * Math.PI / 180);
-                this.moving = true;
+                this.moveIfFree(90);
                 inputState.movement.right = false;
             }
             if (inputState.movement.turnLeft) {
@@ -115,6 +107,34 @@ class Player {
         context.arc(this.x, this.y, 10, 0, Math.PI * 2);
         context.fill();
     }
+
+    moveIfFree(angleOffset) {
+        const rad = (this.angle + angleOffset) * Math.PI / 180;
+        const newX = this.x + globals.tileSize * Math.cos(rad);
+        const newY = this.y + globals.tileSize * Math.sin(rad);
+
+        if (!isWallAt(newX, newY)) {
+            this.targetX = newX;
+            this.targetY = newY;
+            this.moving = true;
+        }
+    }
 }
+
+
+
+
+function isWallAt(x, y) {
+    const col = Math.floor(x / globals.tileSize);
+    const row = Math.floor(y / globals.tileSize);
+
+
+    return globals.maps.map1[row][col] === 1;
+}
+
+
+
+
+
 
 export const player = new Player(7, 7, 0);

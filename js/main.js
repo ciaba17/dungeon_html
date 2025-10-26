@@ -7,7 +7,8 @@ import { raycast, createRays } from './core/raycaster.js';
 import { contexts, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
 import { Enemy } from './game/enemies.js';
-import { combat } from './game/combat.js'; // Resolved import
+import { combat } from './game/combat.js';
+import { bgMusic } from './core/audio.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
