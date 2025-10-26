@@ -24,39 +24,39 @@ class Player {
     update() {
         // Se non sta muovendo né ruotando, leggi input
         if (!this.moving && !this.rotating) {
-            if (inputState.up) {
+            if (inputState.movement.up) {
                 this.targetX = this.x + globals.tileSize * Math.cos(this.angle * Math.PI / 180);
                 this.targetY = this.y + globals.tileSize * Math.sin(this.angle * Math.PI / 180);
                 this.moving = true;
-                inputState.up = false;
+                inputState.movement.up = false;
             }
-            if (inputState.down) {
+            if (inputState.movement.down) {
                 this.targetX = this.x - globals.tileSize * Math.cos(this.angle * Math.PI / 180);
                 this.targetY = this.y - globals.tileSize * Math.sin(this.angle * Math.PI / 180);
                 this.moving = true;
-                inputState.down = false;
+                inputState.movement.down = false;
             }
-            if (inputState.left) {
+            if (inputState.movement.left) {
                 this.targetX = this.x + globals.tileSize * Math.cos((this.angle - 90) * Math.PI / 180);
                 this.targetY = this.y + globals.tileSize * Math.sin((this.angle - 90) * Math.PI / 180);
                 this.moving = true;
-                inputState.left = false;
+                inputState.movement.left = false;
             }
-            if (inputState.right) {
+            if (inputState.movement.right) {
                 this.targetX = this.x + globals.tileSize * Math.cos((this.angle + 90) * Math.PI / 180);
                 this.targetY = this.y + globals.tileSize * Math.sin((this.angle + 90) * Math.PI / 180);
                 this.moving = true;
-                inputState.right = false;
+                inputState.movement.right = false;
             }
-            if (inputState.turnLeft) {
+            if (inputState.movement.turnLeft) {
                 this.targetAngle = this.angle - 90;
                 this.rotating = true;
-                inputState.turnLeft = false;
+                inputState.movement.turnLeft = false;
             }
-            if (inputState.turnRight) {
+            if (inputState.movement.turnRight) {
                 this.targetAngle = this.angle + 90;
                 this.rotating = true;
-                inputState.turnRight = false;
+                inputState.movement.turnRight = false;
             }
         }
 

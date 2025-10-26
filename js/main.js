@@ -7,6 +7,7 @@ import { raycast, createRays } from './core/raycaster.js';
 import { contexts, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
 import { Enemy } from './game/enemies.js';
+import { combat } from './game/combat.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -56,17 +57,19 @@ async function initGame() {
 }
 
 // Variabili necessarie per la gestione del gameloop in base al tempo reale
-let lastTime = performance.now();
+let lastTime = performance.now(); // Prende il tempo attuale in ms
 let fps = 0;
 let frameCount = 0;
 let fpsTimer = 0;
+
 function drawFPS(ctx) {
     ctx.fillStyle = "white";
     ctx.font = "16px monospace";
     ctx.fillText(`FPS: ${fps}`, 10, 20);
 }
+
 function gameloop(time) {
-    const delta = time - lastTime;
+    const delta = time - lastTime; // Tempo trascorso dall'ultimo frame in ms
     globals.deltaTime = Math.min(delta / 1000, 0.1); // Calcola delta limitandone il valore masssimo a 0.1 secondi
     lastTime = time;
 
@@ -83,12 +86,20 @@ function gameloop(time) {
     inputHandler();
 
     // Update
-    player.update();
-    globals.entities.forEach(entity => {
-        if (entity instanceof Enemy) {
-            entity.followPlayer(player);
-        }
-    });
+    switch(globals.gameState) {
+        case 0:
+            player.update();
+            globals.entities.forEach(entity => {
+                if (entity instanceof Enemy) {
+                    entity.followPlayer(player);
+                }
+            });
+            break;
+        case 1:
+            combat(delta);
+            break;
+    }
+    
 
     raycast();
 

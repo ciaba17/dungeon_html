@@ -35,6 +35,7 @@ export const globals = {
     statsDisplay: null,
     moveControls: null,
     combatControls: null,
+
 };
 
 

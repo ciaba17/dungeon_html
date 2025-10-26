@@ -2,8 +2,9 @@ import { Entity } from './objects.js';
 import { globals, textures } from '../utils/globals.js';
 
 export class Enemy extends Entity {
-    constructor(x, y, z, scale, name, texture, interactable = true) {
+    constructor(x, y, z, scale, name, texture, hp, interactable = true) {
         super(x, y, z, scale, name, texture, interactable);
+        this.hp = hp;
     }
 
     followPlayer(player) {
@@ -33,4 +34,4 @@ export class Enemy extends Entity {
 
 
 globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.test, true));
-globals.entities.push(new Enemy(6, 5, 0, 1, 'Skeleton', textures.test, true));
+globals.entities.push(new Enemy(6, 5, 0, 1, 'Skeleton', textures.test, 6, true));
