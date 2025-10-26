@@ -137,4 +137,4 @@ function isWallAt(x, y) {
 
 
 
-export const player = new Player(7, 7, 0);
+export const player = new Player(8, 7, 0);

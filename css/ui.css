@@ -34,8 +34,8 @@
 }
 
 #textbox-content {
-    white-space: normal;          /* permette di andare a capo */
-    overflow-wrap: break-word;    /* forza l'andata a capo se la parola è troppo lunga */
+    white-space: normal;          /* Permette di andare a capo */
+    overflow-wrap: break-word;    /* Forza l'andata a capo se la parola è troppo lunga */
     word-break: break-word;  
     font-size: 6vmin;
 }
@@ -180,12 +180,12 @@
 .combat-btn {
     position: relative;
     width: 25%; /* Larghezza del bottone */
-    background-color: rgb(0, 0, 0); /* Colore di sfondo leggermente visibile */
+    background-color: rgb(0, 0, 0);
     box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
     font-size: 5vmin;
     color: #fff;
     cursor: pointer; /* Cambia il cursore quando si passa sopra il bottone */
-    border: 2px solid #fff; /* Bordo bianco */
+    border: 4px double #fff; /* Bordo bianco */
     cursor: pointer;  /* mantiene il cursore a mano */
     aspect-ratio: 1 / 1;
     

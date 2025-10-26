@@ -48,10 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
+
 // DA ORA IN POI SOLO PER DEBUG PENSO
 
 document.addEventListener('mousemove', function(event) {
-    globals.offsetY = event.clientY - (window.innerHeight / 2);
+    //globals.offsetY = event.clientY - (window.innerHeight / 2);
 });
 
 
