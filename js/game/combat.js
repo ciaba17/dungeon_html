@@ -8,6 +8,13 @@ const combatState = {
     timer: null,
 }
 
+// Accoppia una mossa con quella su cui predomina
+const winsAgainst = {
+    rock: "scissors",
+    paper: "rock",
+    scissors: "paper",
+}
+
 
 export function renderCombat(ctx) {
     const enemy = globals.enemyOnCombat
@@ -45,10 +52,16 @@ export function combat(delta) {
                 combatState.enemy = "scissors"
                 break;
         }
-        combatState.timer = createTimer(5);
+        combatState.timer = createTimer(3);
     } else if (combatState.timer.running) {
         combatState.timer.update(delta);
-    } else {
-            console.log("vai cai")
+    } else { // Decide il vincitore
+        let victoryMessage = "Vincitore: ";
+        if (combatState.player === combatState.enemy) {
+            victoryMessage = "Pareggio";
+        } else {
+            victoryMessage += winsAgainst[combatState.player] === combatState.enemy ? " Player" : " Nemico"
+        }
+        console.log(victoryMessage, "\nil nemico ha scelto: " + combatState.enemy);
     }
 }
