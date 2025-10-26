@@ -54,7 +54,13 @@ async function initGame() {
     globals.statsDisplay = document.getElementById("stats-display");
     globals.combatControls = document.getElementById("combat-controls"); // Resolved addition
     globals.moveControls = document.getElementById("move-controls"); // Resolved addition
+
+    alert("inizio gioco!");
 }
+
+
+
+
 
 // Variabili necessarie per la gestione del gameloop in base al tempo reale
 let lastTime = performance.now(); // Prende il tempo attuale in ms
