@@ -7,6 +7,7 @@ import { raycast, createRays } from './core/raycaster.js';
 import { contexts, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
 import { Enemy } from './game/enemies.js';
+import { bgMusic } from './core/audio.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -50,8 +51,10 @@ async function initGame() {
 
     globals.textBoxContent = document.getElementById("textbox-content");
     globals.statsDisplay = document.getElementById("stats-display");
-
 }
+
+
+
 
 // Variabili necessarie per la gestione del gameloop in base al tempo reale
 let lastTime = performance.now();
