@@ -2,29 +2,29 @@ import { Entity } from './objects.js';
 import { globals, textures } from '../utils/globals.js';
 
 export class Enemy extends Entity {
-    constructor(x, y, z, scale, name, texture, hp, interactable = true) {
+    constructor(x, y, z, scale, hp, speed, name, texture, interactable = true) {
         super(x, y, z, scale, name, texture, interactable);
         this.hp = hp;
+        this.speed = speed;
     }
 
     followPlayer(player) {
-        const dx = player.x - this.x;
-        const dy = player.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const dX = player.x - this.x;
+        const dY = player.y - this.y;
+        const distance = Math.sqrt(dX * dX + dY * dY);
 
-        if (distance > 2) {
-            const speed = 0.5; // Velocità del mostro
-            let newX = this.x + (dx / distance) * speed;
-            let newY = this.y + (dy / distance) * speed;
+        if (distance > 2) { // Se sta inseguendo il nemico
+            // Sceglie la distanza maggiore
+            const selectedAxis = dX >= dY ? "x" : "y";
+            const newPos = this[selectedAxis] + globals.tileSize;
+            //let newPos = axis + (distanceAxis / distance) * this.speed;
 
             // Controllo collisione con muri separatamente sugli assi
-            if (!isWallAt(newX, this.y)) {
-                this.x = newX;
+            if (!isWallAt(this.x, this.y, selectedAxis, newPos)) {
+                if (this[selectedAxis] !== newPos) {
+                    this[selectedAxis] += this.speed;
+                }
             }
-            if (!isWallAt(this.x, newY)) {
-                this.y = newY;
-            }
-
         } else { 
             // Il nemico raggiunge il player e il giovo va in stato di combattimento
             globals.gameState = 1;
@@ -43,14 +43,23 @@ export class Enemy extends Entity {
 }
 
 
-function isWallAt(x, y) {
-    const col = Math.floor(x / globals.tileSize);
-    const row = Math.floor(y / globals.tileSize);
+function isWallAt(x, y, selectedAxis, newPos) {
+    let col;
+    let row;
+
+    if (selectedAxis === "x") {
+        col = Math.floor(newPos / globals.tileSize);
+        row = Math.floor(y / globals.tileSize);
+    } else {
+        col = Math.floor(x / globals.tileSize);
+        row = Math.floor(newPos / globals.tileSize);
+    }
+    
 
     return globals.maps.map1[row][col] === 1;
 }
 
 globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.test, true));
-globals.entities.push(new Enemy(6, 6, 0, 1, 'Skeleton', textures.test, 6, true));
+globals.entities.push(new Enemy(6, 6, 0, 1, 6, 0.5, 'Skeleton', textures.test, true));
 
 

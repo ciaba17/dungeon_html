@@ -44,8 +44,8 @@ export class Entity {
     draw3D(ctx) {
         const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2) / Math.tan((globals.fov * Math.PI / 180) / 2);
 
-        let dx = this.x - player.x;
-        let dy = this.y - player.y;
+        let dX = this.x - player.x;
+        let dY = this.y - player.y;
 
         const dirX = Math.cos(player.angle * Math.PI / 180);
         const dirY = Math.sin(player.angle * Math.PI / 180);
@@ -55,8 +55,8 @@ export class Entity {
         const planeY = Math.cos(player.angle * Math.PI / 180) * fovScale;
 
         const invDet = 1 / (planeX * dirY - dirX * planeY);
-        const transformX = invDet * (dirY * dx - dirX * dy);
-        const transformY = invDet * (-planeY * dx + planeX * dy);
+        const transformX = invDet * (dirY * dX - dirX * dY);
+        const transformY = invDet * (-planeY * dX + planeX * dY);
 
         if (transformY <= 0) return; // dietro il player
         const depth = Math.max(transformY, 0.1); // evita valori troppo piccoli

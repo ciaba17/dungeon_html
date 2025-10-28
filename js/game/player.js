@@ -54,9 +54,9 @@ class Player {
 
         // Movimento verso il target
         if (this.moving) {
-            const dx = this.targetX - this.x;
-            const dy = this.targetY - this.y;
-            const dist = Math.hypot(dx, dy);
+            const dX = this.targetX - this.x;
+            const dY = this.targetY - this.y;
+            const dist = Math.hypot(dX, dY);
             const step = SPEED * globals.deltaTime;
 
             if (dist <= step) {
@@ -64,8 +64,8 @@ class Player {
                 this.y = this.targetY;
                 this.moving = false;
             } else {
-                this.x += (dx / dist) * step;
-                this.y += (dy / dist) * step;
+                this.x += (dX / dist) * step;
+                this.y += (dY / dist) * step;
             }
         }
 
