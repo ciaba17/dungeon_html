@@ -12,27 +12,52 @@ export class Enemy extends Entity {
         const dX = player.x - this.x;
         const dY = player.y - this.y;
         const distance = Math.sqrt(dX * dX + dY * dY);
+        let moving = true;
 
         if (distance > 2) { // Se sta inseguendo il nemico
             // Sceglie la distanza maggiore
-            const selectedAxis = dX >= dY ? "x" : "y";
-            const newPos = this[selectedAxis] + globals.tileSize;
-            //let newPos = axis + (distanceAxis / distance) * this.speed;
+            
 
-            // Controllo collisione con muri separatamente sugli assi
-            if (!isWallAt(this.x, this.y, selectedAxis, newPos)) {
-                if (this[selectedAxis] !== newPos) {
-                    this[selectedAxis] += this.speed;
-                }
-            }
+            
         } else { 
-            // Il nemico raggiunge il player e il giovo va in stato di combattimento
+            // Il nemico raggiunge il player e il gioco va in stato di combattimento
             globals.gameState = 1;
             globals.enemyOnCombat = this; // Salva il nemico che ha toccato il player per il combattimento
             globals.moveControls.style.display = "none";
             globals.combatControls.style.display = "";
             const combatTextContainer = document.getElementById("map-container");
             combatTextContainer.appendChild(globals.textBoxContent);
+
+            function calculateNewPosition() {
+                let selectedAxis = dX >= dY ? "x" : "y";
+                let newPosition = this[selectedAxis] + globals.tileSize;
+
+                // Controllo collisione con muri
+                if (!isWallAt(this.x, this.y, selectedAxis, newPosition)) {
+                        return newPosition;
+                } else {
+                    selectedAxis = selectedAxis === "x" ? "y" : "x";
+                    newPosition = this[selectedAxis] + globals.tileSize;
+                    if (!isWallAt(this.x, this.y, selectedAxis, newPosition)) {
+                        return newPosition;
+                    }
+                }
+
+                // Se su tutti e due gli assi ci sono muri guarda nella direzione opposta
+                newPosition = this[selectedAxis] - globals.tileSize; // RIGUARDARE LA ADDIZIONE E SOTTR DI TILESIZE CHE NON VA BENE
+
+                if (!isWallAt(this.x, this.y, selectedAxis, newPosition)) {
+                        return newPosition;
+                } else {
+                    selectedAxis = selectedAxis === "x" ? "y" : "x";
+                    newPosition = this[selectedAxis] + globals.tileSize;
+                    if (!isWallAt(this.x, this.y, selectedAxis, newPosition)) {
+                        return newPosition;
+                    }
+                }
+
+
+            }
         }
     }   
 
