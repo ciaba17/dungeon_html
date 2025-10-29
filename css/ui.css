@@ -179,7 +179,7 @@
 
 .combat-btn {
     position: relative;
-    width: 25%; /* Larghezza del bottone */
+    width: 30%; /* Larghezza del bottone */
     background-color: rgb(0, 0, 0);
     box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
     font-size: 5vmin;

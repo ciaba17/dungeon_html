@@ -9,6 +9,7 @@ import { scaleCanvas, fitGameMap } from './core/scaling.js';
 import { Enemy } from './game/enemies.js';
 import { combat } from './game/combat.js';
 import { bgMusic } from './core/audio.js';
+import { createNodeMap } from './game/enemies.js';
 
 async function initGame() {
     console.log("Inizio il gioco");
@@ -42,6 +43,9 @@ async function initGame() {
 
     // Crea i raggi per il raycasting
     createRays();
+
+    // Crea la mappa per il pathdinding
+    createNodeMap();
 
     // Resizing iniziale
     scaleCanvas(globals.gameCanvas, contexts.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
@@ -80,7 +84,7 @@ function gameloop(time) {
     lastTime = time;
 
     // Calcolo FPS
-    fpsTimer += delta;
+    fpsTimer += globals.deltaTime * 1000;
     frameCount++;
     if (fpsTimer >= 1000) { // ogni secondo
         fps = frameCount;
@@ -102,7 +106,7 @@ function gameloop(time) {
             });
             break;
         case 1:
-            combat(delta); // Resolved addition
+            combat(globals.deltaTime); // Resolved addition
             break;
     }
 

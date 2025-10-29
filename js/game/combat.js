@@ -30,7 +30,7 @@ export function renderCombat(ctx) {
 
 }
 
-export function combat(delta) {
+export function combat() {
     
     if (!combatState.player) { // IL GIOCATORE NON HA ANCORA SCELTO
         for (let inputAction in inputState.combat) { // Itera le keys (nomi degli attributi) dell'oggetto combat
@@ -54,7 +54,7 @@ export function combat(delta) {
         }
         combatState.timer = createTimer(3);
     } else if (combatState.timer.running) {
-        combatState.timer.update(delta);
+        combatState.timer.update(globals.deltaTime);
     } else { // Decide il vincitore
         let victoryMessage = "Vincitore: ";
         if (combatState.player === combatState.enemy) {
