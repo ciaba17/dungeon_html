@@ -33,38 +33,68 @@ export class Enemy extends Entity {
         const dy = player.y - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-
-        if (distance > 2) {
-            if (!this.moving) {
-                this.timer = createTimer(3);
-                this.moving = true;
-            }
-            if (this.timer.running) {
-                this.timer.update(globals.deltaTime);
-            } else {
-                const startX = Math.floor(this.x / globals.tileSize);
-                const startY = Math.floor(this.y / globals.tileSize);
-                const targetX = Math.floor(player.x / globals.tileSize);
-                const targetY = Math.floor(player.y / globals.tileSize);            
-                const startNode = nodeGrid[startY][startX];
-                const targetNode = nodeGrid[targetY][targetX];
-
-                this.path = findPath(startNode, targetNode);
-                this.timer.reset();
-                console.log(this.path);
-            }
-            
-
-        } else { 
-            // Il nemico raggiunge il player e il gioco va in stato di combattimento
+        // Se il nemico è abbastanza vicino, entra in combattimento
+        if (distance <= globals.tileSize / 1.6) {
             globals.gameState = 1;
-            globals.enemyOnCombat = this; // Salva il nemico che ha toccato il player per il combattimento
+            globals.enemyOnCombat = this;
             globals.moveControls.style.display = "none";
             globals.combatControls.style.display = "";
+            globals.mapCanvas.style.display = "none";
+            globals.textBoxContent.style.display = "";
+            globals.textBoxContent.style.textAlign = "center";
             const combatTextContainer = document.getElementById("map-container");
             combatTextContainer.appendChild(globals.textBoxContent);
         }
-    }   
+
+        // Pathfinding periodico
+        if (!this.moving) {
+            this.timer = createTimer(0.4); // ricalcola path ogni 3 secondi
+            this.moving = true;
+        }
+
+        if (this.timer.running) {
+            this.timer.update(globals.deltaTime);
+        } else {
+            const startX = Math.floor(this.x / globals.tileSize);
+            const startY = Math.floor(this.y / globals.tileSize);
+            const targetX = Math.floor(player.x / globals.tileSize);
+            const targetY = Math.floor(player.y / globals.tileSize);
+            const startNode = nodeGrid[startY][startX];
+            const targetNode = nodeGrid[targetY][targetX];
+            this.path = findPath(startNode, targetNode);
+            this.timer.reset();
+        }
+
+        // Smooth movement + steering
+        if (this.path && this.path.length > 0) {
+    const nextNode = this.path[0];
+    const targetX = nextNode.x * globals.tileSize + globals.tileSize / 2;
+    const targetY = nextNode.y * globals.tileSize + globals.tileSize / 2;
+
+    let dirX = targetX - this.x;
+    let dirY = targetY - this.y;
+    const len = Math.sqrt(dirX*dirX + dirY*dirY);
+    if (len > 0) {
+        dirX /= len;
+        dirY /= len;
+    }
+
+    const speed = 35 * globals.deltaTime;
+
+    // Movimento separato per asse X e Y (scivola lungo il muro)
+    let newX = this.x + dirX * speed;
+    let newY = this.y + dirY * speed;
+
+    if (!isWallAt(newX, this.y)) this.x = newX;
+    if (!isWallAt(this.x, newY)) this.y = newY;
+
+    if (Math.abs(this.x - targetX) < 0.1 && Math.abs(this.y - targetY) < 0.1) {
+        this.path.shift();
+    }
+}
+
+    }
+
 
 
     drawOnCombat(ctx) {
@@ -76,9 +106,10 @@ export class Enemy extends Entity {
 function isWallAt(x, y) {
     const col = Math.floor(x / globals.tileSize);
     const row = Math.floor(y / globals.tileSize);
-
-    return globals.maps.map1[row][col] === 1;
+    return globals.maps.map1[row] && globals.maps.map1[row][col] === 1;
 }
+
+
 
 
 

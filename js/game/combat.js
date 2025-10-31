@@ -1,6 +1,8 @@
 import { globals } from "../utils/globals.js";
 import { createTimer } from "../utils/timer.js";
 import { inputState } from "../core/input.js";
+import { showDialogues } from "./ui.js";
+import { sounds } from "../core/audio.js";
 
 const combatState = {
     player: null,
@@ -10,9 +12,9 @@ const combatState = {
 
 // Accoppia una mossa con quella su cui predomina
 const winsAgainst = {
-    rock: "scissors",
-    paper: "rock",
-    scissors: "paper",
+    sword: "magic",
+    shield: "sword",
+    magic: "shield",
 }
 
 
@@ -24,44 +26,59 @@ export function renderCombat(ctx) {
     const textureH = enemy.texture.height / 2;
 
 
-    ctx.drawImage(enemy.texture, globals.SCREEN_WIDTH / 2 - textureW / 2, globals.SCREEN_HEIGHT / 2 - textureH,
-        textureW, textureH
-    );
-
+    ctx.drawImage(enemy.texture, globals.SCREEN_WIDTH / 2 - textureW / 2, globals.SCREEN_HEIGHT / 2 - textureH,textureW, textureH);
 }
 
+
 export function combat() {
-    
-    if (!combatState.player) { // IL GIOCATORE NON HA ANCORA SCELTO
-        for (let inputAction in inputState.combat) { // Itera le keys (nomi degli attributi) dell'oggetto combat
-            if (inputState.combat[inputAction] === true) { // Controlla se True la proprietà di combat che ha come nome il contenuto di action
-                combatState.player = inputAction;
+    // 1. SCELTA DEL GIOCATORE
+    if (!combatState.player) {
+        for (const action in inputState.combat) {
+            if (inputState.combat[action]) {
+                combatState.player = action;
+                
+                showDialogues(`${action}_player`);
+                sounds.combatSounds.player[action]?.play();  // Suono player
+                
+                inputState.combat[action] = false;
+                combatState.timer = createTimer(3);
+                break;
             }
         }
-    } else if (!combatState.enemy) { // IL NEMICO DEVE RISPONDERE
-        combatState.enemy = Math.floor(Math.random() * 3);
-
-        switch(combatState.enemy) { // Converte da numero a mossa effettiva
-            case 0:
-                combatState.enemy = "rock"
-                break;
-            case 1:
-                combatState.enemy = "paper"
-                break;
-            case 2:
-                combatState.enemy = "scissors"
-                break;
-        }
-        combatState.timer = createTimer(3);
-    } else if (combatState.timer.running) {
-        combatState.timer.update(globals.deltaTime);
-    } else { // Decide il vincitore
-        let victoryMessage = "Vincitore: ";
-        if (combatState.player === combatState.enemy) {
-            victoryMessage = "Pareggio";
-        } else {
-            victoryMessage += winsAgainst[combatState.player] === combatState.enemy ? " Player" : " Nemico"
-        }
-        console.log(victoryMessage, "\nil nemico ha scelto: " + combatState.enemy);
+        return;
     }
+
+    // ATTESA TRA I TURNI
+    if (combatState.timer.running) {
+        combatState.timer.update(globals.deltaTime);
+        return;
+    }
+
+    // 2. SCELTA DEL NEMICO
+    if (!combatState.enemy && !combatState.timer.running) {
+        const moves = ["sword", "shield", "magic"];
+        combatState.enemy = moves[Math.floor(Math.random() * moves.length)];
+        
+        showDialogues(`${combatState.enemy}_enemy`);
+        sounds.combatSounds.enemy[combatState.enemy]?.play();  // Suono nemico
+        
+        combatState.timer.reset();
+        return;
+    }
+
+    // 3. DETERMINAZIONE DEL VINCITORE
+    let resultKey;
+    if (combatState.player === combatState.enemy) {
+        resultKey = "draw";
+    } else {
+        const playerWins = winsAgainst[combatState.player] === combatState.enemy;
+        resultKey = playerWins ? "victory_player" : "victory_enemy";
+    }
+
+    showDialogues(resultKey);
+    sounds.combatSounds.result[resultKey]?.play();  // Suono risultato
+
+    // Reset per il prossimo turno
+    combatState.player = null;
+    combatState.enemy = null;
 }

@@ -3,21 +3,24 @@ export const globals = {
     SCREEN_HEIGHT: 600,
 
     MAP_WIDTH: 400,
-    MAP_HEIGHT : 300,
+    MAP_HEIGHT: 300,
+
+    VIEW_DISTANCE: 150,
 
     gameState: 0, // 0 Visuale 3D in cui puoi cammianre e interagire, 1 combattimento
     enemyOnCombat: null,
 
     // Oggetti vuoti che saranno popolati durante l'inizializzazione del gioco
-    dialoghi: {},
+    dialogues: {},
+    currentDialogueInterval: null,
     maps: {}, 
     gameCanvas: null,
     mapCanvas: null,
 
     tileSize: 32, // Dimensione di una piastrella in pixel
-    mapZoom : 1,
+    mapZoom: 1,
 
-    rayNumber : 400,
+    rayNumber: 400,
 
     fov: 60, // In gradi
     FPS_LIMIT: 60,
@@ -26,15 +29,14 @@ export const globals = {
 
     entities: [],
 
-    deltaTime : null,
+    deltaTime: null,
 
-    offsetY : 0,
+    offsetY: 0,
 
     textBoxContent: null,
     statsDisplay: null,
     moveControls: null,
     combatControls: null,
-
 };
 
 

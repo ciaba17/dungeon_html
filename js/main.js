@@ -1,5 +1,4 @@
 import { globals } from './utils/globals.js';
-import { mostraDialoghi } from './game/ui.js';
 import { inputHandler } from './core/input.js';
 import { mapToWalls } from './game/objects.js';
 import { player } from './game/player.js';
@@ -8,7 +7,6 @@ import { contexts, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
 import { Enemy } from './game/enemies.js';
 import { combat } from './game/combat.js';
-import { bgMusic } from './core/audio.js';
 import { createNodeMap } from './game/enemies.js';
 
 async function initGame() {
@@ -16,8 +14,8 @@ async function initGame() {
 
     // Carica i dialoghi
     let response = await fetch("../assets/dialoghi.json");
-    globals.dialoghi = await response.json();
-    if (globals.dialoghi != null)
+    globals.dialogues = await response.json();
+    if (globals.dialogues != null)
         console.log("Dialoghi caricati:", globals.dialoghi); // verifica caricamento
     else
         console.log("Errore: Dialoghi non caricati correttamente");
@@ -122,8 +120,6 @@ function gameloop(time) {
 // Avvio
 window.addEventListener("DOMContentLoaded", async () => {
     await initGame();
-
-    mostraDialoghi("test1");
-
+    
     requestAnimationFrame(gameloop);
 });

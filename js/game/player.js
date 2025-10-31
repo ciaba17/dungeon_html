@@ -1,7 +1,7 @@
 import { inputState } from "../core/input.js";
 import { walls } from "./objects.js";
 import { globals } from "../utils/globals.js";
-import { mostraDialoghi } from "./ui.js";
+import { showDialogues } from "./ui.js";
 
 const SPEED = 3 * globals.tileSize;     // unità al secondo
 const ROTATION_SPEED = 180;             // gradi al secondo
@@ -96,7 +96,7 @@ class Player {
         // Controlla se c'è un oggetto interagibile in quella posizione
         for (let entity of globals.entities) {
             if (interactX === entity.x && interactY === entity.y && entity.interactable) {
-                mostraDialoghi("test2");
+                showDialogues("test2");
             }
         }
     }

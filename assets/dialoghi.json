@@ -1,12 +1,63 @@
 {
-    "test1": [
-        "Ciao mamma",
-        "butta la pasta",
-        "fai in modo che sia pronta prima che io torni e chiama papà e digli di tornare il prima possibile per aiutarmi a finire i compiti"
+    "sword_player": [
+        "Sollevi la lama e affondi con ferocia.",
+        "Tagli l'aria con un fendente che lacera il silenzio.",
+        "Il tuo colpo risuona come un giuramento di sangue.",
+        "Scagli la spada, e il vento stesso si piega alla tua ira."
     ],
 
-    "test2": [
-        "Addio mamma",
-        "non buttare la pasta, non penso che tornerò mai più a casa"
+    "shield_player": [
+        "Sollevi lo scudo, il metallo vibra di potenza.",
+        "Ti chiudi dietro la tua difesa, in attesa del destino.",
+        "L'impatto rimbomba, ma tu resti saldo come la pietra.",
+        "Ti proteggi, e il mondo sembra rallentare attorno a te."
+    ],
+
+    "magic_player": [
+        "Evoca l'abisso: un turbine di luce oscura esplode dalle tue mani.",
+        "La tua voce sussurra un incanto dimenticato dagli dei.",
+        "Scateni un potere che lacera la realtà.",
+        "Un fulmine arcano si abbatte con furia divina."
+    ],
+
+    "sword_enemy": [
+        "Il nemico vibra un colpo secco, la lama grida sete di sangue.",
+        "Una scia d'acciaio brilla nelle tenebre: l'attacco è fulmineo.",
+        "Il suo fendente ti sfiora, lasciando l'eco della morte."
+    ],
+
+    "shield_enemy": [
+        "Il nemico solleva lo scudo, lo sguardo freddo e impenetrabile.",
+        "Ti osserva, fermo come una statua di ferro e volontà.",
+        "La sua difesa è totale, come se il mondo non potesse ferirlo."
+    ],
+
+    "magic_enemy": [
+        "L'aria si deforma: il nemico incanta la realtà stessa.",
+        "Un bagliore malvagio danza nelle sue mani: magia proibita.",
+        "Senti un potere oscuro avvolgere la battaglia."
+    ],
+
+    "draw": [
+        "Entrambi agite all'unisono, come riflessi nello specchio della guerra.",
+        "Le forze si annullano, il destino resta in sospeso.",
+        "Il fragore dei colpi si dissolve: nessuno prevale."
+    ],
+
+    "victory_player": [
+        "Trionfi. Il sangue e la gloria ti appartengono.",
+        "Il nemico cade, e il tuo respiro si confonde con la vittoria.",
+        "Hai vinto — ma senti che qualcosa dentro di te si è incrinato."
+    ],
+
+    "victory_enemy": [
+        "Cadi a terra, e il mondo si tinge di rosso e silenzio.",
+        "Il nemico sorride: la sconfitta ti gela il cuore.",
+        "Hai perso. Ma il tuo spirito non dimenticherà questa ferita."
     ]
+
+
+
+
+
 }

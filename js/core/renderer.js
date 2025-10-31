@@ -33,14 +33,14 @@ function drawWalls3D(ctx) {
     for (let i = 0; i < rays.length; i++) {
         const slice = globals.wallSlices[i];
         const top = globals.SCREEN_HEIGHT / 2 + globals.offsetY - slice.height / 2;
+        ctx.globalAlpha = 1 * Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7)); // Per scurire i muri
         ctx.drawImage(
             slice.texture,
             slice.textureX, 0, 1, slice.texture.height, // Parte della texture
             i * sliceWidth, top, sliceWidth, slice.height // Sullo schermo
         );
-
-        
     }
+    ctx.globalAlpha = 1;
 }
 
 
