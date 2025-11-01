@@ -38,7 +38,7 @@ async function initGame() {
 // ===== FUNZIONI DI SUPPORTO =====
 async function loadDialogues() {
     try {
-        const response = await fetch("../assets/dialoghi.json");
+        const response = await fetch("assets/dialoghi.json");
         globals.dialogues = await response.json();
         console.log("Dialoghi caricati:", globals.dialogues);
     } catch {
@@ -48,7 +48,7 @@ async function loadDialogues() {
 
 async function loadMaps() {
     try {
-        const response = await fetch("../assets/maps.json");
+        const response = await fetch("assets/maps.json");
         globals.maps = await response.json();
         console.log("Mappe caricate:", globals.maps);
     } catch {

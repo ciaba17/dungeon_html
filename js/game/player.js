@@ -131,10 +131,12 @@ class Player {
         this.hp = CLASS_DATA.hp;
         this.mp = CLASS_DATA.mp;
         this.backImage = new Image();
-        this.backImage.src = "../assets/images/" + classType + "_back.png";
+        this.backImage.src = "assets/images/" + classType + "_back.png";
+        this.frontImage = new Image();
+        this.frontImage.src = "assets/images/" + classType + "_front.png";
 
         // Imposta l’immagine nel DOM
-        playerHeadContainer.style.backgroundImage = 'url("assets/images/' + this.classType + '_front.png")';
+        playerHeadContainer.style.backgroundImage = this.frontImage.src = "../assets/images/" + classType + "_front.png";
     }
     
     takeDamage(amount) {
