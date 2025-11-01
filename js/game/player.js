@@ -128,15 +128,15 @@ class Player {
             wanderer: { hp: 90,  mp: 90}
         };
 
-        this.hp = CLASS_DATA.hp;
-        this.mp = CLASS_DATA.mp;
+        this.hp = CLASS_DATA[classType].hp;
+        this.mp = CLASS_DATA[classType].mp;
         this.backImage = new Image();
         this.backImage.src = "assets/images/" + classType + "_back.png";
         this.frontImage = new Image();
         this.frontImage.src = "assets/images/" + classType + "_front.png";
 
         // Imposta l’immagine nel DOM
-        playerHeadContainer.style.backgroundImage = "url(" + this.frontImage.src + ")";
+        playerHeadContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
     }
     
     takeDamage(amount) {
