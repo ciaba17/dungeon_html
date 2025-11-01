@@ -78,7 +78,6 @@ let fps = 0;
 let frameCounter = 0;
 let fpsAccumulator = 0;
 
-
 // ===== GAME LOOP =====
 function gameloop(currentTime) {
     const delta = (currentTime - lastTime) / 1000; // Tempo trascorso in secondi
