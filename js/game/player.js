@@ -134,7 +134,7 @@ class Player {
         this.backImage.src = "../assets/images/" + classType + "_back.png";
 
         // Imposta l’immagine nel DOM
-        playerHeadContainer.style.backgroundImage = 'url("../../assets/images/' + this.classType + '_front.png")';
+        playerHeadContainer.style.backgroundImage = 'url("assets/images/' + this.classType + '_front.png")';
     }
     
     takeDamage(amount) {
