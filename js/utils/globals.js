@@ -46,8 +46,8 @@ export const textures = {
     
 }
 
-textures.wallTexture.src = "../assets/images/wallTexture.png";  // Prova a caricare il file
-textures.test.src = "../assets/images/monster.png";
+textures.wallTexture.src = "../../assets/images/wallTexture.png";  // Prova a caricare il file
+textures.test.src = "../../assets/images/monster.png";
 
 textures.wallTexture.onload = function() {
     console.log("Immagine caricata con successo!");
