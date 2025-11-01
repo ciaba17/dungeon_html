@@ -13,9 +13,9 @@ export const inputState = { // Mappa di stato degli input
     },
 
     combat: {
-        rock: false,
-        paper: false,
-        scissors: false,
+        sword: false,
+        shield: false,
+        magic: false,
     }
 };
 

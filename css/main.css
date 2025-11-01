@@ -34,3 +34,15 @@ html,body {
 button {
     font-family: inherit;
 }
+
+
+#death-screen {
+    position: fixed;
+    inset: 0;
+    background: rgba(100, 0, 0, 0.85);
+    z-index: 9999; /* sopra a tutto */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+}

@@ -33,14 +33,14 @@ function drawWalls3D(ctx) {
     for (let i = 0; i < rays.length; i++) {
         const slice = globals.wallSlices[i];
         const top = globals.SCREEN_HEIGHT / 2 + globals.offsetY - slice.height / 2;
+        ctx.globalAlpha = 1 * Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7)); // Per scurire i muri
         ctx.drawImage(
             slice.texture,
             slice.textureX, 0, 1, slice.texture.height, // Parte della texture
             i * sliceWidth, top, sliceWidth, slice.height // Sullo schermo
         );
-
-        
     }
+    ctx.globalAlpha = 1;
 }
 
 
@@ -63,10 +63,10 @@ export function render() {
     mapCtx.scale(globals.mapZoom, globals.mapZoom);
     mapCtx.translate(mapCenterX - player.x, mapCenterY - player.y); // Trasla il contesto in modo che il player sia al centro
 
-    if (globals.gameState === 0) {
+    if (globals.gameState === "exploration") {
         // Disegna gli oggetti nella minimappa
         drawWalls2D(mapCtx, walls);
-        player.draw(mapCtx);
+        player.draw2D(mapCtx);
         rays.forEach(ray => ray.draw(mapCtx));
         globals.entities.forEach(entity => {entity.draw2D(mapCtx)});
         globals.entities.forEach(obj => {obj.draw2D(mapCtx)})
@@ -77,7 +77,7 @@ export function render() {
         drawWalls3D(gameCtx);
         globals.entities.sort((a, b) => a.distance - b.distance);
         globals.entities.forEach(entity => {entity.draw3D(gameCtx)})
-    } else if (globals.gameState === 1) {
+    } else if (globals.gameState === "combat") {
         renderCombat(gameCtx);
     }
 }

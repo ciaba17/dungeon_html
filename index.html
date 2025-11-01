@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>dungeon html</title>
-    <!-- Echoes of the deep dungeon -->
+    <title>Echoes of the deep dungeonl</title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
 
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
 </head>
 <body>
-        <div id="menu">
-        <!-- Pulsanti menu: “Inizia”, “Carica”, ecc. -->
+    <div id="menu">
+    <!-- Pulsanti menu: “Inizia”, “Carica”, ecc. -->
+    </div>
+
+    <!-- Schermata di morte -->
+    <div id="death-screen" style="display:none;">
+        <div class="death-message">
+            <h1>Sei morto</h1>
+            <button id="retry-btn">Riprova</button>
         </div>
+    </div>
+
 
     <!-- Area principale del gioco -->
     <div id="main">
@@ -68,9 +76,9 @@
                     </div>
                 </div>
                 <div id="combat-controls" style="display: none">
-                        <button id="rock-btn" class="combat-btn" style="background-image: url('/assets/images/rock.png');"></button>
-                        <button id="paper-btn" class="combat-btn" style="background-image: url('/assets/images/paper.png');"></button>
-                        <button id="scissors-btn" class="combat-btn" style="background-image: url('/assets/images/scissors.png');"></button>
+                        <button id="sword-btn" class="combat-btn" style="background-image: url('assets/images/sword.png');"></button>
+                        <button id="shield-btn" class="combat-btn" style="background-image: url('assets/images/shield.png');"></button>
+                        <button id="magic-btn" class="combat-btn" style="background-image: url('assets/images/magic.png');"></button>
                 </div>
             </div>
         </div>

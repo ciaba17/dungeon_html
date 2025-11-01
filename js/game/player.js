@@ -1,13 +1,13 @@
 import { inputState } from "../core/input.js";
 import { walls } from "./objects.js";
 import { globals } from "../utils/globals.js";
-import { mostraDialoghi } from "./ui.js";
+import { showDialogues } from "./ui.js";
 
 const SPEED = 3 * globals.tileSize;     // unità al secondo
 const ROTATION_SPEED = 180;             // gradi al secondo
 
 class Player {
-    constructor(x, y, angle) {
+    constructor(x, y, angle, classType = "paladin") {
         this.x = x * globals.tileSize - globals.tileSize / 2;
         this.y = y * globals.tileSize - globals.tileSize / 2;
         this.angle = angle; // in gradi
@@ -19,6 +19,10 @@ class Player {
         this.targetX = this.x;
         this.targetY = this.y;
         this.targetAngle = this.angle;
+
+        
+        this.classType = classType;
+        this.initClassType(this.classType);
     }
 
     update() {
@@ -96,28 +100,65 @@ class Player {
         // Controlla se c'è un oggetto interagibile in quella posizione
         for (let entity of globals.entities) {
             if (interactX === entity.x && interactY === entity.y && entity.interactable) {
-                mostraDialoghi("test2");
+                showDialogues("test2");
             }
         }
     }
 
-    draw(context) {
-        context.fillStyle = "red";
-        context.beginPath();
-        context.arc(this.x, this.y, 10, 0, Math.PI * 2);
-        context.fill();
-    }
-
+    
     moveIfFree(angleOffset) {
         const rad = (this.angle + angleOffset) * Math.PI / 180;
         const newX = this.x + globals.tileSize * Math.cos(rad);
         const newY = this.y + globals.tileSize * Math.sin(rad);
-
+        
         if (!isWallAt(newX, newY)) {
             this.targetX = newX;
             this.targetY = newY;
             this.moving = true;
         }
+    }
+
+    initClassType(classType) {
+        const playerHeadContainer = document.getElementById("player-head");
+
+        const CLASS_DATA = {
+            wizard:   { hp: 70,  mp: 120},
+            paladin:  { hp: 120, mp: 60},
+            guardian: { hp: 150, mp: 30},
+            wanderer: { hp: 90,  mp: 90}
+        };
+
+        this.hp = CLASS_DATA[classType].hp;
+        this.mp = CLASS_DATA[classType].mp;
+        this.backImage = new Image();
+        this.backImage.src = "assets/images/" + classType + "_back.png";
+        this.frontImage = new Image();
+        this.frontImage.src = "assets/images/" + classType + "_front.png";
+
+        // Imposta l’immagine nel DOM
+        playerHeadContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
+    }
+    
+    takeDamage(amount) {
+        this.hp -= amount;
+        if (this.hp <= 0) {
+            this.die();
+        }
+    }
+    
+    die() {
+        const deathScreen = document.getElementById("death-screen");
+        deathScreen.style.display = "flex";
+
+        document.getElementById("retry-btn").onclick = () => {location.reload()}; // oppure resetta il combattimento
+        globals.gameState = "gameover";
+    }
+    
+    draw2D(context) {
+        context.fillStyle = "red";
+        context.beginPath();
+        context.arc(this.x, this.y, 10, 0, Math.PI * 2);
+        context.fill();
     }
 }
 
