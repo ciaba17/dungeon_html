@@ -35,7 +35,7 @@ export class Enemy extends Entity {
 
         // Se il nemico è abbastanza vicino, entra in combattimento
         if (distance <= globals.tileSize / 1.6) {
-            globals.gameState = 1;
+            globals.gameState = "combat";
             globals.enemyOnCombat = this;
             globals.moveControls.style.display = "none";
             globals.combatControls.style.display = "";

@@ -7,7 +7,7 @@ export const globals = {
 
     VIEW_DISTANCE: 150,
 
-    gameState: 0, // 0 Visuale 3D in cui puoi cammianre e interagire, 1 combattimento
+    gameState: "exploration", // Stato del gioco (es. gameover, combat, exploration)
     enemyOnCombat: null,
 
     // Oggetti vuoti che saranno popolati durante l'inizializzazione del gioco
@@ -43,6 +43,7 @@ export const globals = {
 export const textures = {
     wallTexture : new Image(),
     test : new Image(),
+    
 }
 
 textures.wallTexture.src = "../assets/images/wallTexture.png";  // Prova a caricare il file
