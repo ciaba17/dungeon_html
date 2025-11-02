@@ -31,12 +31,8 @@ export const globals = {
 
     deltaTime: null,
 
-    offsetY: 0,
-
-    textBoxContent: null,
-    statsDisplay: null,
-    moveControls: null,
-    combatControls: null,
+    combatInputLocked: false,
+    
 };
 
 

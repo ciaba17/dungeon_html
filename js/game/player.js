@@ -128,6 +128,8 @@ class Player {
             wanderer: { hp: 90,  mp: 90}
         };
 
+        this.hpLimit = CLASS_DATA[classType].hp;
+        this.mpLimit = CLASS_DATA[classType].mp;
         this.hp = CLASS_DATA[classType].hp;
         this.mp = CLASS_DATA[classType].mp;
         this.backImage = new Image();
@@ -135,22 +137,43 @@ class Player {
         this.frontImage = new Image();
         this.frontImage.src = "assets/images/" + classType + "_front.png";
 
+        // Imposta stats iniziali
+        this.updateHPBar();
+        this.updateMPBar();
+
         // Imposta l’immagine nel DOM
         playerHeadContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
     }
     
+    // Funzione generica per aggiornare la barra HP
+    updateHPBar() {
+        const fill = document.getElementById("player-hp-fill");
+        const text = document.getElementById("player-hp-text");
+        const percent = (this.hp / this.hpLimit) * 100;
+        fill.style.width = percent + "%";
+        text.textContent = `${this.hp} / ${this.hpLimit}`;
+    }
+
+    updateMPBar() {
+        const fill = document.getElementById("player-mp-fill");
+        const text = document.getElementById("player-mp-text");
+        const percent = (this.mp / this.mpLimit) * 100;
+        fill.style.width = percent + "%";
+        text.textContent = `${this.mp} / ${this.mpLimit}`;
+    }
+
     takeDamage(amount) {
         this.hp -= amount;
-        if (this.hp <= 0) {
-            this.die();
-        }
+        if (this.hp < 0) this.hp = 0;
+        this.updateHPBar();
+
+        if (this.hp <= 0) this.die();
     }
-    
+
     die() {
         const deathScreen = document.getElementById("death-screen");
         deathScreen.style.display = "flex";
-
-        document.getElementById("retry-btn").onclick = () => {location.reload()}; // oppure resetta il combattimento
+        document.getElementById("retry-btn").onclick = () => { location.reload(); };
         globals.gameState = "gameover";
     }
     

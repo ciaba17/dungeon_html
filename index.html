@@ -2,19 +2,21 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Echoes of the deep dungeonl</title>
+    <title>Echoes of the Deep Dungeon</title>
+
+    <!-- === Fogli di stile === -->
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
 
+    <!-- === Icona del sito === -->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
 </head>
-<body>
-    <div id="menu">
-    <!-- Pulsanti menu: “Inizia”, “Carica”, ecc. -->
-    </div>
 
-    <!-- Schermata di morte -->
+
+    <!-- =========================================================
+        SCHERMATA DI MORTE
+        Compare quando il giocatore muore
+    ========================================================== -->
     <div id="death-screen" style="display:none;">
         <div class="death-message">
             <h1>Sei morto</h1>
@@ -22,28 +24,134 @@
         </div>
     </div>
 
-
-    <!-- Area principale del gioco -->
+    <!-- =========================================================
+        AREA PRINCIPALE DEL GIOCO
+        Contiene HUD, mappe, canvas di gioco e interfacce varie
+    ========================================================== -->
     <div id="main">
+
+        <!-- === INTERFACCIA UTENTE === -->
         <div id="ui">
+
+            <!-- === SEZIONE INFERIORE (HUD principale) === -->
             <div id="bottom-ui">
+                
+                <!-- Ritratto del giocatore -->
                 <div id="player-head"></div>
+
+                <!-- Contenitore info testuali e statistiche -->
                 <div id="info-container">
-                    <div id="textbox-content" style="display: none"></div> <!-- Disattivata all'inizio -->
-                    <div id="stats-display">
-                        <div class="stat-bar" id="hp-bar">
-                            <div class="bar-fill" id="hp-fill"></div>
-                            <span class="bar-text" id="hp-text">100 / 100</span>
+                    
+                    <!-- Casella di testo (dialoghi, narrazione, ecc.) -->
+                    <div id="textbox-content" class="hidden"></div>
+
+                    <!-- === STATISTICHE IN COMBATTIMENTO === -->
+                    <div id="combat-stats" class="hidden">
+                        
+                        <!-- Statistiche del giocatore -->
+                        <div class="entity-stats" id="player-stats">
+                            <div class="entity-name">PLAYER</div>
+
+                            <!-- Barra HP -->
+                            <div class="stat-bar" id="player-hp">
+                                <div class="bar-label">HP</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" id="player-hp-fill"></div>
+                                </div>
+                                <div class="bar-text hp" id="player-hp-text"></div>
+                            </div>
+
+                            <!-- Barra MP -->
+                            <div class="stat-bar" id="player-mp">
+                                <div class="bar-label">MP</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" id="player-mp-fill"></div>
+                                </div>
+                                <div class="bar-text" id="player-mp-text">50 / 50</div>
+                            </div>
                         </div>
-                        <div class="stat-bar" id="mana-bar">
-                            <div class="bar-fill" id="mana-fill"></div>
-                            <span class="bar-text" id="mana-text">50 / 50</span>
+
+                        <!-- Statistiche del nemico -->
+                        <div class="entity-stats" id="enemy-stats">
+                            <div class="entity-name">ENEMY</div>
+
+                            <!-- Barra HP -->
+                            <div class="stat-bar" id="enemy-hp">
+                                <div class="bar-label">HP</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" id="enemy-hp-fill"></div>
+                                </div>
+                                <div class="bar-text" id="enemy-hp-text"></div>
+                            </div>
+
+                            <!-- Barra MP -->
+                            <div class="stat-bar" id="enemy-mp">
+                                <div class="bar-label">MP</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" id="enemy-mp-fill"></div>
+                                </div>
+                                <div class="bar-text" id="enemy-mp-text">20 / 20</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- === PANORAMICA STATS PERSONAGGIO IN ESPLORAZIONE === -->
+                    <div id="stats-overview">
+                        
+                        <!-- Colonna sinistra: dati del personaggio -->
+                        <div id="char-stats">
+                            <div id="char-name">WANDERER</div>
+                            <div id="char-class">LV.3 — Wanderer</div>
+
+                            <!-- Barra HP -->
+                            <div class="stat-bar" id="player-hp">
+                                <div class="bar-label">HP</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" id="player-hp-fill"></div>
+                                </div>
+                                <div class="bar-text hp" id="player-hp-text"></div>
+                            </div>
+
+                            <!-- Barra MP -->
+                            <div class="stat-bar" id="player-mp">
+                                <div class="bar-label">MP</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" id="player-mp-fill"></div>
+                                </div>
+                                <div class="bar-text" id="player-mp-text">50 / 50</div>
+                            </div>
+                            
+                            <div class="stat-pair"><span>STR</span><span id="str-val">8</span></div>
+                            <div class="stat-pair"><span>DEF</span><span id="def-val">6</span></div>
+                            <div class="stat-pair"><span>INT</span><span id="int-val">12</span></div>
+                            <div class="stat-pair"><span>SPD</span><span id="spd-val">9</span></div>
+                        </div>
+                    
+                        <!-- Colonna destra: status e log -->
+                        <div id="char-side">
+                            
+                            <!-- Blocchetto status -->
+                            <div id="status-block">
+                                <div class="status-title">STATUS</div>
+                                <div class="status-line">☠ Poisoned</div>
+                                <div class="status-line">🜂 Fire Aura</div>
+                            </div>
+
+                            <!-- Blocchetto log eventi -->
+                            <div id="log-block">
+                                <div class="log-title">LOG</div>
+                                <div class="log-line">> The dungeon hums...</div>
+                                <div class="log-line">> You feel calm.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
+            <!-- === SEZIONE DESTRA (Inventario, Mappa, Controlli) === -->
             <div id="right-ui">
+
+                <!-- Inventario -->
                 <div id="inventory">
                     <div id="inventory-title">Inventory</div>
                     <div id="inventory-slots">
@@ -56,38 +164,52 @@
                     </div>
                 </div>
 
+                <!-- Mini-mappa -->
                 <div id="map-container">
                     <canvas id="game-map"></canvas>
                 </div>
                 
+                <!-- Controlli di movimento -->
                 <div id="move-controls">
+                    
+                    <!-- Pulsante interazione -->
                     <div id="interact">
-                        <btn id="interact-btn">Interact</btn>
+                        <button id="interact-btn">Interact</button>
                     </div>
+
+                    <!-- Controlli direzionali -->
                     <div id="controls-up">
                         <button id="turnLeft-btn" class="move-btn">↶</button>
                         <button id="up-btn" class="move-btn">↑</button>
                         <button id="turnRight-btn" class="move-btn">↷</button>
                     </div>
+
                     <div id="controls-down">
                         <button id="left-btn" class="move-btn">←</button>
                         <button id="down-btn" class="move-btn">↓</button>
                         <button id="right-btn" class="move-btn">→</button>
                     </div>
                 </div>
-                <div id="combat-controls" style="display: none">
-                        <button id="sword-btn" class="combat-btn" style="background-image: url('assets/images/sword.png');"></button>
-                        <button id="shield-btn" class="combat-btn" style="background-image: url('assets/images/shield.png');"></button>
-                        <button id="magic-btn" class="combat-btn" style="background-image: url('assets/images/magic.png');"></button>
+
+                <!-- Controlli di combattimento -->
+                <div id="combat-controls" class="hidden">
+                    <button id="sword-btn" class="combat-btn" 
+                        style="background-image: url('assets/images/sword.png');"></button>
+                    <button id="shield-btn" class="combat-btn" 
+                        style="background-image: url('assets/images/shield.png');"></button>
+                    <button id="magic-btn" class="combat-btn" 
+                        style="background-image: url('assets/images/magic.png');"></button>
                 </div>
             </div>
         </div>
 
+        <!-- === CANVAS DI GIOCO === -->
         <div id="game-container">
             <canvas id="game-area"></canvas>
         </div>
     </div>
 
+    <!-- === SCRIPT PRINCIPALE (entry point JS) === -->
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

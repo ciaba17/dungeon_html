@@ -46,3 +46,8 @@ button {
     align-items: center;
     pointer-events: all;
 }
+
+
+.hidden {
+    display: none !important;
+}

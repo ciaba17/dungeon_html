@@ -1,0 +1,16 @@
+.class-btn {
+    width: 100%;
+    padding: 2vmin 0;
+    font-size: 5vmin;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 0.5vmin double #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.class-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}

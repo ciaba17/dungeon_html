@@ -32,7 +32,7 @@ function drawWalls3D(ctx) {
     const sliceWidth = globals.SCREEN_WIDTH / globals.rayNumber; // Larghezza di una linea del muro
     for (let i = 0; i < rays.length; i++) {
         const slice = globals.wallSlices[i];
-        const top = globals.SCREEN_HEIGHT / 2 + globals.offsetY - slice.height / 2;
+        const top = globals.SCREEN_HEIGHT / 2 - slice.height / 2;
         ctx.globalAlpha = 1 * Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7)); // Per scurire i muri
         ctx.drawImage(
             slice.texture,

@@ -1,6 +1,7 @@
 import { Entity } from './objects.js';
 import { globals, textures } from '../utils/globals.js';
 import { createTimer } from '../utils/timer.js';
+import { enterCombat } from './combat.js';
 
 class Node {
     constructor(x, y, walkable) {
@@ -22,10 +23,13 @@ class Node {
 export class Enemy extends Entity {
     constructor(x, y, z, scale, name, texture, hp, interactable = true) {
         super(x, y, z, scale, name, texture, interactable);
-        this.hp = hp;
         this.moving = false;
         this.timer;
         this.path;
+
+        this.hp = hp;
+        this.hpLimit = hp;
+        this.updateHPBar();
     }
 
     followPlayer(player) {
@@ -33,22 +37,14 @@ export class Enemy extends Entity {
         const dy = player.y - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Se il nemico è abbastanza vicino, entra in combattimento
+        // --- ENTRATA IN COMBATTIMENTO ----
         if (distance <= globals.tileSize / 1.6) {
-            globals.gameState = "combat";
-            globals.enemyOnCombat = this;
-            globals.moveControls.style.display = "none";
-            globals.combatControls.style.display = "";
-            globals.mapCanvas.style.display = "none";
-            globals.textBoxContent.style.display = "";
-            globals.textBoxContent.style.textAlign = "center";
-            const combatTextContainer = document.getElementById("map-container");
-            combatTextContainer.appendChild(globals.textBoxContent);
+            enterCombat(this);
         }
 
-        // Pathfinding periodico
+        // --- PATHFINDING PERIODICO ---
         if (!this.moving) {
-            this.timer = createTimer(0.4); // ricalcola path ogni 3 secondi
+            this.timer = createTimer(0.4); // Ricalcola path ogni tot secondi 
             this.moving = true;
         }
 
@@ -65,36 +61,54 @@ export class Enemy extends Entity {
             this.timer.reset();
         }
 
-        // Smooth movement + steering
+        // --- MOVIMENTO ---
         if (this.path && this.path.length > 0) {
-    const nextNode = this.path[0];
-    const targetX = nextNode.x * globals.tileSize + globals.tileSize / 2;
-    const targetY = nextNode.y * globals.tileSize + globals.tileSize / 2;
+            const nextNode = this.path[0];
+            const targetX = nextNode.x * globals.tileSize + globals.tileSize / 2;
+            const targetY = nextNode.y * globals.tileSize + globals.tileSize / 2;
 
-    let dirX = targetX - this.x;
-    let dirY = targetY - this.y;
-    const len = Math.sqrt(dirX*dirX + dirY*dirY);
-    if (len > 0) {
-        dirX /= len;
-        dirY /= len;
+            let dirX = targetX - this.x;
+            let dirY = targetY - this.y;
+            const len = Math.sqrt(dirX*dirX + dirY*dirY);
+            if (len > 0) {
+                dirX /= len;
+                dirY /= len;
+            }
+
+            const speed = 35 * globals.deltaTime;
+
+            // Movimento separato per asse X e Y (scivola lungo il muro)
+            let newX = this.x + dirX * speed;
+            let newY = this.y + dirY * speed;
+
+            if (!isWallAt(newX, this.y)) this.x = newX;
+            if (!isWallAt(this.x, newY)) this.y = newY;
+
+            if (Math.abs(this.x - targetX) < 0.1 && Math.abs(this.y - targetY) < 0.1) {
+                this.path.shift();
+            }
+        }   
     }
 
-    const speed = 35 * globals.deltaTime;
-
-    // Movimento separato per asse X e Y (scivola lungo il muro)
-    let newX = this.x + dirX * speed;
-    let newY = this.y + dirY * speed;
-
-    if (!isWallAt(newX, this.y)) this.x = newX;
-    if (!isWallAt(this.x, newY)) this.y = newY;
-
-    if (Math.abs(this.x - targetX) < 0.1 && Math.abs(this.y - targetY) < 0.1) {
-        this.path.shift();
-    }
-}
-
+    updateHPBar() {
+        const fill = document.getElementById("enemy-hp-fill");
+        const text = document.getElementById("enemy-hp-text");
+        const percent = (this.hp / this.hpLimit) * 100;
+        fill.style.width = percent + "%";
+        text.textContent = `${this.hp} / ${this.hpLimit}`;
     }
 
+    takeDamage(amount) {
+        this.hp -= amount;
+        if (this.hp < 0) this.hp = 0;
+        this.updateHPBar();
+
+        if (this.hp <= 0) this.die();
+    }
+
+    die() {
+        console.log(this.name + " è morto!")
+    }
 
 
     drawOnCombat(ctx) {
@@ -224,6 +238,6 @@ function findPath(startNode, targetNode) {
 
 
 globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.test, true));
-globals.entities.push(new Enemy(6, 6, 0, 1, 'Skeleton', textures.test, 6, true));
+globals.entities.push(new Enemy(6, 6, 0, 1, 'Skeleton', textures.test, 60, true));
 
 

@@ -26,19 +26,13 @@ async function initGame() {
 
     // --- Scaling ---
     setupScaling();
-
-    // --- Riferimenti DOM ---
-    globals.textBoxContent = document.getElementById("textbox-content");
-    globals.statsDisplay   = document.getElementById("stats-display");
-    globals.combatControls = document.getElementById("combat-controls");
-    globals.moveControls   = document.getElementById("move-controls");
 }
 
 
 // ===== FUNZIONI DI SUPPORTO =====
 async function loadDialogues() {
     try {
-        const response = await fetch("assets/dialoghi.json");
+        const response = await fetch("assets/dialogues.json");
         globals.dialogues = await response.json();
         console.log("Dialoghi caricati:", globals.dialogues);
     } catch {

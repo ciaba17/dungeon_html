@@ -27,35 +27,31 @@ export function inputHandler() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const buttons = Array.from(document.querySelectorAll(".combat-btn, .move-btn")); // Prende elementi che hanno una delle due classi e trasforma in array
-    
-    // Aggiunge un event listener a ogni bottone
+    const buttons = Array.from(document.querySelectorAll(".combat-btn, .move-btn"));
+
     for (let button of buttons) {
         button.addEventListener("click", () => {
-            const input = button.id.replace("-btn", ""); // tipo "up-btn" → "up"
-            console.log(input)
+            if (globals.combatInputLocked) return; // ignora input finché bloccato
+
+            const input = button.id.replace("-btn", "");
             if (button.classList.contains("move-btn")) {
                 inputState.movement[input] = true;
             } else if (button.classList.contains("combat-btn")) {
                 inputState.combat[input] = true;
+                globals.combatInputLocked = true; // blocca subito altri click finché il turno non termina
             }
         });
     }
 
-    const interact = document.getElementById("interact-btn");
-    interact.onclick = () => {
+    document.getElementById("interact-btn").onclick = () => {
         player.interact();
     }
 });
 
 
 
+
 // DA ORA IN POI SOLO PER DEBUG PENSO
-
-document.addEventListener('mousemove', function(event) {
-    //globals.offsetY = event.clientY - (window.innerHeight / 2);
-});
-
 
 document.addEventListener('keydown', event => {
     switch (event.key) {

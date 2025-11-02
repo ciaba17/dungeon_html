@@ -3,7 +3,7 @@ import { globals } from '../utils/globals.js';
 
 export function showDialogues(id) {
     const container = document.getElementById("info-container");
-    const textboxContent = globals.textBoxContent;
+    const textboxContent = document.getElementById("textbox-content")
     const INTERVAL_TIME = 20; // Velocità del testo: più è bassa più è veloce
 
     // Ferma qualsiasi dialogo precedente prima di iniziarne uno nuovo.
