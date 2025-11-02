@@ -38,8 +38,13 @@ export class Enemy extends Entity {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         // --- ENTRATA IN COMBATTIMENTO ----
-        if (distance <= globals.tileSize / 1.6) {
+        if (distance <= globals.tileSize * 0.6) {
             enterCombat(this);
+            return;
+        }
+
+        if (distance >= globals.tileSize * 10) {
+            return
         }
 
         // --- PATHFINDING PERIODICO ---
@@ -120,8 +125,14 @@ export class Enemy extends Entity {
 function isWallAt(x, y) {
     const col = Math.floor(x / globals.tileSize);
     const row = Math.floor(y / globals.tileSize);
-    return globals.maps.map1[row] && globals.maps.map1[row][col] === 1;
+    
+    // Controlla che la riga e la colonna esistano
+    if (!globals.maps.map1[row] || !globals.maps.map1[row][col]) return false;
+    
+    const [tipo, texture] = globals.maps.map1[row][col]; // destruttura la tupla
+    return tipo === 1; // vero se è un muro
 }
+
 
 
 
@@ -142,7 +153,9 @@ export function createNodeMap() {
     for (let y = 0; y < globals.maps.map1.length; y++) {
         nodeGrid[y] = [];
         for (let x = 0; x < globals.maps.map1[y].length; x++) {
-            nodeGrid[y][x] = new Node(x, y, globals.maps.map1[y][x] === 0);
+            const [tipo, texture] = globals.maps.map1[y][x];
+            nodeGrid[y][x] = new Node(x, y, tipo === 0); // camminabile se tipo = 0
+
         }
     }
 

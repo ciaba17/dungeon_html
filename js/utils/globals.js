@@ -37,27 +37,12 @@ export const globals = {
 
 
 export const textures = {
-    wallTexture : new Image(),
-    test : new Image(),
+    wallTexture: new Image(),
+    errorTexture: new Image(),
+    test: new Image(),
     
 }
 
-textures.wallTexture.src = "assets/images/wallTexture.png";  // Prova a caricare il file
+textures.wallTexture.src = "assets/images/wallTexture.png";
+textures.errorTexture.src = "assets/images/errorTexture.png";
 textures.test.src = "assets/images/monster.png";
-
-textures.wallTexture.onload = function() {
-    console.log("Immagine caricata con successo!");
-};
-
-textures.wallTexture.onerror = function() {
-    console.error("Errore: impossibile caricare l'immagine.");
-};
-
-
-textures.test.onload = function() {
-    console.log("Immagine caricata con successo!");
-};
-
-textures.test.onerror = function() {
-    console.error("Errore: impossibile caricare l'immagine.");
-};

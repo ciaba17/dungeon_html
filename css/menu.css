@@ -7,7 +7,6 @@
     align-items: center;
     background: radial-gradient(circle at center, #000000 0%, #111 100%);
     color: #fff;
-    font-family: monospace;
 }
 
 .menu-title {

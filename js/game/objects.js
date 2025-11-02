@@ -5,9 +5,18 @@ export const walls = [];
 
 
 class Wall {
-    constructor(x, y) {
+    constructor(x, y, textureId) {
         this.x = x;
         this.y = y;
+        this.texture = textures.errorTexture;
+        this.setTexture(textureId);
+    }
+
+    setTexture(textureId) {
+        switch(textureId) {
+            case 0:
+                this.texture = 1;
+        }
     }
 
     draw(ctx) {
@@ -22,12 +31,20 @@ export function mapToWalls(id) {
 
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[i].length; j++) {
-            if (map[i][j] == 1) { // 1 Rappresenta un muro
-                walls.push(new Wall(j * globals.tileSize, i * globals.tileSize));
+            const [tipo, texture] = map[i][j]; // Destruttura la tupla
+
+            if (tipo === 1) { // 1 rappresenta un muro
+                // Passa anche l'ID della texture al costruttore del muro
+                walls.push(new Wall(
+                    j * globals.tileSize, 
+                    i * globals.tileSize, 
+                    texture // aggiungi questo parametro
+                ));
             }
         }
     }
 }
+
 
 export class Entity {
     constructor(x, y, z = 0, scale, name, texture, interactable) {
@@ -67,7 +84,7 @@ export class Entity {
 
 
         const spriteScreenX = (globals.SCREEN_WIDTH / 2) * (1 + transformX / transformY) - spriteWidth / 2;
-        const spriteScreenY = globals.SCREEN_HEIGHT / 2 + globals.offsetY - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
+        const spriteScreenY = globals.SCREEN_HEIGHT / 2 - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
 
         // Se lo sprite è completamente fuori schermo, non disegnarlo
         if (spriteScreenX + spriteWidth < 0 || spriteScreenX > globals.SCREEN_WIDTH) return;

@@ -1,22 +1,37 @@
-// ===== Pulsanti classi =====
-const classButtons = document.querySelectorAll(".class-btn");
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.class-btn');
 
-// Funzione simulata per inizializzare la classe del player
-// In pratica, nel tuo main.js dovrai avere questa funzione
-import { player } from './game/player.js'; // o dove hai la tua classe player
+    const classData = {
+        wizard: {
+            name: "Wizard",
+            description: "Maestro di magie arcane e incantesimi potenti."
+        },
+        paladin: {
+            name: "Paladin",
+            description: "Guerriero sacro con alto potere difensivo e attacchi pesanti."
+        },
+        rogue: {
+            name: "Rogue",
+            description: "Abile e veloce, esperto in trappole e colpi critici."
+        },
+        wanderer: {
+            name: "Wanderer",
+            description: "Esploratore libero, bilanciato tra attacco e mobilità."
+        }
+    };
 
-function initClassType(className) {
-    player.initClassType(className);
-    console.log("Classe selezionata:", className);
-}
+    buttons.forEach(btn => {
+        const infoBox = btn.nextElementSibling; // prende il div .class-info sotto il bottone
+        btn.addEventListener('mouseenter', () => {
+            const cls = btn.dataset.class;
+            if(classData[cls]) {
+                infoBox.innerHTML = `<strong>${classData[cls].name}</strong><br>${classData[cls].description}`;
+                infoBox.style.display = 'block';
+            }
+        });
 
-// Gestione click
-classButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const className = btn.dataset.class;
-        initClassType(className);
-
-        // Passa al gioco
-        window.location.href = "game.html"; // sostituisci con la tua pagina del gioco
+        btn.addEventListener('mouseleave', () => {
+            infoBox.style.display = 'none';
+        });
     });
 });

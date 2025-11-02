@@ -1,5 +1,5 @@
 @font-face { /* definizione del font personalizzato */
-    font-family: 'Font';
+    font-family: "Font";
     src: url('../assets/font.ttf') format('truetype');
 }
 
@@ -10,7 +10,7 @@ html,body {
     padding: 0;
     background-color: rgba(0, 0, 0, 1);
     color: #fff; /* colore del testo */
-    font-family: 'Font'; /* font personalizzato */
+    font-family: "Font"; /* font personalizzato */
     user-select: none; /* impedisce la selezione del testo */
     width: 100%;
     height: 100%;

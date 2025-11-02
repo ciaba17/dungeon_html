@@ -7,7 +7,7 @@ const SPEED = 3 * globals.tileSize;     // unità al secondo
 const ROTATION_SPEED = 180;             // gradi al secondo
 
 class Player {
-    constructor(x, y, angle, classType = "paladin") {
+    constructor(x, y, angle, classType = "wizard") {
         this.x = x * globals.tileSize - globals.tileSize / 2;
         this.y = y * globals.tileSize - globals.tileSize / 2;
         this.angle = angle; // in gradi
@@ -191,10 +191,14 @@ class Player {
 function isWallAt(x, y) {
     const col = Math.floor(x / globals.tileSize);
     const row = Math.floor(y / globals.tileSize);
-
-
-    return globals.maps.map1[row][col] === 1;
+    
+    // Controlla che la riga e la colonna esistano
+    if (!globals.maps.map1[row] || !globals.maps.map1[row][col]) return false;
+    
+    const [tipo, texture] = globals.maps.map1[row][col]; // destruttura la tupla
+    return tipo === 1; // vero se è un muro
 }
+
 
 
 
