@@ -16,6 +16,10 @@ class Wall {
         switch(textureId) {
             case 0:
                 this.texture = 1;
+                break;
+            case 1:
+                this.texture = textures.errorTexture;
+                break;
         }
     }
 

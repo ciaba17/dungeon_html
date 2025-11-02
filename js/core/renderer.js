@@ -18,30 +18,41 @@ function drawWalls2D(ctx, walls) { // Disegna tutti i muri
 }
 
 function drawWalls3D(ctx) {
-    // Dati per il rendering
-    globals.wallSlices = []; // Resetta l'array delle slice dei muri
-    globals.wallSlices = rays.map(ray => {
-        return {
-            texture: textures.wallTexture,
-            height: (globals.tileSize / ray.distance) * distanceProjectionPlane, // Altezza del muro
+    const sliceWidth = globals.SCREEN_WIDTH / globals.rayNumber;
+    globals.wallSlices = [];
+
+    rays.forEach((ray, i) => {
+        // La texture viene presa direttamente dal muro colpito
+        const texture = ray.hitWall ? ray.hitWall.texture : textures.wallTexture;
+
+        // Posizione della slice sulla texture
+        const textureX = ray.hitVertical
+            ? Math.floor((ray.hitY % globals.tileSize) / globals.tileSize * texture.width)
+            : Math.floor((ray.hitX % globals.tileSize) / globals.tileSize * texture.width);
+
+        const height = (globals.tileSize / ray.distance) * distanceProjectionPlane;
+
+        globals.wallSlices.push({
+            texture: texture,
+            height: height,
             distance: ray.correctedDistance,
-            textureX: Math.floor(((ray.hitVertical ? ray.hitY : ray.hitX) % globals.tileSize) / globals.tileSize * textures.wallTexture.width), // Posizione sulla texture orizzontale
-        }
+            textureX: textureX
+        });
     });
 
-    const sliceWidth = globals.SCREEN_WIDTH / globals.rayNumber; // Larghezza di una linea del muro
-    for (let i = 0; i < rays.length; i++) {
-        const slice = globals.wallSlices[i];
+    globals.wallSlices.forEach((slice, i) => {
         const top = globals.SCREEN_HEIGHT / 2 - slice.height / 2;
-        ctx.globalAlpha = 1 * Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7)); // Per scurire i muri
+        ctx.globalAlpha = Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7));
         ctx.drawImage(
             slice.texture,
-            slice.textureX, 0, 1, slice.texture.height, // Parte della texture
-            i * sliceWidth, top, sliceWidth, slice.height // Sullo schermo
+            slice.textureX, 0, 1, slice.texture.height,
+            i * sliceWidth, top, sliceWidth, slice.height
         );
-    }
+    });
+
     ctx.globalAlpha = 1;
 }
+
 
 
 

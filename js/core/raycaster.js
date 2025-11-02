@@ -21,77 +21,70 @@ class Ray {
     }
 
     cast(walls) {
-        // Posizione iniziale nella griglia della mappa
         let startX = Math.floor(this.entity.x / globals.tileSize);
         let startY = Math.floor(this.entity.y / globals.tileSize);
-
-        // Direzione del raggio 
+    
         const rayDirX = Math.cos(this.angle);
         const rayDirY = Math.sin(this.angle);
-
-        // Distanza che il raggio percorre per spostarsi da cella a cella
+    
         const deltaDistX = Math.abs(1 / rayDirX) * globals.tileSize;
         const deltaDistY = Math.abs(1 / rayDirY) * globals.tileSize;
-
-        // Vede se fare il passo(spostarsi) a sinistra o a destra in base alla direzione
+    
         const stepX = rayDirX < 0 ? -1 : 1;
         const stepY = rayDirY < 0 ? -1 : 1;
-
-        // In base alla direzione del raggio, trova la distanza tra il this.entity e il bordo verticale della cella in cui esso si trova
-        let sideDistX, sideDistY;
-        if (rayDirX < 0) 
-            sideDistX = (this.entity.x - startX * globals.tileSize) * Math.abs(1 / rayDirX); // Se il raggio è diretto a sinistra
-        else
-            sideDistX = ((startX + 1) * globals.tileSize - this.entity.x) * Math.abs(1 / rayDirX); // Se il raggio è diretto a destra
-        // Stessa cosa per il bordo orizzontale
-        if (rayDirY < 0)
-            sideDistY = (this.entity.y - startY * globals.tileSize) * Math.abs(1 / rayDirY);
-        else
-            sideDistY = ((startY + 1) * globals.tileSize - this.entity.y) * Math.abs(1 / rayDirY);
-
-        let hit = false; // True quando il raggio colpisce un muro
+    
+        let sideDistX = rayDirX < 0
+            ? (this.entity.x - startX * globals.tileSize) * Math.abs(1 / rayDirX)
+            : ((startX + 1) * globals.tileSize - this.entity.x) * Math.abs(1 / rayDirX);
+        let sideDistY = rayDirY < 0
+            ? (this.entity.y - startY * globals.tileSize) * Math.abs(1 / rayDirY)
+            : ((startY + 1) * globals.tileSize - this.entity.y) * Math.abs(1 / rayDirY);
+    
+        let hit = false;
         let side = 0; // 0 = X, 1 = Y
-
-        // Ciclo di avanzamento del raggio
-        while (!hit) { 
-            if (sideDistX < sideDistY) { // Se il raggio colpisce prima la cella in verticale
-                sideDistX += deltaDistX; // Aggiorna la distanza al prossimo bordo verticale
-                startX += stepX; // Il raggio avanza di una cella
-                side = 0; // Segna di aver colpito un muro verticale
+        let hitWall = null; // ← SALVA QUI IL MURO
+    
+        while (!hit) {
+            if (sideDistX < sideDistY) {
+                sideDistX += deltaDistX;
+                startX += stepX;
+                side = 0;
             } else {
                 sideDistY += deltaDistY;
                 startY += stepY;
                 side = 1;
             }
-
-            for (let wall of walls) { // Cicla tutti i muri
-                // Posizione dei muri sulla griglia
-                const wallMapX = Math.floor(wall.x / globals.tileSize); 
+        
+            for (let wall of walls) {
+                const wallMapX = Math.floor(wall.x / globals.tileSize);
                 const wallMapY = Math.floor(wall.y / globals.tileSize);
-
-                if (startX === wallMapX && startY === wallMapY) {// Se il ,muro si trova nella stessa casella del raggio
-                    hit = true; // Il raggio ha colpito un muro
+            
+                if (startX === wallMapX && startY === wallMapY) {
+                    hit = true;
+                    hitWall = wall; // ← ASSEGNA IL MURO COLPITO
                     break;
                 }
             }
         }
-
-        if (side === 0) { // Se il muro che ha colpito è verticale
-            this.distance = (startX - this.entity.x / globals.tileSize + (1 - stepX) / 2) / rayDirX * globals.tileSize; // Calcola la distanza tra this.entity e impatto
-            // Coordinate della collisione raggio-muro
+    
+        if (side === 0) {
+            this.distance = (startX - this.entity.x / globals.tileSize + (1 - stepX) / 2) / rayDirX * globals.tileSize;
             this.hitX = this.entity.x + rayDirX * this.distance;
             this.hitY = this.entity.y + rayDirY * this.distance;
-            this.hitVertical = true; // Segna che il raggio ha colpito un muro verticale
-        } else { // Se il muro che ha colpito è orizzontale
+            this.hitVertical = true;
+        } else {
             this.distance = (startY - this.entity.y / globals.tileSize + (1 - stepY) / 2) / rayDirY * globals.tileSize;
             this.hitX = this.entity.x + rayDirX * this.distance;
             this.hitY = this.entity.y + rayDirY * this.distance;
             this.hitVertical = false;
         }
+    
+        this.correctedDistance = this.distance * Math.cos(this.angle - (this.entity.angle * Math.PI / 180));
+    
+        this.hitWall = hitWall; // ← SALVA IL MURO NEL RAGGIO
+        wallDistances.push(this.correctedDistance);
+    }
 
-        this.correctedDistance = this.distance * Math.cos(this.angle - (this.entity.angle * Math.PI / 180)); // DA SISTEMARE
-        wallDistances.push(this.correctedDistance); // Salva la distanza per compararla a quella delle entità
-    }   
 
     draw(ctx) {
         ctx.lineWidth = 1;
