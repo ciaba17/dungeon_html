@@ -15,16 +15,16 @@ class Wall {
     setTexture(textureId) {
         switch(textureId) {
             case 0:
-                this.texture = 1;
+                this.texture = textures.blankTexture;
                 break;
             case 1:
-                this.texture = textures.errorTexture;
+                this.texture = textures.wallTexture;
                 break;
         }
     }
 
     draw(ctx) {
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = "white";
         ctx.fillRect(this.x, this.y, globals.tileSize, globals.tileSize);
     }
 }
@@ -42,7 +42,7 @@ export function mapToWalls(id) {
                 walls.push(new Wall(
                     j * globals.tileSize, 
                     i * globals.tileSize, 
-                    texture // aggiungi questo parametro
+                    texture // Aggiungi questo parametro
                 ));
             }
         }

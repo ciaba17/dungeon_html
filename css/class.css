@@ -15,7 +15,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap; /* permette ai bottoni di andare a capo su schermi piccoli */
-    gap: 2vmin;      /* spazio tra i bottoni */
+    gap: 10vmin;      /* spazio tra i bottoni */
     width: 100%;
     margin-top: 5vmin;
     position: relative; /* per far funzionare .class-info in assoluto */
@@ -34,10 +34,13 @@
     display: block;
     width: 20vmin; /* fisso in vmin per mantenere proporzioni */
     min-width: 120px; /* assicura leggibilità su schermi piccoli */
+    height: 25vh;
     padding: 1.5vmin 0;
     font-size: 4.5vmin;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0);
+    background-size: cover; /* Copre tutta l'area */
+    background-position: center; /* Centra l'immagine */
     border: 0.5vmin double #fff;
     cursor: pointer;
     box-sizing: border-box;
@@ -46,29 +49,33 @@
 }
 
 .class-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
 }
 
 .class-info {
-    display: none; /* nascosto di default */
-    width: max-content; /* larghezza minima necessaria */
-    max-width: 90vw;   /* non supera lo schermo */
+    display: none;
+    width: 15vw;
+    height: max-content;
+    max-width: 90vw;
     margin-top: 0.8vmin;
     padding: 1vmin;
     font-size: 3vmin;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.85);
-    border: 0.5vmin double #fff;
     box-sizing: border-box;
     text-align: center;
     font-family: "Courier New", monospace;
     letter-spacing: 0.1em;
     line-height: 1.4;
-    position: absolute; /* così non sposta altri bottoni */
-    top: 100%;         /* subito sotto il bottone */
+    position: absolute;
+    top: 100%;
     left: 50%;
-    transform: translateX(-50%); /* centra rispetto al bottone */
+    transform: translateX(-50%);
     z-index: 10;
-    pointer-events: none; /* evita conflitti di clic */
+    pointer-events: none;
+    white-space: normal;      /* consente l'andata a capo */
+    word-break: normal;       /* evita di spezzare le parole */
+    overflow-wrap: normal;    /* idem, non forza il capo a metà parola */
 }
+
+

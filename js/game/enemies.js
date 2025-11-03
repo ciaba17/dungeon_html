@@ -1,7 +1,7 @@
 import { Entity } from './objects.js';
 import { globals, textures } from '../utils/globals.js';
 import { createTimer } from '../utils/timer.js';
-import { enterCombat } from './combat.js';
+import { enterCombat, exitCombat } from './combat.js';
 
 class Node {
     constructor(x, y, walkable) {
@@ -112,7 +112,10 @@ export class Enemy extends Entity {
     }
 
     die() {
-        console.log(this.name + " è morto!")
+        exitCombat();
+        const index = globals.entities.indexOf(this); // IndexOf restituisce -1 se non lo trova
+        if (index !== -1) globals.entities.splice(index, 1); 
+
     }
 
 

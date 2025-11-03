@@ -4,19 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const classData = {
         wizard: {
             name: "Wizard",
-            description: "Maestro di magie arcane e incantesimi potenti."
+            description: "Maestro di magie arcane e incantesimi potenti"
         },
         paladin: {
             name: "Paladin",
-            description: "Guerriero sacro con alto potere difensivo e attacchi pesanti."
+            description: "Guerriero sacro con alto potere difensivo e attacchi pesanti"
         },
         rogue: {
-            name: "Rogue",
-            description: "Abile e veloce, esperto in trappole e colpi critici."
+            name: "Guardian",
+            description: "Pesante e corazzato, molto forte nei combattimenti corpo a corpo"
         },
         wanderer: {
             name: "Wanderer",
-            description: "Esploratore libero, bilanciato tra attacco e mobilità."
+            description: "Esploratore libero, bilanciato tra attacco e mobilità"
         }
     };
 

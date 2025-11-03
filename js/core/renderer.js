@@ -23,7 +23,8 @@ function drawWalls3D(ctx) {
 
     rays.forEach((ray, i) => {
         // La texture viene presa direttamente dal muro colpito
-        const texture = ray.hitWall ? ray.hitWall.texture : textures.wallTexture;
+        const texture = ray.hitWall ? ray.hitWall.texture : textures.errorTexture;
+        ;
 
         // Posizione della slice sulla texture
         const textureX = ray.hitVertical

@@ -38,11 +38,13 @@ export const globals = {
 
 export const textures = {
     wallTexture: new Image(),
+    blankTexture: new Image(),
     errorTexture: new Image(),
     test: new Image(),
     
 }
 
 textures.wallTexture.src = "assets/images/wallTexture.png";
+textures.blankTexture.src = "assets/images/blankTexture.png";
 textures.errorTexture.src = "assets/images/errorTexture.png";
 textures.test.src = "assets/images/monster.png";
