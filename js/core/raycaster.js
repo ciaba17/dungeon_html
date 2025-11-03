@@ -5,7 +5,7 @@ import { globals } from "../utils/globals.js";
 export let rays = [];
 export let wallDistances = []; // Distanze dei muri colpiti dai raggi per ordine di rendering
 
-const MAX_DISTANCE = 5000; // Distanza massima di lancio del raggio
+const MAX_DISTANCE = globals.tileSize * 50; // Distanza massima di lancio del raggio
 
 
 
@@ -21,6 +21,13 @@ class Ray {
     }
 
     cast(walls) {
+        // Filtra solo i muri piu vicini
+        const filteredWalls = walls.filter(wall => {
+            const dx = wall.x - this.entity.x;
+            const dy = wall.y - this.entity.y;
+            return dx * dx + dy * dy <= MAX_DISTANCE * MAX_DISTANCE;
+        });
+
         let startX = Math.floor(this.entity.x / globals.tileSize);
         let startY = Math.floor(this.entity.y / globals.tileSize);
     
@@ -44,28 +51,40 @@ class Ray {
         let side = 0; // 0 = X, 1 = Y
         let hitWall = null; // ← SALVA QUI IL MURO
     
-        while (!hit) {
+        let traveledDistance = 0;
+
+        while (!hit && traveledDistance < MAX_DISTANCE) {
             if (sideDistX < sideDistY) {
                 sideDistX += deltaDistX;
                 startX += stepX;
                 side = 0;
+                traveledDistance = sideDistX;
             } else {
                 sideDistY += deltaDistY;
                 startY += stepY;
                 side = 1;
+                traveledDistance = sideDistY;
             }
         
-            for (let wall of walls) {
+            for (let wall of filteredWalls) {
                 const wallMapX = Math.floor(wall.x / globals.tileSize);
                 const wallMapY = Math.floor(wall.y / globals.tileSize);
             
                 if (startX === wallMapX && startY === wallMapY) {
                     hit = true;
-                    hitWall = wall; // ← ASSEGNA IL MURO COLPITO
+                    hitWall = wall;
                     break;
                 }
             }
         }
+
+        // Se il raggio non colpisce nulla entro MAX_DISTANCE, puoi considerarlo "vuoto"
+        if (!hit) {
+            this.distance = MAX_DISTANCE;
+            this.hitX = this.entity.x + rayDirX * MAX_DISTANCE;
+            this.hitY = this.entity.y + rayDirY * MAX_DISTANCE;
+        }
+
     
         if (side === 0) {
             this.distance = (startX - this.entity.x / globals.tileSize + (1 - stepX) / 2) / rayDirX * globals.tileSize;

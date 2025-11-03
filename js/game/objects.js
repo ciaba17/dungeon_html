@@ -54,7 +54,7 @@ export class Entity {
     constructor(x, y, z = 0, scale, name, texture, interactable) {
         this.x = x * globals.tileSize - globals.tileSize / 2; 
         this.y = y * globals.tileSize - globals.tileSize / 2;
-        this.z = z - 10;
+        this.z = z - 12;
         this.scale = scale / 10;
         this.name = name;
         this.texture = texture;

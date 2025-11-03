@@ -26,6 +26,7 @@ async function initGame() {
 
     // --- Scaling ---
     setupScaling();
+
 }
 
 

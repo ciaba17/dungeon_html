@@ -13,6 +13,7 @@ class Node {
         this.walkable = walkable;
         this.parent = null;
         this.neighbors = [];
+        this.baseDamage = 20;
     }
 
     addNeighbor(node) {
@@ -95,7 +96,7 @@ export class Enemy extends Entity {
         }   
     }
 
-    updateHPBar() {
+    updateHPBar() { // DA RIVEDERE TESTO
         const fill = document.getElementById("enemy-hp-fill");
         const text = document.getElementById("enemy-hp-text");
         const percent = (this.hp / this.hpLimit) * 100;

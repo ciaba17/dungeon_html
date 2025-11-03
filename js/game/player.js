@@ -7,10 +7,19 @@ const SPEED = 3 * globals.tileSize;     // unità al secondo
 const ROTATION_SPEED = 180;             // gradi al secondo
 
 class Player {
-    constructor(x, y, angle, classType = "wizard") {
+    constructor(x, y, angle) {
         this.x = x * globals.tileSize - globals.tileSize / 2;
         this.y = y * globals.tileSize - globals.tileSize / 2;
         this.angle = angle; // in gradi
+
+        // Aggiunge al gioco nome e classe player scelti in precedenza
+        this.name = localStorage.getItem("playerName");
+        this.updateNameUI();
+        this.classType = localStorage.getItem("playerClass");
+        this.initClassType(this.classType);
+        this.baseDamage = 20;
+
+
 
         // Movimento attivo
         this.moving = false;
@@ -20,9 +29,6 @@ class Player {
         this.targetY = this.y;
         this.targetAngle = this.angle;
 
-        
-        this.classType = classType;
-        this.initClassType(this.classType);
     }
 
     update() {
@@ -118,49 +124,143 @@ class Player {
         }
     }
 
+    updateNameUI() {
+        const combatName = document.getElementById("player-name");
+        const overviewName = document.getElementById("char-name");
+    
+        if (combatName) combatName.textContent = this.name;
+        if (overviewName) overviewName.textContent = this.name;
+    }
+
+
     initClassType(classType) {
         const playerHeadContainer = document.getElementById("player-head");
-
+    
+        // Valori base HP/MP
         const CLASS_DATA = {
-            wizard:   { hp: 70,  mp: 120},
-            paladin:  { hp: 120, mp: 60},
-            guardian: { hp: 150, mp: 30},
-            wanderer: { hp: 90,  mp: 90}
+            wizard:   { hp: 70,  mp: 120 },
+            paladin:  { hp: 120, mp: 60 },
+            guardian: { hp: 150, mp: 30 },
+            wanderer: { hp: 90,  mp: 90 }
         };
-
+    
+        // Modificatori di attacco e difesa per ogni classe
+        const CLASS_MODIFIERS = {
+            wizard: {
+                attack: {
+                    sword: 0.8,  // -20% danno
+                    shield: 0.9, // -10% difesa
+                    magic: 1.5   // +50% danno
+                },
+                defense: {
+                    sword: 1.0,
+                    shield: 0.9, // -10% difesa
+                    magic: 1.0
+                },
+                special: {
+                    name: "Magia Potenziata",
+                    cost: 10,
+                    description: "Danno doppio con attacco magico (x2)."
+                }
+            },
+        
+            paladin: {
+                attack: {
+                    sword: 1.1,  // +10% danno
+                    shield: 1.0,
+                    magic: 1.1   // +10% danno
+                },
+                defense: {
+                    sword: 1.0,
+                    shield: 1.5, // +50% difesa
+                    magic: 1.0
+                },
+                special: {
+                    name: "Scudo Divino",
+                    cost: 10,
+                    description: "Assorbe tutto il danno per 1 turno."
+                }
+            },
+        
+            guardian: {
+                attack: {
+                    sword: 1.0,
+                    shield: 1.0,
+                    magic: 0.8   // -20% danno
+                },
+                defense: {
+                    sword: 1.2,  // +20% difesa
+                    shield: 1.3, // +30% difesa
+                    magic: 1.0
+                },
+                special: {
+                    name: "Controcolpo",
+                    cost: 10,
+                    description: "Riflette parte del danno subito se blocca."
+                }
+            },
+        
+            wanderer: {
+                attack: {
+                    sword: 1.1,  // +10% danno
+                    shield: 1.0,
+                    magic: 1.1
+                },
+                defense: {
+                    sword: 1.1,  // +10% difesa
+                    shield: 1.1,
+                    magic: 1.1
+                },
+                special: null // Nessuna abilità speciale
+            }
+        };
+    
+        // Imposta HP/MP
         this.hpLimit = CLASS_DATA[classType].hp;
         this.mpLimit = CLASS_DATA[classType].mp;
         this.hp = CLASS_DATA[classType].hp;
         this.mp = CLASS_DATA[classType].mp;
+    
+        // Imposta modificatori di classe
+        this.classType = classType;
+        this.classModifiers = CLASS_MODIFIERS[classType];
+    
+        // Imposta immagini
         this.backImage = new Image();
         this.backImage.src = "assets/images/" + classType + "_back.png";
         this.frontImage = new Image();
         this.frontImage.src = "assets/images/" + classType + "_front.png";
-
-        // Imposta stats iniziali
+    
+        // Aggiorna barre HP/MP
         this.updateHPBar();
         this.updateMPBar();
-
-        // Imposta l’immagine nel DOM
+    
+        // Imposta immagine del volto nel DOM
         playerHeadContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
     }
-    
-    // Funzione generica per aggiornare la barra HP
-    updateHPBar() {
-        const fill = document.getElementById("player-hp-fill");
-        const text = document.getElementById("player-hp-text");
-        const percent = (this.hp / this.hpLimit) * 100;
-        fill.style.width = percent + "%";
-        text.textContent = `${this.hp} / ${this.hpLimit}`;
-    }
 
-    updateMPBar() {
-        const fill = document.getElementById("player-mp-fill");
-        const text = document.getElementById("player-mp-text");
-        const percent = (this.mp / this.mpLimit) * 100;
-        fill.style.width = percent + "%";
-        text.textContent = `${this.mp} / ${this.mpLimit}`;
+
+    
+    // Aggiorna tutte le barre HP
+    updateHPBar() {
+        const fills = document.querySelectorAll(".player-hp-fill");
+        const texts = document.querySelectorAll(".player-hp-text");
+        const percent = (this.hp / this.hpLimit) * 100;
+    
+        fills.forEach(f => f.style.width = percent + "%");
+        texts.forEach(t => t.textContent = `${this.hp} / ${this.hpLimit}`);
     }
+    
+    // Aggiorna tutte le barre MP
+    updateMPBar() {
+        const fills = document.querySelectorAll(".player-mp-fill");
+        const texts = document.querySelectorAll(".player-mp-text");
+        const percent = (this.mp / this.mpLimit) * 100;
+    
+        fills.forEach(f => f.style.width = percent + "%");
+        texts.forEach(t => t.textContent = `${this.mp} / ${this.mpLimit}`);
+    }
+    
 
     takeDamage(amount) {
         this.hp -= amount;
@@ -186,8 +286,6 @@ class Player {
 }
 
 
-
-
 function isWallAt(x, y) {
     const col = Math.floor(x / globals.tileSize);
     const row = Math.floor(y / globals.tileSize);
@@ -204,5 +302,4 @@ function isWallAt(x, y) {
 
 
 
-
-export const player = new Player(8, 7, 0);
+    export const player = new Player(8, 7, 0);
