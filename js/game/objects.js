@@ -1,5 +1,6 @@
 import { globals, textures } from '../utils/globals.js';
 import { player } from './player.js';
+import { showDialogues } from './ui.js';
 
 export const walls = [];
 
@@ -125,3 +126,21 @@ export class Entity {
     }
 }
 
+
+class Npc extends Entity {
+    constructor(x, y, z, scale, name, texture, dialogueId){
+        super(x, y, z, scale, name, texture, true); // Passa i valori al costruttore originale di entity
+        this.dialogueId = dialogueId;
+
+        this.headImage = new Image()
+        this.headImage.src = "assets/images/" + this.name + "_head.png"
+    }
+
+    interact() {
+        showDialogues(this.dialogueId);
+        
+        // Imposta immagine del volto nel DOM
+        const playerHeadContainer = document.getElementById("player-head");
+        playerHeadContainer.style.backgroundImage = 'url("' + this.headImage.src + '")';
+    }
+}

@@ -13,7 +13,6 @@ class Node {
         this.walkable = walkable;
         this.parent = null;
         this.neighbors = [];
-        this.baseDamage = 20;
     }
 
     addNeighbor(node) {
@@ -22,8 +21,8 @@ class Node {
 }
 
 export class Enemy extends Entity {
-    constructor(x, y, z, scale, name, texture, hp, interactable = true) {
-        super(x, y, z, scale, name, texture, interactable);
+    constructor(x, y, z, scale, name, texture, hp) {
+        super(x, y, z, scale, name, texture, false); // Passa i valori al costruttore originale di entity
         this.moving = false;
         this.timer;
         this.path;
@@ -31,6 +30,7 @@ export class Enemy extends Entity {
         this.hp = hp;
         this.hpLimit = hp;
         this.updateHPBar();
+        this.baseDamage = 20;
     }
 
     followPlayer(player) {

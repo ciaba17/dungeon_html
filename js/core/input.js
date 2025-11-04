@@ -51,8 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// DA ORA IN POI SOLO PER DEBUG PENSO
-
+// Comandi da tastiera
 document.addEventListener('keydown', event => {
     switch (event.key) {
         case 'ArrowUp':
@@ -72,6 +71,9 @@ document.addEventListener('keydown', event => {
             break;
         case 'x':
             inputState.movement.turnRight = true;
+            break;
+        case ' ':
+            player.interact();
             break;
     }
 });

@@ -1,26 +1,43 @@
 // ===== Pulsanti menu =====
 const startBtn   = document.getElementById("start-btn");
-const loadBtn    = document.getElementById("load-btn");
+
 const optionsBtn = document.getElementById("options-btn");
-const exitBtn    = document.getElementById("exit-btn");
+const optionsWindow = document.getElementById("options-window");
+const closeOptions = document.getElementById("close-options");
+
+const commandsBtn = document.getElementById("commands-btn");
+const commandsWindow = document.getElementById("commands-window");
+const closeCommands = document.getElementById("close-commands");
+
+const creditsBtn = document.getElementById("credits-btn");
+const creditsWindow = document.getElementById("credits-window");
+const closeCredits = document.getElementById("close-credits");
 
 // Vai al gioco
 startBtn.addEventListener("click", () => {
     window.location.href = "class.html"; // Sostituisci con la pagina del tuo gioco
-    console.log("cai")
 });
 
-// Caricamento salvataggi
-loadBtn.addEventListener("click", () => {
-    alert("Funzione Carica non ancora implementata");
+// Schermata comandi
+commandsBtn.addEventListener("click", () => {
+    commandsWindow.classList.remove("hidden");
+});
+closeCommands.addEventListener("click", () => {
+    commandsWindow.classList.add("hidden");
 });
 
 // Opzioni
 optionsBtn.addEventListener("click", () => {
-    alert("Funzione Opzioni non ancora implementata");
+    optionsWindow.classList.remove("hidden");
+});
+closeOptions.addEventListener("click", () => {
+    optionsWindow.classList.add("hidden");
 });
 
-// Esci
-exitBtn.addEventListener("click", () => {
-    window.close(); // In browser probabilmente non funziona
+// Crediti
+creditsBtn.addEventListener("click", () => {
+    creditsWindow.classList.remove("hidden");
+});
+closeCredits.addEventListener("click", () => {
+    creditsWindow.classList.add("hidden");
 });

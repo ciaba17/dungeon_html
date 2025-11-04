@@ -97,57 +97,13 @@ export function combat() {
 
     // Funzione per il calcolo del danno TOTALMENTE DA SISTEMARE
 function calculateDamage(isPlayerAttacking = true) {
-    const attacker = isPlayerAttacking ? player : globals.enemyOnCombat;
-    const defender = isPlayerAttacking ? globals.enemyOnCombat : player;
+    let damage;
 
-    const baseDamage = attacker.baseDamage ?? 10; // fallback
-    const action = isPlayerAttacking ? combatState.player : combatState.enemy;
-
-    let attackMod = 1;
-    let critChance = 0;
-    let special = null;
-
-    if (isPlayerAttacking && attacker.classModifiers) {
-        attackMod = attacker.classModifiers[action] ?? 1;
-        critChance = attacker.classModifiers.critChance ?? 0;
-        special = attacker.classModifiers.special ?? null;
+    if (isPlayerAttacking) {
+        damage = player.baseDamage * player.classModifiers.attack[combatState.player];
+    } else {
+        damage = globals.enemyOnCombat.baseDamage;
     }
-
-    // Difesa del bersaglio
-    let defenseMod = 1;
-    if (defender.classModifiers?.defense) {
-        defenseMod = defender.classModifiers.defense;
-
-        if ((isPlayerAttacking && combatState.enemy === "shield") ||
-            (!isPlayerAttacking && combatState.player === "shield")) {
-            defenseMod *= 1.2;
-        }
-    }
-
-    // Danno iniziale
-    let damage = baseDamage * attackMod / defenseMod;
-
-    // Attacco speciale (solo player)
-    if (isPlayerAttacking && special?.name === action && attacker.mp >= special.mpCost) {
-        attacker.mp -= special.mpCost;
-        switch (special.effect) {
-            case "doubleMagicDamage": damage *= 2; break;
-            case "invulnerable": damage = 0; break;
-        }
-    }
-
-    // Critico (solo player)
-    if (isPlayerAttacking && Math.random() < critChance) {
-        damage *= 1.5;
-    }
-
-    // Nemico: danno variabile tra 80% e 120%
-    if (!isPlayerAttacking) {
-        damage *= 0.8 + Math.random() * 0.4;
-    }
-
-    // Protezione finale: mai NaN
-    if (!isFinite(damage)) damage = 1;
 
     return Math.round(damage);
 }

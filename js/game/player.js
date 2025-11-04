@@ -20,9 +20,9 @@ class Player {
         this.baseDamage = 20;
 
 
-
         // Movimento attivo
         this.moving = false;
+        this.interacting = false;
         this.rotating = false;
 
         this.targetX = this.x;
@@ -105,8 +105,11 @@ class Player {
         const interactY = this.y + interactDistance * Math.sin(this.angle * Math.PI / 180);
         // Controlla se c'è un oggetto interagibile in quella posizione
         for (let entity of globals.entities) {
-            if (interactX === entity.x && interactY === entity.y && entity.interactable) {
-                showDialogues("test2");
+            if (interactX === entity.x && interactY === entity.y && entity.interactable && !this.interacting) {
+                if (entity.interactable) {
+                    entity.interact();
+                    this.interacting = true
+                }
             }
         }
     }
@@ -117,7 +120,7 @@ class Player {
         const newX = this.x + globals.tileSize * Math.cos(rad);
         const newY = this.y + globals.tileSize * Math.sin(rad);
         
-        if (!isWallAt(newX, newY)) {
+        if (!isWallAt(newX, newY) && !this.interacting) {
             this.targetX = newX;
             this.targetY = newY;
             this.moving = true;
@@ -133,9 +136,7 @@ class Player {
     }
 
 
-    initClassType(classType) {
-        const playerHeadContainer = document.getElementById("player-head");
-    
+    initClassType(classType) {    
         // Valori base HP/MP
         const CLASS_DATA = {
             wizard:   { hp: 70,  mp: 120 },
@@ -152,11 +153,6 @@ class Player {
                     shield: 0.9, // -10% difesa
                     magic: 1.5   // +50% danno
                 },
-                defense: {
-                    sword: 1.0,
-                    shield: 0.9, // -10% difesa
-                    magic: 1.0
-                },
                 special: {
                     name: "Magia Potenziata",
                     cost: 10,
@@ -169,11 +165,6 @@ class Player {
                     sword: 1.1,  // +10% danno
                     shield: 1.0,
                     magic: 1.1   // +10% danno
-                },
-                defense: {
-                    sword: 1.0,
-                    shield: 1.5, // +50% difesa
-                    magic: 1.0
                 },
                 special: {
                     name: "Scudo Divino",
@@ -188,11 +179,6 @@ class Player {
                     shield: 1.0,
                     magic: 0.8   // -20% danno
                 },
-                defense: {
-                    sword: 1.2,  // +20% difesa
-                    shield: 1.3, // +30% difesa
-                    magic: 1.0
-                },
                 special: {
                     name: "Controcolpo",
                     cost: 10,
@@ -204,11 +190,6 @@ class Player {
                 attack: {
                     sword: 1.1,  // +10% danno
                     shield: 1.0,
-                    magic: 1.1
-                },
-                defense: {
-                    sword: 1.1,  // +10% difesa
-                    shield: 1.1,
                     magic: 1.1
                 },
                 special: null // Nessuna abilità speciale
@@ -236,7 +217,8 @@ class Player {
         this.updateMPBar();
     
         // Imposta immagine del volto nel DOM
-        playerHeadContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
+        const headContainer = document.getElementById("player-head");
+        headContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
     }
 
 
