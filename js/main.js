@@ -18,9 +18,9 @@ async function initGame() {
     await loadMaps();
 
     // --- Setup iniziale ---
-    mapToWalls("map1");
+    mapToWalls("map");
     createNodeMap();
-    mapToEntities("map1");
+    mapToEntities("map");
     initCanvasContexts();
     createRays();
 
@@ -42,7 +42,7 @@ async function loadDialogues() {
 
 async function loadMaps() {
     try {
-        const response = await fetch("assets/maps.json");
+        const response = await fetch("assets/map.json");
         globals.maps = await response.json();
         console.log("Mappe caricate:", globals.maps);
     } catch {

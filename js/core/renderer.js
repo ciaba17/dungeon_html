@@ -43,15 +43,12 @@ function drawWalls3D(ctx) {
 
     globals.wallSlices.forEach((slice, i) => {
         const top = globals.SCREEN_HEIGHT / 2 - slice.height / 2;
-        //ctx.globalAlpha = Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7));
         ctx.drawImage(
             slice.texture,
             slice.textureX, 0, 1, slice.texture.height,
             i * sliceWidth, top, sliceWidth, slice.height
         );
     });
-
-    //ctx.globalAlpha = 1;
 }
 
 
@@ -61,9 +58,15 @@ export function render() {
     const gameCtx = contexts.gameCtx; 
     const mapCtx = contexts.mapCtx; 
 
-    // Pulisce gli schermi
-    gameCtx.fillStyle = "rgba(0, 0, 0, 1)";
-    gameCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
+    // Colore pavimento e soffito
+    // Metà superiore
+    gameCtx.fillStyle = globals.ceilingColor;
+    gameCtx.fillRect(0, 0, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT / 2);
+
+    // Metà inferiore
+    gameCtx.fillStyle = globals.floorColor;
+    gameCtx.fillRect(0, globals.SCREEN_HEIGHT / 2, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT / 2);
+
     
     const mapContainer = document.getElementById("map-container")
     mapCtx.fillStyle = 'black';
@@ -89,10 +92,6 @@ export function render() {
         globals.entities.forEach(entity => {entity.updateDistance()})
         globals.entities.sort((a, b) => b.distance - a.distance); // Dalla più lontana alla più vicina
         globals.entities.forEach(entity => {entity.draw3D(gameCtx)})
-
-        console.log("player: " + player.x, player.y)
-        globals.entities.forEach(entity => {console.log("entity: " + entity.x, entity.y)})
-
         
     } else if (globals.gameState === "combat") {
         renderCombat(gameCtx);

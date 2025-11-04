@@ -3,7 +3,7 @@ import { player } from './player.js';
 import { showDialogues } from './ui.js';
 import { showElement, hideElement } from '../utils/cssHandler.js';
 
-export const walls = [];
+export let walls = [];
 
 
 class Wall {
@@ -46,7 +46,7 @@ class Wall {
 
 export function mapToWalls(id) {
     const map = globals.maps[id]; // Usa la mappa caricata
-    console.log(globals.maps, globals.maps[id]);
+    walls = [];
 
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[i].length; j++) {
@@ -66,13 +66,14 @@ export function mapToWalls(id) {
 
 
 export class Entity {
-    constructor(x, y, z = 0, scale, name, texture, interactable) {
+    constructor(x, y, z = 0, scale, name, interactable) {
         this.x = x * globals.tileSize - globals.tileSize / 2; 
         this.y = y * globals.tileSize - globals.tileSize / 2;
         this.z = z - 12;
         this.scale = scale / 10;
         this.name = name;
-        this.texture = texture;
+        this.texture = new Image();
+        this.texture.src = "assets/images/" + this.name + ".png"
         this.interactable = interactable;
         this.onScreen = true;
     }
@@ -138,7 +139,6 @@ export class Entity {
         }
     }
 
-
     draw2D(ctx) {
         ctx.fillStyle = "green";
         ctx.beginPath();
@@ -148,9 +148,9 @@ export class Entity {
 }
 
 export class GameObject extends Entity {
-    constructor(x, y, z, scale, name, texture, dialogueId, collectable = false) {
+    constructor(x, y, z, scale, name, dialogueId, collectable = false) {
         // Gli oggetti sono sempre interactable
-        super(x, y, z, scale, name, texture, true);
+        super(x, y, z, scale, name, true);
         this.collectable = collectable
         if (this.collectable) this.collected = false; // Crea il flag collected sono se è collezionabile
         this.dialogueId = dialogueId;
@@ -191,8 +191,8 @@ export class GameObject extends Entity {
 
 
 export class Npc extends Entity {
-    constructor(x, y, z, scale, name, texture, dialogueId){
-        super(x, y, z, scale, name, texture, true); // Passa i valori al costruttore originale di entity
+    constructor(x, y, z, scale, name, dialogueId){
+        super(x, y, z, scale, name, true); // Passa i valori al costruttore originale di entity
 
         this.dialogueId = dialogueId;
 

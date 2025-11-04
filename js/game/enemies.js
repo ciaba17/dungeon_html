@@ -21,8 +21,8 @@ class Node {
 }
 
 export class Enemy extends Entity {
-    constructor(x, y, z, scale, name, texture, hp, speed) {
-        super(x, y, z, scale, name, texture, false); // Passa i valori al costruttore originale di entity
+    constructor(x, y, z, scale, name, hp, baseDamage, speed) {
+        super(x, y, z, scale, name, false); // Passa i valori al costruttore originale di entity
         this.moving = false;
         this.timer;
         this.path;
@@ -132,9 +132,9 @@ function isWallAt(x, y) {
     const row = Math.floor(y / globals.tileSize);
     
     // Controlla che la riga e la colonna esistano
-    if (!globals.maps.map1[row] || !globals.maps.map1[row][col]) return false;
+    if (!globals.maps.map[row] || !globals.maps.map[row][col]) return false;
     
-    const [tipo, texture] = globals.maps.map1[row][col]; // destruttura la tupla
+    const [tipo, texture] = globals.maps.map[row][col]; // destruttura la tupla
     return tipo === 1; // vero se è un muro
 }
 
@@ -155,17 +155,17 @@ function isWallAt(x, y) {
 let nodeGrid = [];
 
 export function createNodeMap() {
-    for (let y = 0; y < globals.maps.map1.length; y++) {
+    for (let y = 0; y < globals.maps.map.length; y++) {
         nodeGrid[y] = [];
-        for (let x = 0; x < globals.maps.map1[y].length; x++) {
-            const [tipo, texture] = globals.maps.map1[y][x];
+        for (let x = 0; x < globals.maps.map[y].length; x++) {
+            const [tipo, texture] = globals.maps.map[y][x];
             nodeGrid[y][x] = new Node(x, y, tipo === 0); // camminabile se tipo = 0
 
         }
     }
 
-    for (let y = 0; y < globals.maps.map1.length; y++) {
-        for (let x = 0; x < globals.maps.map1[y].length; x++) {
+    for (let y = 0; y < globals.maps.map.length; y++) {
+        for (let x = 0; x < globals.maps.map[y].length; x++) {
             let node = nodeGrid[y][x];
             if (!node.walkable) continue;
 
@@ -251,18 +251,18 @@ function findPath(startNode, targetNode) {
 
 export function mapToEntities(id) {
     const ENTITY_TYPES = {
-        1: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"dungeon_keeper", texture:textures.errorTexture, dialogueId:"dungeon_keeper_entrance" }},
-        2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Skeleton", texture:textures.monster, hp:60, baseDamage:10 }},
-        3: { class: Enemy, defaults: { x:0, y:0, z:0, scale:0.5, name:"Rat", texture:textures.monster, hp:15, baseDamage:3 }},
-        4: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key1", texture:textures.key, dialogueId:"", interactable:true }},
-        5: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key2", texture:textures.key, dialogueId:"", interactable:true }},
-        6: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"Tree", texture:textures.errorTexture, interactable:false }},
-        7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"HoodedMan", texture:textures.errorTexture, dialogueId:"hooded_man_dialogue" }},
-        8: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Zombie", texture:textures.monster, hp:50, baseDamage:8 }},
-        9: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Goblin", texture:textures.monster, hp:30, baseDamage:6 }},
-        10: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"AncientScroll", texture:textures.key, dialogueId:"", interactable:true }},
-        11: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"StoneStatue", texture:textures.errorTexture, interactable:false }},
-        12: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"DarkKnight", texture:textures.monster, hp:120, baseDamage:20 }}
+        1: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"dungeon_keeper", dialogueId:"dungeon_keeper" }},
+        2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Skeleton", hp:60, baseDamage:10, speed:10 }},
+        3: { class: Enemy, defaults: { x:0, y:0, z:0, scale:0.5, name:"Rat", hp:15, baseDamage:3, speed:30 }},
+        4: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key1", dialogueId:"", interactable:true }},
+        5: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key2", dialogueId:"", interactable:true }},
+        6: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"Tree", interactable:false }},
+        7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"HoodedMan", dialogueId:"hooded_man_dialogue" }},
+        8: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Zombie", hp:50, baseDamage:8, speed:30 }},
+        9: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Goblin", hp:30, baseDamage:6, speed:30 }},
+        10: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"AncientScroll", dialogueId:"", interactable:true }},
+        11: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"StoneStatue", interactable:false }},
+        12: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"DarkKnight", hp:120, baseDamage:20, speed:30 }}
     };
 
     const map = globals.maps[id];
@@ -282,13 +282,17 @@ export function mapToEntities(id) {
             const params = { ...entityConfig.defaults };
 
             let entity;
+            j++;
+            i++;
             if (EntityClass === Enemy) {
-                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.texture, params.hp || 50, params.baseDamage || 10);
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.hp || 50, params.baseDamage || 10);
             } else if (EntityClass === Npc) {
-                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.texture, params.dialogueId || "");
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.dialogueId || "");
             } else {
-                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.texture);
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name);
             }
+            j--;
+            i--;
 
             globals.entities.push(entity);
         }

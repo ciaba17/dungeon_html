@@ -1,5 +1,5 @@
 import { inputState } from "../core/input.js";
-import { Npc, walls, GameObject } from "./objects.js";
+import { Npc, walls, GameObject, mapToWalls } from "./objects.js";
 import { globals } from "../utils/globals.js";
 import { showDialogues } from "./ui.js";
 import { showElement, hideElement } from "../utils/cssHandler.js";
@@ -21,16 +21,19 @@ class Player {
         this.baseDamage = 20;
         this.inventory;
 
-
+        
         // Movimento attivo
         this.moving = false;
-        this.interactingWithNpc = false;
         this.rotating = false;
+        this.interactingWithNpc = false;
 
         this.targetX = this.x;
         this.targetY = this.y;
         this.targetAngle = this.angle;
 
+
+        // Eventi
+        this.enteredDungeon = false;
     }
 
     update() {
@@ -98,6 +101,24 @@ class Player {
             if (this.angle < 0) this.angle += 360;
             if (this.angle >= 360) this.angle -= 360;
         }
+
+        this.checkPositionEvents(); // Guarda gli eventi legati alla posizione del giocatore
+    }
+
+    checkPositionEvents() {
+        const col = Math.floor(this.x / globals.tileSize);
+        const row = Math.floor(this.y / globals.tileSize);
+
+        // Esempio: entra in una stanza segreta
+        if (row > 30 && !this.enteredDungeon) {
+            globals.maps.map[30][22] = [1,11];
+            globals.maps.map[30][23] = [1,11];
+            globals.maps.map[30][24] = [1,11];
+            mapToWalls("map");
+            globals.floorColor = "rgb(0,0,0)"
+            globals.ceilingColor = "rgb(0,0,0)"
+            this.enteredDungeon = true;
+        }
     }
 
     interact() {
@@ -105,11 +126,22 @@ class Player {
         const interactDistance = globals.tileSize;
         const interactX = this.x + interactDistance * Math.cos(this.angle * Math.PI / 180);
         const interactY = this.y + interactDistance * Math.sin(this.angle * Math.PI / 180);
-        // Controlla se c'è un oggetto interagibile in quella posizione
+
+        // Controlla se c'è un'entità interagibile in quella posizione
         for (let entity of globals.entities) {
-            if (interactX === entity.x && interactY === entity.y && entity.interactable) {
+            if (interactX === entity.x && interactY === entity.y && entity.interactable) { // Interazione con NPC
                 if (entity instanceof Npc && !this.interactingWithNpc) {
                     this.enterInteract(entity);
+
+                    switch(entity.name) {
+                        case "dungeon_keeper":
+                            globals.maps.map[30][22] = [0,0];
+                            globals.maps.map[30][23] = [0,0];
+                            globals.maps.map[30][24] = [0,0];
+                            mapToWalls("map");
+                            break;
+                    }
+
                 }
 
                 if (entity instanceof GameObject) { 
@@ -322,10 +354,10 @@ function isWallAt(x, y) {
     const row = Math.floor(y / globals.tileSize);
     
     // Controlla che la riga e la colonna esistano
-    if (!globals.maps.map1[row] || !globals.maps.map1[row][col]) return false;
+    if (!globals.maps.map[row] || !globals.maps.map[row][col]) return false;
     
-    const [tipo, texture] = globals.maps.map1[row][col]; // destruttura la tupla
-    return tipo === 1 || tipo === -1; // vero se è un muro
+    const [type, texture] = globals.maps.map[row][col]; // destruttura la tupla
+    return type === 1 || texture === 99; // vero se è un muro
 }
 
 

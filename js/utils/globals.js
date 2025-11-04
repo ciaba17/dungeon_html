@@ -33,6 +33,8 @@ export const globals = {
 
     combatInputLocked: false,
     
+    floorColor: "rgba(101, 242, 0, 0.97)",
+    ceilingColor: "rgba(0, 202, 242, 1)"
 };
 
 
