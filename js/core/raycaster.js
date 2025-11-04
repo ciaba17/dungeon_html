@@ -5,7 +5,7 @@ import { globals } from "../utils/globals.js";
 export let rays = [];
 export let wallDistances = []; // Distanze dei muri colpiti dai raggi per ordine di rendering
 
-const MAX_DISTANCE = globals.tileSize * 50; // Distanza massima di lancio del raggio
+const MAX_DISTANCE = globals.tileSize * 500; // Distanza massima di lancio del raggio
 
 
 

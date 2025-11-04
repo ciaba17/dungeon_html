@@ -23,7 +23,7 @@ function drawWalls3D(ctx) {
 
     rays.forEach((ray, i) => {
         // La texture viene presa direttamente dal muro colpito
-        const texture = ray.hitWall ? ray.hitWall.texture : textures.errorTexture;
+        const texture = ray.hitWall ? ray.hitWall.texture : textures.blankTexture;
         ;
 
         // Posizione della slice sulla texture
@@ -43,7 +43,7 @@ function drawWalls3D(ctx) {
 
     globals.wallSlices.forEach((slice, i) => {
         const top = globals.SCREEN_HEIGHT / 2 - slice.height / 2;
-        ctx.globalAlpha = Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7));
+        //ctx.globalAlpha = Math.exp(-slice.distance / (globals.VIEW_DISTANCE * 0.7));
         ctx.drawImage(
             slice.texture,
             slice.textureX, 0, 1, slice.texture.height,
@@ -51,7 +51,7 @@ function drawWalls3D(ctx) {
         );
     });
 
-    ctx.globalAlpha = 1;
+    //ctx.globalAlpha = 1;
 }
 
 

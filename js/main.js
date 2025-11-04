@@ -2,6 +2,7 @@
 import { globals } from './utils/globals.js';
 import { inputHandler } from './core/input.js';
 import { mapToWalls } from './game/objects.js';
+import { mapToEntities } from './game/enemies.js';
 import { player } from './game/player.js';
 import { raycast, createRays } from './core/raycaster.js';
 import { contexts, render } from './core/renderer.js';
@@ -12,14 +13,13 @@ import { combat } from './game/combat.js';
 
 // ===== INIZIALIZZAZIONE DEL GIOCO =====
 async function initGame() {
-    console.log("Inizio il gioco");
-
     // --- Caricamento risorse ---
     await loadDialogues();
     await loadMaps();
 
     // --- Setup iniziale ---
     mapToWalls("map1");
+    mapToEntities("map1");
     initCanvasContexts();
     createRays();
     createNodeMap();

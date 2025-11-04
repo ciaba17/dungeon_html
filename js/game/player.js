@@ -9,8 +9,8 @@ const ROTATION_SPEED = 180;             // gradi al secondo
 
 class Player {
     constructor(x, y, angle) {
-        this.x = x * globals.tileSize - globals.tileSize / 2;
-        this.y = y * globals.tileSize - globals.tileSize / 2;
+        this.x = (x + 1) * globals.tileSize - globals.tileSize / 2;
+        this.y = (y + 1) * globals.tileSize - globals.tileSize / 2;
         this.angle = angle; // in gradi
 
         // Aggiunge al gioco nome e classe player scelti in precedenza
@@ -325,10 +325,10 @@ function isWallAt(x, y) {
     if (!globals.maps.map1[row] || !globals.maps.map1[row][col]) return false;
     
     const [tipo, texture] = globals.maps.map1[row][col]; // destruttura la tupla
-    return tipo === 1; // vero se è un muro
+    return tipo === 1 || tipo === 2; // vero se è un muro
 }
 
 
 
 
-export const player = new Player(8, 7, 0);
+export const player = new Player(23, 25, 0);

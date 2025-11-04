@@ -39,11 +39,8 @@ export const globals = {
 
 // Crea e carica tutte le textures
 export const textures = {
-    wallTexture: new Image(),
     blankTexture: new Image(),
-    errorTexture: new Image(),
-    monster: new Image(),
-    key: new Image(),
+    wallTexture: new Image(),
     outside1_1: new Image(),
     outside1_2: new Image(),
     outside1_3: new Image(),
@@ -53,6 +50,10 @@ export const textures = {
     outside3_1: new Image(),
     outside3_2: new Image(),
     outside3_3: new Image(),
+    gate: new Image(),
+    errorTexture: new Image(),
+    monster: new Image(),
+    key: new Image(),
 };
 
 for (let key in textures) {

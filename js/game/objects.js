@@ -15,15 +15,28 @@ class Wall {
     }
 
     setTexture(textureId) {
-        switch(textureId) {
-            case 0:
-                this.texture = textures.blankTexture;
-                break;
-            case 1:
-                this.texture = textures.wallTexture;
-                break;
-        }
+        const textureList = [
+            textures.blankTexture,// 0
+            textures.wallTexture, // 1
+            textures.outside1_1, // 2
+            textures.outside1_2, // 3
+            textures.outside1_3, // 4
+            textures.outside2_1, // 5
+            textures.outside2_2, // 6
+            textures.outside2_3, // 7
+            textures.outside3_1, // 8
+            textures.outside3_2, // 9
+            textures.outside3_3, // 10
+            textures.gate, // 11
+            textures.errorTexture, // 19
+            textures.errorTexture, // 20
+            textures.errorTexture, // 21
+
+        ];
+
+        this.texture = textureList[textureId] || textures.errorTexture; // fallback
     }
+
 
     draw2D(ctx) {
         ctx.fillStyle = "white";
@@ -166,6 +179,8 @@ export class GameObject extends Entity {
         }
     }
 }
+
+
 
 
 export class Npc extends Entity {
