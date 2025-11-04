@@ -249,105 +249,49 @@ function findPath(startNode, targetNode) {
 
 
 
-
 export function mapToEntities(id) {
-    // Definizione dei tipi di entità
     const ENTITY_TYPES = {
-        1: {
-            class: Npc,
-            defaults: { x: 0, y: 0, z: 0, scale: 0.5, name: "dungeon_keeper", texture: textures.errorTexture, dialogueId: "dungeon_keeper_entrance" }
-        },
-        2: {
-            class: Enemy,
-            defaults: { x: 0, y: 0, z: 0, scale: 1, name: "Skeleton", texture: textures.monster, hp: 60, baseDamage: 10 }
-        },
-        3: {
-            class: Enemy,
-            defaults: { x: 0, y: 0, z: 0, scale: 0.5, name: "Rat", texture: textures.monster, hp: 15, baseDamage: 3 }
-        },
-        4: {
-            class: GameObject,
-            defaults: { x: 0, y: 0, z: 0, scale: 0.5, name: "Key1", texture: textures.key, dialogueId: "", interactable: true }
-        },
-        5: {
-            class: GameObject,
-            defaults: { x: 0, y: 0, z: 0, scale: 0.5, name: "Key2", texture: textures.key, dialogueId: "", interactable: true }
-        },
-        6: {
-            class: Entity,
-            defaults: { x: 0, y: 0, z: 0, scale: 1, name: "Tree", texture: textures.errorTexture, interactable: false }
-        },
-        7: {
-            class: Npc,
-            defaults: { x: 0, y: 0, z: 0, scale: 0.5, name: "HoodedMan", texture: textures.errorTexture, dialogueId: "hooded_man_dialogue" }
-        },
-
-        // Proposte extra per l’atmosfera dark fantasy
-        8: {
-            class: Enemy,
-            defaults: { x: 0, y: 0, z: 0, scale: 1, name: "Zombie", texture: textures.monster, hp: 50, baseDamage: 8 }
-        },
-        9: {
-            class: Enemy,
-            defaults: { x: 0, y: 0, z: 0, scale: 1, name: "Goblin", texture: textures.monster, hp: 30, baseDamage: 6 }
-        },
-        10: {
-            class: GameObject,
-            defaults: { x: 0, y: 0, z: 0, scale: 0.5, name: "AncientScroll", texture: textures.key, dialogueId: "", interactable: true }
-        },
-        11: {
-            class: Entity,
-            defaults: { x: 0, y: 0, z: 0, scale: 1, name: "StoneStatue", texture: textures.errorTexture, interactable: false }
-        },
-        12: {
-            class: Enemy,
-            defaults: { x: 0, y: 0, z: 0, scale: 1, name: "DarkKnight", texture: textures.monster, hp: 120, baseDamage: 20 }
-        }
+        1: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"dungeon_keeper", texture:textures.errorTexture, dialogueId:"dungeon_keeper_entrance" }},
+        2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Skeleton", texture:textures.monster, hp:60, baseDamage:10 }},
+        3: { class: Enemy, defaults: { x:0, y:0, z:0, scale:0.5, name:"Rat", texture:textures.monster, hp:15, baseDamage:3 }},
+        4: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key1", texture:textures.key, dialogueId:"", interactable:true }},
+        5: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key2", texture:textures.key, dialogueId:"", interactable:true }},
+        6: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"Tree", texture:textures.errorTexture, interactable:false }},
+        7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"HoodedMan", texture:textures.errorTexture, dialogueId:"hooded_man_dialogue" }},
+        8: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Zombie", texture:textures.monster, hp:50, baseDamage:8 }},
+        9: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Goblin", texture:textures.monster, hp:30, baseDamage:6 }},
+        10: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"AncientScroll", texture:textures.key, dialogueId:"", interactable:true }},
+        11: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"StoneStatue", texture:textures.errorTexture, interactable:false }},
+        12: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"DarkKnight", texture:textures.monster, hp:120, baseDamage:20 }}
     };
-
-
-    // --- Logica di Mappatura ---
 
     const map = globals.maps[id];
     globals.entities = globals.entities || [];
 
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[i].length; j++) {
-            const [tipo, extra] = map[i][j];
+            const [tipoBase, tipoExtra] = map[i][j];
 
-            // 🌟 Aggiunto controllo esplicito per la tupla [0, 0] come "vuoto totale" (né entità, né muro).
-            if (tipo === 0 && (extra === 0 || extra === undefined || Object.keys(extra).length === 0)) {
-                continue; 
-            }
-            
-            // Il tuo codice originale usava solo "if (tipo === 0) continue;", 
-            // che è sufficiente se "tipo" 0 è *sempre* vuoto.
-            // Ho lasciato il controllo sul "tipo === 0" di sopra come più specifico per "[0, 0]".
+            if (tipoBase !== 0) continue; // ignora completamente se tipoBase diverso da 0
+            if (tipoExtra === 0 || tipoExtra === null || tipoExtra === undefined) continue; // tile vuoto
 
-            const entityConfig = ENTITY_TYPES[tipo];
+            const entityConfig = ENTITY_TYPES[tipoExtra];
             if (!entityConfig) continue;
 
             const EntityClass = entityConfig.class;
-            const params = { ...entityConfig.defaults, ...extra }; // unisce default ed extra
+            const params = { ...entityConfig.defaults };
 
-            const entity = new EntityClass(
-                j, i,
-                params.z || 0,
-                params.scale, 
-                params.name, 
-                params.texture, 
-                params.dialogueId
-            );
+            let entity;
+            if (EntityClass === Enemy) {
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.texture, params.hp || 50, params.baseDamage || 10);
+            } else if (EntityClass === Npc) {
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.texture, params.dialogueId || "");
+            } else {
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.texture);
+            }
 
             globals.entities.push(entity);
         }
     }
 }
-
-
-globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.monster, true));
-globals.entities.push(new Enemy(6, 6, 0, 1, 'Skeleton', textures.monster, 60, 10));
-globals.entities.push(new Npc(10, 12, 0, 0.5, "npc1", textures.errorTexture, "dungeon_keeper_entrance"));
-globals.entities.push(new GameObject(7, 12, 0, 0.5, "key", textures.key,"object_collected", true));
-
 

@@ -77,11 +77,18 @@ export class Entity {
         this.onScreen = true;
     }
 
+    updateDistance() {
+        const dX = this.x - player.x;
+        const dY = this.y - player.y;
+        this.distance = Math.sqrt(dX * dX + dY * dY);
+    }
+
     draw3D(ctx) {
         const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2) / Math.tan((globals.fov * Math.PI / 180) / 2);
 
         let dX = this.x - player.x;
         let dY = this.y - player.y;
+
 
         const dirX = Math.cos(player.angle * Math.PI / 180);
         const dirY = Math.sin(player.angle * Math.PI / 180);

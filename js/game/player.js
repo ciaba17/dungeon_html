@@ -325,7 +325,7 @@ function isWallAt(x, y) {
     if (!globals.maps.map1[row] || !globals.maps.map1[row][col]) return false;
     
     const [tipo, texture] = globals.maps.map1[row][col]; // destruttura la tupla
-    return tipo === 1 || tipo === 2; // vero se è un muro
+    return tipo === 1 || tipo === -1; // vero se è un muro
 }
 
 

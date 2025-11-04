@@ -86,8 +86,13 @@ export function render() {
         
         // Disegna la vista 3D
         drawWalls3D(gameCtx);
-        globals.entities.sort((a, b) => a.distance - b.distance); // Ordina per distanza le entità
+        globals.entities.forEach(entity => {entity.updateDistance()})
+        globals.entities.sort((a, b) => b.distance - a.distance); // Dalla più lontana alla più vicina
         globals.entities.forEach(entity => {entity.draw3D(gameCtx)})
+
+        console.log("player: " + player.x, player.y)
+        globals.entities.forEach(entity => {console.log("entity: " + entity.x, entity.y)})
+
         
     } else if (globals.gameState === "combat") {
         renderCombat(gameCtx);

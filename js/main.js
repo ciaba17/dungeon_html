@@ -19,10 +19,10 @@ async function initGame() {
 
     // --- Setup iniziale ---
     mapToWalls("map1");
+    createNodeMap();
     mapToEntities("map1");
     initCanvasContexts();
     createRays();
-    createNodeMap();
 
     // --- Scaling ---
     setupScaling();
