@@ -7,11 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedClass = null;
 
     const classData = {
-        wizard: { name: "Wizard", description: "Maestro di magie arcane e incantesimi potenti" },
-        paladin: { name: "Paladin", description: "Guerriero sacro con alto potere difensivo e attacchi pesanti" },
-        guardian: { name: "Guardian", description: "Pesante e corazzato, molto forte nei combattimenti corpo a corpo" },
-        wanderer: { name: "Wanderer", description: "Esploratore libero, bilanciato tra attacco e mobilità" }
+        wizard: { 
+            name: "Wizard", 
+            description: "Master of arcane arts, capable of casting powerful spells and bending magic to their will." 
+        },
+        paladin: { 
+            name: "Paladin", 
+            description: "A holy warrior blessed with divine strength, excelling in defense and delivering heavy, righteous blows." 
+        },
+        guardian: { 
+            name: "Guardian", 
+            description: "Heavily armored and unyielding, a frontline fighter built to endure and dominate in close combat." 
+        },
+        wanderer: { 
+            name: "Wanderer", 
+            description: "A free-spirited explorer, balanced between offense, agility, and adaptability in any situation." 
+        }
     };
+
 
     buttons.forEach(btn => {
         const infoBox = btn.nextElementSibling;

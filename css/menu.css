@@ -41,61 +41,8 @@
     transform: scale(1.05);
 }
 
-/* ===== Finestra Comandi ===== */
-.commands-window {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 70%;
-    max-width: 700px;
-    max-height: 75%;
-    background: rgba(0, 0, 0);
-    border: 0.5vmin double #fff;
-    box-shadow: 0 0 20px #000;
-    padding: 2vmin;
-    overflow-y: auto;
-    color: #fff;
-    z-index: 100;
-}
 
-.commands-window h2 {
-    text-align: center;
-    margin-bottom: 1.5vmin;
-    font-size: 5vmin;
-    text-shadow: 0 0 8px #fff;
-}
-
-.commands-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2vmin;
-    align-items: center;
-}
-
-.commands-content img {
-    width: 90%;
-    border: 0.3vmin solid #fff;
-}
-
-.close-btn {
-    position: absolute;
-    top: 1vmin;
-    right: 1vmin;
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 4vmin;
-    cursor: pointer;
-    text-shadow: 0 0 5px #fff;
-}
-
-.hidden {
-    display: none;
-}
-
-
-/* ===== Finestre Generali (Comandi + Opzioni) ===== */
+/* ===== Finestre Generali ===== */
 .menu-window {
     position: absolute;
     top: 10%;
@@ -126,6 +73,12 @@
     flex-direction: column;
     gap: 2vmin;
     align-items: center;
+}
+
+.commands-img {
+    width: 100%;
+    border-bottom: 10vmin solid rgb(0, 0, 0, 0);
+    border-top: 10vmin solid rgb(0, 0, 0, 0);
 }
 
 /* Opzioni */
@@ -172,12 +125,6 @@
     display: none;
 }
 
-/* Animazione d’apertura */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, -5%) scale(0.95); }
-    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
-}
-
 /* ======== Crediti ======== */
 .credits-content {
     display: flex;
@@ -188,13 +135,13 @@
 }
 
 .credits-content h1 {
-    font-size: 24px;
+    font-size: 3.6vmin;
     margin-bottom: 10px;
     text-decoration: underline;
 }
 
 .credits-content h3 {
-    font-size: 18px;
+    font-size: 3vmin;
     font-weight: normal;
     margin: 0;
 }
@@ -204,5 +151,10 @@
 }
 
 #github-img {
-    width: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+#github-img img{
+    width: 15%;
 }

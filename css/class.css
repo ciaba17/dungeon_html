@@ -54,14 +54,13 @@
 
 .class-info {
     display: none;
-    width: 15vw;
+    width: 18vw;
     height: max-content;
     max-width: 90vw;
     margin-top: 0.8vmin;
     padding: 1vmin;
     font-size: 3vmin;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.85);
     box-sizing: border-box;
     text-align: center;
     font-family: "Courier New", monospace;
@@ -75,7 +74,9 @@
     pointer-events: none;
     white-space: normal;      /* consente l'andata a capo */
     word-break: normal;       /* evita di spezzare le parole */
-    overflow-wrap: normal;    /* idem, non forza il capo a metà parola */
+    overflow-wrap: normal;    /* non forza a capo a metà parola */
+    border: 0.1vmin solid rgba(255, 255, 255);
+    margin-top: 3vmin;
 }
 
 

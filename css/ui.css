@@ -355,9 +355,65 @@
     margin: 0.25vmin 0;
 }
 
-/* === HOVER EFFECT === */
+/* === HOVER EFFECT STATUS + LOG === */
 #status-block:hover,
 #log-block:hover {
     filter: brightness(4);
     transition: 0.25s ease;
 }
+
+
+
+/* === DEATH SCREEN === */
+#death-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.8vmin double #fff;
+    box-sizing: border-box;
+    color: #fff;
+    z-index: 9999;
+}
+
+.death-message {
+    text-align: center;
+    background-color: #000;
+    border: 0.8vmin double #fff;
+    padding: 4vmin 6vmin;
+    box-sizing: border-box;
+}
+
+.death-message h1 {
+    font-size: 6vmin;
+    margin-bottom: 2vmin;
+    text-transform: uppercase;
+}
+
+#death-text {
+    font-size: 1.5rem;            /* dimensione ben visibile */
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.6); /* bagliore rosso */
+    margin-top: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+#retry-btn {
+    font-size: 3.5vmin;
+    color: #fff;
+    background-color: #000;
+    border: 0.4vmin double #fff;
+    padding: 1vmin 3vmin;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+#retry-btn:hover {
+    filter: brightness(2);
+}
+

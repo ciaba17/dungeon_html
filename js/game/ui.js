@@ -1,4 +1,5 @@
 import { globals } from '../utils/globals.js';
+import { player } from './player.js';
 
 
 export function showDialogues(id) {
@@ -13,7 +14,6 @@ export function showDialogues(id) {
 
     let i = 0;
     let j = 0;
-    // 'interval' non è più una 'let', useremo direttamente 'globals.currentDialogueInterval'
 
     // ... (Qui va la tua logica 'randomChoiceKeys' che ti ho dato prima)
     // ... (per scegliere 'dialogue' in modo casuale o sequenziale)
@@ -58,6 +58,9 @@ export function showDialogues(id) {
             j = 0;
             // --- MODIFICA 4: Assegna all'intervallo GLOBALE ---
             globals.currentDialogueInterval = setInterval(textForward, INTERVAL_TIME);
+        } else { // Tutti i dialoghi sono finiti
+            if (player.interactingWithNpc) player.exitInteract(); // Disattiva interazione con NPC
+            if (id !== "blank_dialogue") showDialogues("blank_dialogue") // Se il testo prima non gia stato messo per resettare: resetta con dialogo vuoto
         }
     }
 

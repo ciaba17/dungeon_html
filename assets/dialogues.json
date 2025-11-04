@@ -2,6 +2,30 @@
     "blank_dialogue": [
         ""
     ],
+
+    "object_collected": [
+        "Object collected!"
+    ],
+
+    "dungeon_keeper_entrance": [
+        "Not many dare to reach this place...",
+        "The shadows here do not forgive the curious.",
+        "Yet I see your heart does not falter.",
+        "Hear this: what lies within is not meant for all.",
+        "Are you ready? Then let the gate open for you..."
+    ],
+
+    "death_messages": [
+        "Well... not everyone gets to be the main character.",
+        "Game Over? Yeah, I've heard of it.",
+        "Press Retry and we'll both pretend this never happened.",
+        "Don't worry, it was just the tutorial...no it isn't.",
+        "Statistically, this was bound to happen.",
+        "Interesting strategy. Horrible results.", 
+        "It's over. But hey, at least you looked cool dying.",
+        "Retry? Or just... go outside maybe?",
+        "A brave effort. A stupid one, but brave."
+    ],
     
     "sword_player": [
         "Sollevi la lama e affondi con ferocia.",

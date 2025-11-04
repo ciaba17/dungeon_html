@@ -1,7 +1,8 @@
 import { inputState } from "../core/input.js";
-import { walls } from "./objects.js";
+import { Npc, walls, GameObject } from "./objects.js";
 import { globals } from "../utils/globals.js";
 import { showDialogues } from "./ui.js";
+import { showElement, hideElement } from "../utils/cssHandler.js";
 
 const SPEED = 3 * globals.tileSize;     // unità al secondo
 const ROTATION_SPEED = 180;             // gradi al secondo
@@ -18,11 +19,12 @@ class Player {
         this.classType = localStorage.getItem("playerClass");
         this.initClassType(this.classType);
         this.baseDamage = 20;
+        this.inventory;
 
 
         // Movimento attivo
         this.moving = false;
-        this.interacting = false;
+        this.interactingWithNpc = false;
         this.rotating = false;
 
         this.targetX = this.x;
@@ -105,14 +107,53 @@ class Player {
         const interactY = this.y + interactDistance * Math.sin(this.angle * Math.PI / 180);
         // Controlla se c'è un oggetto interagibile in quella posizione
         for (let entity of globals.entities) {
-            if (interactX === entity.x && interactY === entity.y && entity.interactable && !this.interacting) {
-                if (entity.interactable) {
-                    entity.interact();
-                    this.interacting = true
+            if (interactX === entity.x && interactY === entity.y && entity.interactable) {
+                if (entity instanceof Npc && !this.interactingWithNpc) {
+                    this.enterInteract(entity);
+                }
+
+                if (entity instanceof GameObject) { 
+                    // Controlla se collezionare l'oggetto o se interagirci
+                    if (entity.collectable) {
+                        this.enterInteract(entity, true);
+                        entity.collect();
+                    }
+                    else entity.interact();
                 }
             }
         }
     }
+
+    enterInteract(entity, isObject = false) {
+        this.interactingWithNpc = true;
+
+        const textboxContent = document.getElementById("textbox-content");
+        const headContainer = document.getElementById("player-head");
+
+        // Mostra il textbox e nasconde le stats
+        hideElement(document.getElementById("stats-overview"));
+        showElement(textboxContent);
+
+        // Se è un NPC, testo allineato a sinistra e mostra immagine volto
+        if (!isObject && entity.headImage) {
+            textboxContent.style.textAlign = "left";
+            headContainer.style.backgroundImage = `url("${entity.headImage.src}")`;
+        }
+
+        showDialogues(entity.dialogueId);
+    }
+
+    // Uscita dall'interazione (NPC o oggetto)
+    exitInteract() {
+        this.interactingWithNpc = false;
+        const textboxContent = document.getElementById("textbox-content");
+        const headContainer = document.getElementById("player-head");
+
+        hideElement(textboxContent);
+        showElement(document.getElementById("stats-overview"));
+        headContainer.style.backgroundImage = `url("${this.frontImage.src}")`;
+    }
+
 
     
     moveIfFree(angleOffset) {
@@ -120,7 +161,7 @@ class Player {
         const newX = this.x + globals.tileSize * Math.cos(rad);
         const newY = this.y + globals.tileSize * Math.sin(rad);
         
-        if (!isWallAt(newX, newY) && !this.interacting) {
+        if (!isWallAt(newX, newY) && !this.interactingWithNpc) {
             this.targetX = newX;
             this.targetY = newY;
             this.moving = true;
@@ -252,13 +293,21 @@ class Player {
         if (this.hp <= 0) this.die();
     }
 
-    die() {
-        const deathScreen = document.getElementById("death-screen");
-        deathScreen.style.display = "flex";
+    die() { // Game over
+        showElement(document.getElementById("death-screen"));
         document.getElementById("retry-btn").onclick = () => { location.reload(); };
+
+        const deathText = document.getElementById("death-text");
+
+        // seleziona una frase casuale tra quelle nei dialoghi
+        const messages = globals.dialogues.death_messages;
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+        deathText.innerText = randomMessage;
+
         globals.gameState = "gameover";
     }
-    
+
     draw2D(context) {
         context.fillStyle = "red";
         context.beginPath();
@@ -282,6 +331,4 @@ function isWallAt(x, y) {
 
 
 
-
-
-    export const player = new Player(8, 7, 0);
+export const player = new Player(8, 7, 0);

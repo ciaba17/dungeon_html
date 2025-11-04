@@ -1,4 +1,4 @@
-import { Entity, Npc } from './objects.js';
+import { Entity, Npc, GameObject } from './objects.js';
 import { globals, textures } from '../utils/globals.js';
 import { createTimer } from '../utils/timer.js';
 import { enterCombat, exitCombat } from './combat.js';
@@ -21,7 +21,7 @@ class Node {
 }
 
 export class Enemy extends Entity {
-    constructor(x, y, z, scale, name, texture, hp) {
+    constructor(x, y, z, scale, name, texture, hp, speed) {
         super(x, y, z, scale, name, texture, false); // Passa i valori al costruttore originale di entity
         this.moving = false;
         this.timer;
@@ -31,6 +31,7 @@ export class Enemy extends Entity {
         this.hpLimit = hp;
         this.updateHPBar();
         this.baseDamage = 20;
+        this.speed = speed;
     }
 
     followPlayer(player) {
@@ -81,7 +82,7 @@ export class Enemy extends Entity {
                 dirY /= len;
             }
 
-            const speed = 35 * globals.deltaTime;
+            let speed = this.speed * globals.deltaTime;
 
             // Movimento separato per asse X e Y (scivola lungo il muro)
             let newX = this.x + dirX * speed;
@@ -251,11 +252,9 @@ function findPath(startNode, targetNode) {
 
 
 
-
-
-
-globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.test, true));
-globals.entities.push(new Enemy(6, 6, 0, 1, 'Skeleton', textures.test, 60, true));
-globals.entities.push(new Npc(10, 13, 0, 0.5, "npc1", textures.errorTexture, "sword_player"));
+globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.monster, true));
+globals.entities.push(new Enemy(6, 6, 0, 1, 'Skeleton', textures.monster, 60, 10));
+globals.entities.push(new Npc(10, 12, 0, 0.5, "npc1", textures.errorTexture, "dungeon_keeper_entrance"));
+globals.entities.push(new GameObject(7, 12, 0, 0.5, "key", textures.key,"object_collected", true));
 
 

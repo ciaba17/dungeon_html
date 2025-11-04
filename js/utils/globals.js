@@ -36,15 +36,25 @@ export const globals = {
 };
 
 
+
+// Crea e carica tutte le textures
 export const textures = {
     wallTexture: new Image(),
     blankTexture: new Image(),
     errorTexture: new Image(),
-    test: new Image(),
-    
-}
+    monster: new Image(),
+    key: new Image(),
+    outside1_1: new Image(),
+    outside1_2: new Image(),
+    outside1_3: new Image(),
+    outside2_1: new Image(),
+    outside2_2: new Image(),
+    outside2_3: new Image(),
+    outside3_1: new Image(),
+    outside3_2: new Image(),
+    outside3_3: new Image(),
+};
 
-textures.wallTexture.src = "assets/images/wallTexture.png";
-textures.blankTexture.src = "assets/images/blankTexture.png";
-textures.errorTexture.src = "assets/images/errorTexture.png";
-textures.test.src = "assets/images/monster.png";
+for (let key in textures) {
+    textures[key].src = "assets/images/" + key + ".png";
+}

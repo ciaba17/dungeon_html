@@ -127,28 +127,56 @@ export class Entity {
     }
 }
 
+export class GameObject extends Entity {
+    constructor(x, y, z, scale, name, texture, dialogueId, collectable = false) {
+        // Gli oggetti sono sempre interactable
+        super(x, y, z, scale, name, texture, true);
+        this.collectable = collectable
+        if (this.collectable) this.collected = false; // Crea il flag collected sono se è collezionabile
+        this.dialogueId = dialogueId;
+    }
+
+    // Funzione per "raccogliere" l'oggetto
+    collect() {
+        this.collected = true;
+        this.onScreen = false; // sparisce dallo schermo
+
+        // Mostra dialogo quando raccolto
+        showDialogues(this.dialogueId);
+
+        // Eventuale logica aggiuntiva, tipo aggiungere all'inventario
+        if (!player.inventory) player.inventory = [];
+        player.inventory.push(this.name);
+    }
+
+    interact() {
+    }
+
+    // Per non disegnare oggetti già raccolti
+    draw2D(ctx) {
+        if (!this.collected) {
+            super.draw2D(ctx);
+        }
+    }
+
+    // Per non disegnare oggetti già raccolti
+    draw3D(ctx) {
+        if (!this.collected) {
+            super.draw3D(ctx);
+        }
+    }
+}
+
 
 export class Npc extends Entity {
     constructor(x, y, z, scale, name, texture, dialogueId){
         super(x, y, z, scale, name, texture, true); // Passa i valori al costruttore originale di entity
+
         this.dialogueId = dialogueId;
 
         this.headImage = new Image()
         this.headImage.src = "assets/images/" + this.name + "_head.png"
     }
 
-    interact() {
-        const textboxContent = document.getElementById("textbox-content");
-        textboxContent.style.textAlign =  "left";
-        hideElement(document.getElementById("stats-overview"))
-        showElement(textboxContent);
-        showDialogues(this.dialogueId);
-
-        
-        
-        // Imposta immagine del volto nel DOM
-        const playerHeadContainer = document.getElementById("player-head");
-        playerHeadContainer.style.backgroundImage = 'url("' + this.headImage.src + '")';
-    }
 }
 
