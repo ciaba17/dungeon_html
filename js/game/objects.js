@@ -1,6 +1,7 @@
 import { globals, textures } from '../utils/globals.js';
 import { player } from './player.js';
 import { showDialogues } from './ui.js';
+import { showElement, hideElement } from '../utils/cssHandler.js';
 
 export const walls = [];
 
@@ -137,7 +138,13 @@ export class Npc extends Entity {
     }
 
     interact() {
+        const textboxContent = document.getElementById("textbox-content");
+        textboxContent.style.textAlign =  "left";
+        hideElement(document.getElementById("stats-overview"))
+        showElement(textboxContent);
         showDialogues(this.dialogueId);
+
+        
         
         // Imposta immagine del volto nel DOM
         const playerHeadContainer = document.getElementById("player-head");

@@ -126,8 +126,8 @@ export function enterCombat(enemy) {
     showElement(document.getElementById("combat-stats"));
 
     textboxContent.style.textAlign = "center";
-    const combatTextContainer = document.getElementById("map-container");
-    combatTextContainer.appendChild(textboxContent);
+    const textContainer = document.getElementById("map-container");
+    textContainer.appendChild(textboxContent);
 }
 
 export function exitCombat() {
