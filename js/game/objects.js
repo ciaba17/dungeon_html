@@ -24,7 +24,7 @@ class Wall {
         }
     }
 
-    draw(ctx) {
+    draw2D(ctx) {
         ctx.fillStyle = "white";
         ctx.fillRect(this.x, this.y, globals.tileSize, globals.tileSize);
     }
@@ -127,7 +127,7 @@ export class Entity {
 }
 
 
-class Npc extends Entity {
+export class Npc extends Entity {
     constructor(x, y, z, scale, name, texture, dialogueId){
         super(x, y, z, scale, name, texture, true); // Passa i valori al costruttore originale di entity
         this.dialogueId = dialogueId;
@@ -144,3 +144,4 @@ class Npc extends Entity {
         playerHeadContainer.style.backgroundImage = 'url("' + this.headImage.src + '")';
     }
 }
+

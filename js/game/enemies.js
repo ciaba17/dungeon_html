@@ -1,4 +1,4 @@
-import { Entity } from './objects.js';
+import { Entity, Npc } from './objects.js';
 import { globals, textures } from '../utils/globals.js';
 import { createTimer } from '../utils/timer.js';
 import { enterCombat, exitCombat } from './combat.js';
@@ -256,5 +256,6 @@ function findPath(startNode, targetNode) {
 
 globals.entities.push(new Entity(10, 10, 0, 0.2, "oggettoTest", textures.test, true));
 globals.entities.push(new Enemy(6, 6, 0, 1, 'Skeleton', textures.test, 60, true));
+globals.entities.push(new Npc(10, 13, 0, 0.5, "npc1", textures.errorTexture, "sword_player"));
 
 

@@ -72,7 +72,7 @@ document.addEventListener('keydown', event => {
         case 'x':
             inputState.movement.turnRight = true;
             break;
-        case ' ':
+        case ' ': // Spacebar
             player.interact();
             break;
     }

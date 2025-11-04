@@ -14,7 +14,7 @@ const distanceProjectionPlane = (globals.SCREEN_WIDTH / 2) / Math.tan((globals.f
 
 
 function drawWalls2D(ctx, walls) { // Disegna tutti i muri
-    walls.forEach(wall => wall.draw(ctx));
+    walls.forEach(wall => wall.draw2D(ctx));
 }
 
 function drawWalls3D(ctx) {
@@ -81,7 +81,6 @@ export function render() {
         player.draw2D(mapCtx);
         rays.forEach(ray => ray.draw(mapCtx));
         globals.entities.forEach(entity => {entity.draw2D(mapCtx)});
-        globals.entities.forEach(obj => {obj.draw2D(mapCtx)})
 
         mapCtx.restore(); // Ripristina lo stato originale
         
