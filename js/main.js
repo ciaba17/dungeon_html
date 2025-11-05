@@ -177,7 +177,7 @@ function updateGame() {
             updateExploration();
             break;
         case "combat":      // Stato di combattimento a turni o in tempo reale
-            combat(globals.deltaTime);
+            combat();
             break;
         // Altri stati (es. "menu", "dialogue") verranno aggiunti qui
     }

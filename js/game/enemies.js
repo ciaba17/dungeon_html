@@ -357,7 +357,7 @@ export function mapToEntities(id) {
         2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"skeleton", hp:60, baseDamage:10, speed:35 }},
         3: { class: Enemy, defaults: { x:0, y:0, z:0, scale:0.5, name:"rat", hp:15, baseDamage:5, speed:100 }},
         4: { class: GameObject, defaults: { x:0, y:-15, z:0, scale:0.2, name:"key1", dialogueId:"object_collected", collectable:true }},
-        5: { class: GameObject, defaults: { x:0, y:-15, z:0, scale:0.2, name:"key2", dialogueId:"object_coolected", collectable:true }},
+        5: { class: GameObject, defaults: { x:0, y:-15, z:0, scale:0.2, name:"key2", dialogueId:"object_collected", collectable:true }},
         6: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"tree", interactable:false }},
         7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"hooded_man", dialogueId:"hooded_man" }},
         // Ipotetici entità future

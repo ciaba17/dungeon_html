@@ -251,8 +251,16 @@ export class GameObject extends Entity {
         showDialogues(this.dialogueId);
 
         // Aggiunge all'inventario del player.
-        if (!player.inventory) player.inventory = [];
         player.inventory.push(this.name);
+        const inventoryUI = document.getElementById("inventory-slots");
+        for (let slot of inventoryUI.getElementsByClassName("inventory-slot")) {
+            if (!slot.dataset.filled) {
+                slot.style.backgroundImage = `url('assets/images/${this.name}.png')`;
+                slot.dataset.filled = "true";
+                break;
+            }
+        }
+        
     }
 
     // placeholder per interazioni complesse (qui è gestito dal collect se collectable)

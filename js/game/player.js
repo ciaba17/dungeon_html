@@ -42,15 +42,14 @@ class Player {
 
         // --- Statistiche e inventario ---
         this.baseDamage = 20;
-        this.inventory; // (Questa riga è ridondante ma mantenuta per fedeltà all'originale)
         this.inventory = [];
 
-        // --- Stato movimento (per interpolazione) ---
+        // --- Stato movimento ---
         this.moving = false;
         this.rotating = false;
-        this.interactingWithNpc = false;
+        this.interacting = false;
 
-        // Obiettivi (target) per il movimento interpolato
+        // Obiettivi (target) per il movimento
         this.targetX = this.x;
         this.targetY = this.y;
         this.targetAngle = this.angle;
@@ -173,9 +172,11 @@ class Player {
             this.enteredDungeon = true;
         }
 
-        // Fine demo (raccolta di due chiavi)
+        // Fine demo (raccolta delle due chiavi)
         if (this.inventory.includes("key1") && this.inventory.includes("key2")) {
-            showDialogues("demo_end");  // Mostra il dialogo di fine demo
+            if (!this.interacting) {
+                this.enterInteract(null, false, "demo_end") // Entra nell'interazione di fine demo
+            }
         }
     }
 
@@ -195,10 +196,10 @@ class Player {
             if (interactX === entity.x && interactY === entity.y && entity.interactable) { 
                 
                 // --- Caso 1: interazione con NPC ---
-                if (entity instanceof Npc && !this.interactingWithNpc) {
+                if (entity instanceof Npc && !this.interacting) {
                     this.enterInteract(entity); // Avvia il dialogo
 
-                    // Esempio di evento specifico per NPC (apertura cancello)
+                    // Controlla se il dialogo con l'NPC è colelgato ad eventi
                     switch(entity.name) {
                         case "dungeon_keeper":
                             globals.maps.map[30][22] = [0,0];
@@ -227,8 +228,8 @@ class Player {
      * @param {Entity} entity L'entità con cui si interagisce
      * @param {boolean} isObject True se l'entità è un oggetto
      */
-    enterInteract(entity, isObject = false) {
-        this.interactingWithNpc = true; // Blocca il movimento
+    enterInteract(entity, isObject = false, standaloneDialogueId = null) {
+        this.interacting = true; // Blocca il movimento
 
         const textboxContent = document.getElementById("textbox-content");
         const headContainer = document.getElementById("player-head");
@@ -237,6 +238,12 @@ class Player {
         hideElement(document.getElementById("stats-overview"));
         showElement(textboxContent);
 
+        // Se si vuole chiamare un diangolo standalone (non connesso ad un'entità)
+        if (standaloneDialogueId) { 
+            showDialogues(standaloneDialogueId);
+            return;
+        }
+
         // Se è un NPC, mostra il suo volto e allinea il testo
         if (!isObject && entity.headImage) {
             textboxContent.style.textAlign = "left";
@@ -244,13 +251,14 @@ class Player {
         }
 
         showDialogues(entity.dialogueId);
+
     }
 
     /**
      * Termina l'interazione e ripristina l'interfaccia utente (UI)
      */
     exitInteract() {
-        this.interactingWithNpc = false; // Sblocca il movimento
+        this.interacting = false; // Sblocca il movimento
         const textboxContent = document.getElementById("textbox-content");
         const headContainer = document.getElementById("player-head");
 
@@ -277,7 +285,7 @@ class Player {
         const newY = this.y + globals.tileSize * Math.sin(rad);
         
         // Controlla collisione sulla tile target e se si è in interazione
-        if (!isWallAt(newX, newY) && !this.interactingWithNpc) {
+        if (!isWallAt(newX, newY) && !this.interacting) {
             this.targetX = newX;
             this.targetY = newY;
             this.moving = true; // Abilita l'interpolazione (gestita in update())
