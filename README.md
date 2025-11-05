@@ -51,13 +51,13 @@ movimento, interazioni, NPC, combattimenti e dialoghi, tutto senza engine estern
 
 <h2>👤 Autore</h2>
 
-<p>Progetto realizzato da <b>Cai</b>.</p>
+<p>Progetto realizzato da <b>Cai Dal Pino Gabriele</b> e da <b>Esterasi Michael</b>.</p>
 
 <hr>
 
 <h2>📜 Licenza</h2>
 
 <p>Questo progetto è rilasciato sotto licenza <b>MIT</b>.<br>
-Puoi modificarlo, studiarlo e riutilizzarlo liberamente, citando l’autore originale.</p>
+Puoi modificarlo, studiarlo e riutilizzarlo liberamente, citando gli autori originali.</p>
 
 </div>
