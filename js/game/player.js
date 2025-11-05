@@ -174,7 +174,7 @@ class Player {
         }
 
         if (this.inventory.includes("key1") && this.inventory.includes("key2")) {
-            // Fine demo
+            showDialogues("demo_end");
         }
     }
 

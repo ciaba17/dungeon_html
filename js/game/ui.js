@@ -96,17 +96,18 @@ export function showDialogues(id) {
                 player.exitInteract(); 
             }
             
-            // Resetta la textbox con un dialogo vuoto per pulizia (se non è già il reset)
-            if (id !== "blank_dialogue") {
-                showDialogues("blank_dialogue") 
-            }
-            
-            // Gestione della fine del gioco/demo
+            // Gestione della fine della demo
             if (id === "demo_end") { 
                 setTimeout(() => {
                     location.href = "index.html"; // Torna alla pagina principale
                 }, 5000); // 5 secondi
             }
+
+            // Resetta la textbox con un dialogo vuoto per pulizia (se non è già il reset)
+            if (id !== "blank_dialogue") {
+                showDialogues("blank_dialogue") 
+            }
+            
         }
     }
 
