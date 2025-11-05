@@ -242,7 +242,26 @@ function drawFPS(ctx) {
  * Event listener che attende il caricamento completo del DOM prima di avviare il gioco
  * Questo è il vero e proprio punto di inizio dell'applicazione
  */
-window.addEventListener("DOMContentLoaded", async () => {
-    await initGame();                // Prima: inizializzazione di tutte le risorse
-    requestAnimationFrame(gameloop); // Poi: avvio del ciclo di gioco
+window.addEventListener("DOMContentLoaded", () => {
+    // Mostra una schermata di avvio che richiede il click per iniziare (necessario per l'audio)
+    const overlay = document.createElement("div");
+    overlay.textContent = "Click to Start the Game";
+    Object.assign(overlay.style, {
+        position: "fixed",
+        inset: "0",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "black",
+        color: "white",
+        fontSize: "24px",
+        cursor: "pointer"
+    });
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", async () => { // Attende il click per iniziare
+        overlay.remove();                           // Togli la schermata
+        await initGame();                           // Avvia il gioco
+        requestAnimationFrame(gameloop);            // E parte tutto
+    });
 });
