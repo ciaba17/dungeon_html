@@ -354,12 +354,12 @@ export function mapToEntities(id) {
     // Definizione di tutti i tipi di entità che possono essere piazzate sulla mappa
     const ENTITY_TYPES = {
         1: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"dungeon_keeper", dialogueId:"dungeon_keeper" }},
-        2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"skeleton", hp:60, baseDamage:10, speed:35 }},
+        2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"skeleton", hp:60, baseDamage:30, speed:35 }},
         3: { class: Enemy, defaults: { x:0, y:0, z:0, scale:0.5, name:"rat", hp:15, baseDamage:5, speed:100 }},
         4: { class: GameObject, defaults: { x:0, y:-15, z:-10, scale:0.2, name:"key1", dialogueId:"object_collected", collectable:true }},
         5: { class: GameObject, defaults: { x:0, y:-15, z:-10, scale:0.2, name:"key2", dialogueId:"object_collected", collectable:true }},
         6: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"tree", interactable:false }},
-        7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"hooded_man", dialogueId:"hooded_man" }},
+        7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.55, name:"hooded_man", dialogueId:"hooded_man" }},
         8: { class: GameObject, defaults: { x:0, y:-15, z:-10, scale:0.2, name:"health_potion", dialogueId:"object_collected", collectable:true }},
         // Ipotetici entità future
         9: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Goblin", hp:30, baseDamage:6, speed:30 }},
