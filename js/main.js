@@ -50,6 +50,7 @@ async function initGame() {
     sounds.wind.play();
     sounds.birds.play();
 
+    // --- Caricamento delle Texture ---
     loadTextures();
 }
 

@@ -174,7 +174,7 @@ class Player {
         }
 
         if (this.inventory.includes("key1") && this.inventory.includes("key2")) {
-            // Fine demo
+            showDialogues("demo_end");
         }
     }
 
@@ -444,8 +444,8 @@ function isWallAt(x, y) {
     // Controlla che la riga e la colonna esistano
     if (!globals.maps.map[row] || !globals.maps.map[row][col]) return false;
     
-    const [type, texture] = globals.maps.map[row][col]; // destruttura la tupla
-    return type === 1 || texture === 99; // vero se è un muro (tipo 1) o un blocco speciale (texture 99)
+    const [type, texture] = globals.maps.map[row][col]; // Destruttura la tupla
+    return type === 1 || texture === 99; // Vero se è un muro (tipo 1) o un blocco speciale (texture 99)
 }
 
 
