@@ -1,3 +1,10 @@
+// player.js - Definisce la classe Player, la logica di movimento, interazione e stato.
+// Esporta l'istanza 'player' utilizzata globalmente dagli altri moduli.
+
+// ====================================================================================
+// ===== IMPORTAZIONI E COSTANTI =====
+// ====================================================================================
+
 import { inputState } from "../core/input.js";
 import { Npc, walls, GameObject, mapToWalls } from "./objects.js";
 import { globals } from "../utils/globals.js";
@@ -5,42 +12,64 @@ import { showDialogues } from "./ui.js";
 import { showElement, hideElement } from "../utils/cssHandler.js";
 import { sounds } from "../core/audio.js";
 
-const SPEED = 3 * globals.tileSize;     // unità al secondo
-const ROTATION_SPEED = 180;             // gradi al secondo
+// --- Costanti di Movimento ---
+const SPEED = 3 * globals.tileSize;     // Velocità di movimento (unità al secondo)
+const ROTATION_SPEED = 180;             // Velocità di rotazione (gradi al secondo)
+
+
+// ====================================================================================
+// ===== CLASSE PLAYER =====
+// ====================================================================================
 
 class Player {
+    /**
+     * @param {number} x Coordinata X della tile di spawn.
+     * @param {number} y Coordinata Y della tile di spawn.
+     * @param {number} angle Angolo di partenza in gradi.
+     */
     constructor(x, y, angle) {
+        // --- Posizione e Angolo ---
+        // Centra il player all'interno della tile (es. 1.5, 2.5)
         this.x = (x + 1) * globals.tileSize - globals.tileSize / 2;
         this.y = (y + 1) * globals.tileSize - globals.tileSize / 2;
         this.angle = angle; // in gradi
 
-        // Aggiunge al gioco nome e classe player scelti in precedenza
+        // --- Dati Giocatore (da localStorage) ---
         this.name = localStorage.getItem("playerName");
-        this.updateNameUI();
+        this.updateNameUI(); // Aggiorna l'elemento DOM del nome
         this.classType = localStorage.getItem("playerClass");
-        this.initClassType(this.classType);
+        this.initClassType(this.classType); // Inizializza stats specifiche per la classe
 
+        // --- Statistiche e Inventario ---
         this.baseDamage = 20;
-        this.inventory;
+        this.inventory; // (Questa riga è ridondante ma mantenuta per fedeltà all'originale)
         this.inventory = [];
 
-        
-        // Movimento attivo
+        // --- Stato Movimento (per interpolazione) ---
         this.moving = false;
         this.rotating = false;
         this.interactingWithNpc = false;
 
+        // Obiettivi (Target) per il movimento interpolato
         this.targetX = this.x;
         this.targetY = this.y;
         this.targetAngle = this.angle;
 
-
-        // Eventi
+        // --- Stato Eventi ---
         this.enteredDungeon = false;
     }
 
+    // ====================================================================================
+    // ===== LOOP DI AGGIORNAMENTO (UPDATE) =====
+    // ====================================================================================
+
+    /**
+     * Funzione principale del Player, chiamata ad ogni frame dal gameloop.
+     * Gestisce la lettura degli input e l'interpolazione di movimento e rotazione.
+     */
     update() {
-        // Se non sta muovendo ne ruotando, leggi input
+        // --- 1. Lettura Input (solo se il player è fermo) ---
+        // Imposta i 'target' per il movimento/rotazione.
         if (!this.moving && !this.rotating) {
             if (inputState.movement.up) {
                 this.moveIfFree(0);
@@ -70,26 +99,31 @@ class Player {
             }
         }
 
-        // Movimento verso il target
+        // --- 2. Movimento (Interpolazione Smooth) ---
+        // Esegue lo spostamento effettivo verso il targetX/targetY.
         if (this.moving) {
             const dX = this.targetX - this.x;
             const dY = this.targetY - this.y;
             const dist = Math.hypot(dX, dY);
-            const step = SPEED * globals.deltaTime;
+            const step = SPEED * globals.deltaTime; // Movimento basato sul tempo (delta)
 
             if (dist <= step) {
+                // Arrivato a destinazione
                 this.x = this.targetX;
                 this.y = this.targetY;
                 this.moving = false;
             } else {
+                // Muove il player verso il target
                 this.x += (dX / dist) * step;
                 this.y += (dY / dist) * step;
             }
         }
 
-        // Rotazione verso il target
+        // --- 3. Rotazione (Interpolazione Smooth) ---
+        // Esegue la rotazione effettiva verso il targetAngle.
         if (this.rotating) {
             let diff = this.targetAngle - this.angle;
+            // Normalizza l'angolo per il percorso più breve (es. da 350° a 10° non fa 340°, ma +20°)
             if (diff > 180) diff -= 360;
             if (diff < -180) diff += 360;
 
@@ -101,23 +135,35 @@ class Player {
                 this.angle += Math.sign(diff) * step;
             }
 
+            // Mantiene l'angolo nell'intervallo [0, 360)
             if (this.angle < 0) this.angle += 360;
             if (this.angle >= 360) this.angle -= 360;
         }
 
-        this.checkEvents(); // Guarda gli eventi legati alla posizione del giocatore
+        // --- 4. Controllo Eventi ---
+        this.checkEvents(); 
     }
 
+    // ====================================================================================
+    // ===== EVENTI E INTERAZIONE =====
+    // ====================================================================================
+
+    /**
+     * Controlla eventi scriptati basati sulla posizione (tile) attuale del giocatore.
+     */
     checkEvents() {
         const col = Math.floor(this.x / globals.tileSize);
         const row = Math.floor(this.y / globals.tileSize);
 
-        // Esempio: entra in una stanza segreta
+        // Esempio: Entrata nel dungeon (modifica la mappa dinamicamente)
         if (row > 30 && !this.enteredDungeon) {
+            // Chiude il passaggio (modificando il tipo di tile nella griglia logica)
             globals.maps.map[30][22] = [1,11];
             globals.maps.map[30][23] = [1,11];
             globals.maps.map[30][24] = [1,11];
-            mapToWalls("map");
+            mapToWalls("map"); // Aggiorna i muri 3D
+            
+            // Cambia l'atmosfera
             globals.floorColor = "rgb(0,0,0)";
             globals.ceilingColor = "rgb(0,0,0)";
             sounds.bgMusic.play();
@@ -130,22 +176,28 @@ class Player {
         if (this.inventory.includes("key1") && this.inventory.includes("key2")) {
             // Fine demo
         }
-
-
     }
 
+    /**
+     * Gestisce l'interazione con Entità (NPC o GameObject) nella tile di fronte al player.
+     */
     interact() {
-        // Calcola la posizione davanti al giocatore
+        // Calcola la posizione (coordinate mondo) di fronte al giocatore
         const interactDistance = globals.tileSize;
         const interactX = this.x + interactDistance * Math.cos(this.angle * Math.PI / 180);
         const interactY = this.y + interactDistance * Math.sin(this.angle * Math.PI / 180);
 
         // Controlla se c'è un'entità interagibile in quella posizione
         for (let entity of globals.entities) {
-            if (interactX === entity.x && interactY === entity.y && entity.interactable) { // Interazione con NPC
+            // NOTA: Questo controllo confronta coordinate esatte (float), 
+            // che è molto restrittivo. La logica originale è mantenuta.
+            if (interactX === entity.x && interactY === entity.y && entity.interactable) { 
+                
+                // --- Caso 1: Interazione con NPC ---
                 if (entity instanceof Npc && !this.interactingWithNpc) {
-                    this.enterInteract(entity);
+                    this.enterInteract(entity); // Avvia il dialogo
 
+                    // Esempio di evento specifico per NPC (apertura cancello)
                     switch(entity.name) {
                         case "dungeon_keeper":
                             globals.maps.map[30][22] = [0,0];
@@ -155,32 +207,36 @@ class Player {
                             sounds.gate.play();
                             break;
                     }
-
                 }
 
+                // --- Caso 2: Interazione con GameObject ---
                 if (entity instanceof GameObject) { 
-                    // Controlla se collezionare l'oggetto o se interagirci
                     if (entity.collectable) {
-                        this.enterInteract(entity, true);
-                        entity.collect();
+                        this.enterInteract(entity, true); // Avvia dialogo (è un oggetto)
+                        entity.collect(); // Raccoglie l'oggetto
                     }
-                    else entity.interact();
+                    else entity.interact(); // Interazione generica
                 }
             }
         }
     }
 
+    /**
+     * Inizializza l'interfaccia utente per l'interazione (mostra dialogo, nasconde stats).
+     * @param {Entity} entity L'entità con cui si interagisce.
+     * @param {boolean} isObject True se l'entità è un oggetto.
+     */
     enterInteract(entity, isObject = false) {
-        this.interactingWithNpc = true;
+        this.interactingWithNpc = true; // Blocca il movimento
 
         const textboxContent = document.getElementById("textbox-content");
         const headContainer = document.getElementById("player-head");
 
-        // Mostra il textbox e nasconde le stats
+        // Aggiorna la UI per il dialogo
         hideElement(document.getElementById("stats-overview"));
         showElement(textboxContent);
 
-        // Se è un NPC, testo allineato a sinistra e mostra immagine volto
+        // Se è un NPC, mostra il suo volto e allinea il testo
         if (!isObject && entity.headImage) {
             textboxContent.style.textAlign = "left";
             headContainer.style.backgroundImage = `url("${entity.headImage.src}")`;
@@ -189,31 +245,51 @@ class Player {
         showDialogues(entity.dialogueId);
     }
 
-    // Uscita dall'interazione (NPC o oggetto)
+    /**
+     * Termina l'interazione e ripristina l'interfaccia utente (UI).
+     */
     exitInteract() {
-        this.interactingWithNpc = false;
+        this.interactingWithNpc = false; // Sblocca il movimento
         const textboxContent = document.getElementById("textbox-content");
         const headContainer = document.getElementById("player-head");
 
+        // Ripristina la UI
         hideElement(textboxContent);
         showElement(document.getElementById("stats-overview"));
+        // Rimette l'immagine del giocatore nel box
         headContainer.style.backgroundImage = `url("${this.frontImage.src}")`;
     }
 
 
+    // ====================================================================================
+    // ===== MOVIMENTO E COLLISIONI =====
+    // ====================================================================================
     
+    /**
+     * Tenta di muovere il player di una tile se la destinazione non è un muro.
+     * @param {number} angleOffset Offset dell'angolo rispetto alla direzione in avanti (0, 90, 180, -90).
+     */
     moveIfFree(angleOffset) {
+        // Calcola la posizione (coordinate mondo) della tile target
         const rad = (this.angle + angleOffset) * Math.PI / 180;
         const newX = this.x + globals.tileSize * Math.cos(rad);
         const newY = this.y + globals.tileSize * Math.sin(rad);
         
+        // Controlla collisione sulla tile target e se si è in interazione
         if (!isWallAt(newX, newY) && !this.interactingWithNpc) {
             this.targetX = newX;
             this.targetY = newY;
-            this.moving = true;
+            this.moving = true; // Abilita l'interpolazione (gestita in update())
         }
     }
 
+    // ====================================================================================
+    // ===== METODI DI SUPPORTO (UI e STATS) =====
+    // ====================================================================================
+
+    /**
+     * Aggiorna gli elementi HTML del nome del giocatore (in-game e stats).
+     */
     updateNameUI() {
         const combatName = document.getElementById("player-name");
         const overviewName = document.getElementById("char-name");
@@ -222,9 +298,13 @@ class Player {
         if (overviewName) overviewName.textContent = this.name;
     }
 
-
+    /**
+     * Inizializza le statistiche (HP, MP), i modificatori e le immagini
+     * in base alla classe scelta dal giocatore.
+     * @param {string} classType L'identificativo della classe (es. "wizard").
+     */
     initClassType(classType) {    
-        // Valori base HP/MP
+        // --- Database Statistiche di Classe ---
         const CLASS_DATA = {
             wizard:   { hp: 70,  mp: 120 },
             paladin:  { hp: 120, mp: 60 },
@@ -232,85 +312,52 @@ class Player {
             wanderer: { hp: 90,  mp: 90 }
         };
     
-        // Modificatori di attacco e difesa per ogni classe
+        // Database Modificatori di Classe
         const CLASS_MODIFIERS = {
             wizard: {
-                attack: {
-                    sword: 0.8,  // -20% danno
-                    shield: 0.9, // -10% difesa
-                    magic: 1.5   // +50% danno
-                },
-                special: {
-                    name: "Magia Potenziata",
-                    cost: 10,
-                    description: "Danno doppio con attacco magico (x2)."
-                }
+                attack: { sword: 0.8, shield: 0.9, magic: 1.5 },
+                special: { name: "Magia Potenziata", cost: 10, description: "Danno doppio con attacco magico (x2)." }
             },
-        
             paladin: {
-                attack: {
-                    sword: 1.1,  // +10% danno
-                    shield: 1.0,
-                    magic: 1.1   // +10% danno
-                },
-                special: {
-                    name: "Scudo Divino",
-                    cost: 10,
-                    description: "Assorbe tutto il danno per 1 turno."
-                }
+                attack: { sword: 1.1, shield: 1.0, magic: 1.1 },
+                special: { name: "Scudo Divino", cost: 10, description: "Assorbe tutto il danno per 1 turno." }
             },
-        
             guardian: {
-                attack: {
-                    sword: 1.0,
-                    shield: 1.0,
-                    magic: 0.8   // -20% danno
-                },
-                special: {
-                    name: "Controcolpo",
-                    cost: 10,
-                    description: "Riflette parte del danno subito se blocca."
-                }
+                attack: { sword: 1.0, shield: 1.0, magic: 0.8 },
+                special: { name: "Controcolpo", cost: 10, description: "Riflette parte del danno subito se blocca." }
             },
-        
             wanderer: {
-                attack: {
-                    sword: 1.1,  // +10% danno
-                    shield: 1.0,
-                    magic: 1.1
-                },
-                special: null // Nessuna abilità speciale
+                attack: { sword: 1.1, shield: 1.0, magic: 1.1 },
+                special: null 
             }
         };
     
-        // Imposta HP/MP
+        // --- Assegnazione Statistiche ---
         this.hpLimit = CLASS_DATA[classType].hp;
         this.mpLimit = CLASS_DATA[classType].mp;
         this.hp = CLASS_DATA[classType].hp;
         this.mp = CLASS_DATA[classType].mp;
     
-        // Imposta modificatori di classe
         this.classType = classType;
         this.classModifiers = CLASS_MODIFIERS[classType];
     
-        // Imposta immagini
+        // --- Assegnazione Immagini ---
         this.backImage = new Image();
         this.backImage.src = "assets/images/" + classType + "_back.png";
         this.frontImage = new Image();
         this.frontImage.src = "assets/images/" + classType + "_front.png";
     
-        // Aggiorna barre HP/MP
+        // --- Aggiornamento UI Iniziale ---
         this.updateHPBar();
         this.updateMPBar();
     
-        // Imposta immagine del volto nel DOM
         const headContainer = document.getElementById("player-head");
         headContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
     }
 
-
+    // --- Gestione Barre UI ---
     
-    // Aggiorna tutte le barre HP
+    /** Aggiorna tutte le barre HP (in-game e stats). */
     updateHPBar() {
         const fills = document.querySelectorAll(".player-hp-fill");
         const texts = document.querySelectorAll(".player-hp-text");
@@ -320,7 +367,7 @@ class Player {
         texts.forEach(t => t.textContent = `${this.hp} / ${this.hpLimit}`);
     }
     
-    // Aggiorna tutte le barre MP
+    /** Aggiorna tutte le barre MP (in-game e stats). */
     updateMPBar() {
         const fills = document.querySelectorAll(".player-mp-fill");
         const texts = document.querySelectorAll(".player-mp-text");
@@ -331,6 +378,12 @@ class Player {
     }
     
 
+    // --- Gestione Danno e Morte ---
+
+    /**
+     * Applica danno al giocatore e aggiorna la UI.
+     * @param {number} amount La quantità di danno da subire.
+     */
     takeDamage(amount) {
         this.hp -= amount;
         if (this.hp < 0) this.hp = 0;
@@ -339,30 +392,51 @@ class Player {
         if (this.hp <= 0) this.die();
     }
 
-    die() { // Game over
+    /** Gestisce la logica di Game Over. */
+    die() { 
+        // Mostra la schermata di morte
         showElement(document.getElementById("death-screen"));
         document.getElementById("retry-btn").onclick = () => { location.reload(); };
 
         const deathText = document.getElementById("death-text");
 
-        // seleziona una frase casuale tra quelle nei dialoghi
+        // Seleziona una frase casuale dai dialoghi
         const messages = globals.dialogues.death_messages;
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
         deathText.innerText = randomMessage;
 
-        globals.gameState = "gameover";
+        globals.gameState = "gameover"; // Blocca il gioco
     }
 
+    // ====================================================================================
+    // ===== RENDERING 2D (MINIMAPPA) =====
+    // ====================================================================================
+    
+    /**
+     * Disegna la rappresentazione 2D del giocatore sulla minimappa.
+     * @param {CanvasRenderingContext2D} context Il contesto di rendering 2D della minimappa.
+     */
     draw2D(context) {
+        // Disegna il punto (cerchio) del player
         context.fillStyle = "red";
         context.beginPath();
         context.arc(this.x, this.y, 10, 0, Math.PI * 2);
         context.fill();
     }
-}
+} // --- Fine della Classe Player ---
 
 
+// ====================================================================================
+// ===== FUNZIONI DI UTILITY (Scope del Modulo) =====
+// ====================================================================================
+
+/**
+ * Controlla se le coordinate X, Y nel mondo si trovano su un muro.
+ * @param {number} x Coordinata X nel mondo.
+ * @param {number} y Coordinata Y nel mondo.
+ * @returns {boolean} True se la posizione è un muro.
+ */
 function isWallAt(x, y) {
     const col = Math.floor(x / globals.tileSize);
     const row = Math.floor(y / globals.tileSize);
@@ -371,10 +445,17 @@ function isWallAt(x, y) {
     if (!globals.maps.map[row] || !globals.maps.map[row][col]) return false;
     
     const [type, texture] = globals.maps.map[row][col]; // destruttura la tupla
-    return type === 1 || texture === 99; // vero se è un muro
+    return type === 1 || texture === 99; // vero se è un muro (tipo 1) o un blocco speciale (texture 99)
 }
 
 
+// ====================================================================================
+// ===== ISTANZA GLOBALE DEL PLAYER =====
+// ====================================================================================
 
-
+/**
+ * Creazione dell'unica istanza di Player. 
+ * Viene esportata in modo che altri moduli (es. raycaster.js) possano importarla.
+ * Player(x, y, angle) -> Es. Tile (23, 25) con angolo di 0 gradi.
+ */
 export const player = new Player(23, 25, 0);

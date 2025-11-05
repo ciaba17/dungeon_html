@@ -1,43 +1,78 @@
-// ===== Pulsanti menu =====
-const startBtn   = document.getElementById("start-btn");
+// menu.js - Gestisce la logica di interazione del menu principale index.html: 
+// navigazione verso la selezione classe e gestione delle finestre modali (pop-up).
 
-const optionsBtn = document.getElementById("options-btn");
-const optionsWindow = document.getElementById("options-window");
-const closeOptions = document.getElementById("close-options");
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // ====================================================================================
+    // ===== 1. RIFERIMENTI DOM =====
+    // ====================================================================================
 
-const commandsBtn = document.getElementById("commands-btn");
-const commandsWindow = document.getElementById("commands-window");
-const closeCommands = document.getElementById("close-commands");
+    // Pulsanti Principali
+    const startBtn = document.getElementById("start-btn");
 
-const creditsBtn = document.getElementById("credits-btn");
-const creditsWindow = document.getElementById("credits-window");
-const closeCredits = document.getElementById("close-credits");
+    // Finestra Opzioni
+    const optionsBtn = document.getElementById("options-btn");
+    const optionsWindow = document.getElementById("options-window");
+    const closeOptions = document.getElementById("close-options");
 
-// Vai al gioco
-startBtn.addEventListener("click", () => {
-    window.location.href = "class.html"; // Sostituisci con la pagina del tuo gioco
-});
+    // Finestra Comandi
+    const commandsBtn = document.getElementById("commands-btn");
+    const commandsWindow = document.getElementById("commands-window");
+    const closeCommands = document.getElementById("close-commands");
 
-// Schermata comandi
-commandsBtn.addEventListener("click", () => {
-    commandsWindow.classList.remove("hidden");
-});
-closeCommands.addEventListener("click", () => {
-    commandsWindow.classList.add("hidden");
-});
+    // Finestra Crediti
+    const creditsBtn = document.getElementById("credits-btn");
+    const creditsWindow = document.getElementById("credits-window");
+    const closeCredits = document.getElementById("close-credits");
 
-// Opzioni
-optionsBtn.addEventListener("click", () => {
-    optionsWindow.classList.remove("hidden");
-});
-closeOptions.addEventListener("click", () => {
-    optionsWindow.classList.add("hidden");
-});
 
-// Crediti
-creditsBtn.addEventListener("click", () => {
-    creditsWindow.classList.remove("hidden");
-});
-closeCredits.addEventListener("click", () => {
-    creditsWindow.classList.add("hidden");
+    // ====================================================================================
+    // ===== 2. NAVIGAZIONE (Inizio Gioco) =====
+    // ====================================================================================
+
+    /**
+     * Avvia il flusso di gioco reindirizzando alla pagina di selezione della classe.
+     */
+    startBtn.addEventListener("click", () => {
+        // Reindirizza l'utente alla schermata successiva (selezione classe/nome)
+        window.location.href = "class.html"; 
+    });
+
+
+    // ====================================================================================
+    // ===== 3. FUNZIONI HELPER PER LE MODALI =====
+    // ====================================================================================
+
+    /**
+     * Configura gli event listener per mostrare e nascondere una specifica finestra modale.
+     * @param {HTMLElement} openBtn Il pulsante che apre la finestra.
+     * @param {HTMLElement} windowElement La finestra modale (elemento DOM).
+     * @param {HTMLElement} closeBtn Il pulsante o l'icona per chiudere la finestra.
+     */
+    function setupModal(openBtn, windowElement, closeBtn) {
+        // Mostra la finestra modale (rimuove la classe 'hidden')
+        openBtn.addEventListener("click", () => {
+            windowElement.classList.remove("hidden");
+        });
+        
+        // Nasconde la finestra modale (aggiunge la classe 'hidden')
+        closeBtn.addEventListener("click", () => {
+            windowElement.classList.add("hidden");
+        });
+    }
+
+
+    // ====================================================================================
+    // ===== 4. APPLICAZIONE DEI LISTENER =====
+    // ====================================================================================
+
+    // Configura la finestra Comandi
+    setupModal(commandsBtn, commandsWindow, closeCommands);
+
+    // Configura la finestra Opzioni
+    setupModal(optionsBtn, optionsWindow, closeOptions);
+
+    // Configura la finestra Crediti
+    setupModal(creditsBtn, creditsWindow, closeCredits);
+
 });
