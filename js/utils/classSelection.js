@@ -17,21 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Dati delle Classi ---
     const classData = {
         wizard: { 
-            name: "Mago", // Traduzione per coerenza didattica (se necessario)
-            description: "Maestro delle arti arcane, in grado di lanciare incantesimi potenti e piegare la magia al proprio volere." 
+            name: "Wizard", 
+            description: "Master of the arcane arts, capable of casting powerful spells and bending magic to their will." 
         },
         paladin: { 
-            name: "Paladino", 
-            description: "Un guerriero sacro benedetto da forza divina, eccellente in difesa e nell'infliggere colpi pesanti e giusti." 
+            name: "Paladin", 
+            description: "A holy warrior blessed with divine strength, excelling in defense and delivering righteous, heavy blows." 
         },
         guardian: { 
-            name: "Guardiano", 
-            description: "Pesantemente corazzato e irremovibile, un combattente in prima linea costruito per resistere e dominare nel corpo a corpo." 
+            name: "Guardian", 
+            description: "Heavily armored and unyielding, a frontline fighter built to endure and dominate in close combat." 
         },
         wanderer: { 
-            name: "Viandante", 
-            description: "Un esploratore dallo spirito libero, bilanciato tra attacco, agilità e adattabilità in qualsiasi situazione." 
+            name: "Wanderer", 
+            description: "A free-spirited explorer, balanced between offense, agility, and adaptability in any situation." 
         }
+
     };
 
 

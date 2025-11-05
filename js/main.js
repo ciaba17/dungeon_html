@@ -65,9 +65,8 @@ async function loadDialogues() {
     try {
         const response = await fetch("assets/dialogues.json");
         globals.dialogues = await response.json();
-        console.log("✅ Dialoghi caricati con successo.");
     } catch {
-        console.error("❌ Errore critico nel caricamento dei dialoghi.");
+        console.error("Error: can't load dialogues");
     }
 }
 
@@ -78,9 +77,8 @@ async function loadMaps() {
     try {
         const response = await fetch("assets/map.json");
         globals.maps = await response.json();
-        console.log("✅ Mappe caricate con successo.");
     } catch {
-        console.error("❌ Errore critico nel caricamento delle mappe.");
+        console.error("Error: can't load maps");
     }
 }
 
@@ -244,8 +242,11 @@ function drawFPS(ctx) {
  * Questo è il vero e proprio punto di inizio dell'applicazione.
  */
 window.addEventListener("DOMContentLoaded", async () => {
+<<<<<<< HEAD
     console.log("🚀 Avvio del gioco in corso...");
     await initGame();                // Prima: inizializzazione di tutte le risorse.
+=======
+    await initGame(); // Prima: inizializzazione di tutte le risorse.
+>>>>>>> 988088bca479fbe22927d0afec254db5f36e3884
     requestAnimationFrame(gameloop); // Poi: avvio del ciclo di gioco.
-    console.log("🎮 Gioco avviato: 'main.js' ha completato il setup.");
 });

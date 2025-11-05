@@ -388,7 +388,7 @@ export function mapToEntities(id) {
             let entity;
             
             // Le coordinate i e j rappresentano la tile. Aggiungendo 0.5 (o 1) si centra l'entità.
-            // Il codice originale usa i++ e j++ per compensare l'indice base zero della griglia.
+            // Usa i++ e j++ per allineare le coordinate effettive dell'entità a quelle della griglia.
             j++; 
             i++; 
             

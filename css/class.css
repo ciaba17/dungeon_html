@@ -14,33 +14,33 @@
 #menu-buttons {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap; /* permette ai bottoni di andare a capo su schermi piccoli */
-    gap: 10vmin;      /* spazio tra i bottoni */
+    flex-wrap: wrap;
+    gap: 10vmin;
     width: 100%;
     margin-top: 5vmin;
-    position: relative; /* per far funzionare .class-info in assoluto */
+    position: relative;
 }
 
 .button-wrapper {
     display: flex;
-    flex-direction: column; /* bottone + info verticale */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: auto; /* più flessibile */
-    position: relative; /* per posizionare correttamente l'infobox */
+    width: auto;
+    position: relative;
 }
 
 .class-btn {
     display: block;
-    width: 20vmin; /* fisso in vmin per mantenere proporzioni */
-    min-width: 120px; /* assicura leggibilità su schermi piccoli */
+    width: 20vmin;
+    min-width: 120px;
     height: 25vh;
     padding: 1.5vmin 0;
     font-size: 4.5vmin;
     color: #fff;
     background-color: rgba(0, 0, 0);
-    background-size: cover; /* Copre tutta l'area */
-    background-position: center; /* Centra l'immagine */
+    background-size: cover;
+    background-position: center;
     border: 0.5vmin double #fff;
     cursor: pointer;
     box-sizing: border-box;
@@ -63,7 +63,6 @@
     color: #fff;
     box-sizing: border-box;
     text-align: center;
-    font-family: "Courier New", monospace;
     letter-spacing: 0.1em;
     line-height: 1.4;
     position: absolute;
@@ -72,14 +71,12 @@
     transform: translateX(-50%);
     z-index: 10;
     pointer-events: none;
-    white-space: normal;      /* consente l'andata a capo */
-    word-break: normal;       /* evita di spezzare le parole */
-    overflow-wrap: normal;    /* non forza a capo a metà parola */
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
     border: 0.1vmin solid rgba(255, 255, 255);
     margin-top: 3vmin;
 }
-
-
 
 .modal {
     position: fixed;
@@ -106,7 +103,6 @@
     color: #fff;
     width: 80%;
     max-width: 400px;
-    font-family: "Courier New", monospace;
     letter-spacing: 0.1em;
     border-radius: 1vmin;
 }
