@@ -242,11 +242,7 @@ function drawFPS(ctx) {
  * Questo è il vero e proprio punto di inizio dell'applicazione.
  */
 window.addEventListener("DOMContentLoaded", async () => {
-<<<<<<< HEAD
-    console.log("🚀 Avvio del gioco in corso...");
     await initGame();                // Prima: inizializzazione di tutte le risorse.
-=======
-    await initGame(); // Prima: inizializzazione di tutte le risorse.
->>>>>>> 988088bca479fbe22927d0afec254db5f36e3884
+    await initGame();                // Prima: inizializzazione di tutte le risorse.
     requestAnimationFrame(gameloop); // Poi: avvio del ciclo di gioco.
 });
