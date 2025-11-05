@@ -12,7 +12,7 @@ import { showDialogues } from "./ui.js";
 import { showElement, hideElement } from "../utils/cssHandler.js";
 import { sounds } from "../core/audio.js";
 
-// --- Costanti di Movimento ---
+// --- Costanti di movimento ---
 const SPEED = 3 * globals.tileSize; // Velocità di movimento (unità al secondo)
 const ROTATION_SPEED = 180;         // Velocità di rotazione (gradi al secondo)
 
@@ -54,7 +54,7 @@ class Player {
         this.targetY = this.y;
         this.targetAngle = this.angle;
 
-        // --- Stato Eventi ---
+        // --- Stato eventi ---
         this.enteredDungeon = false;
     }
 
@@ -148,7 +148,7 @@ class Player {
     // ====================================================================================
 
     /**
-     * Controlla eventi scriptati basati sulla posizione (tile) attuale del giocatore.
+     * Controlla eventi scriptati basati sulla posizione (tile) attuale del giocatore
      */
     checkEvents() {
         const col = Math.floor(this.x / globals.tileSize);
@@ -311,10 +311,10 @@ class Player {
     /**
      * Inizializza le statistiche (HP, MP), i modificatori e le immagini
      * in base alla classe scelta dal giocatore
-     * @param {string} classType L'identificativo della classe (es. "wizard")
+     * @param {string} classType L'identificativo della classe
      */
     initClassType(classType) {    
-        // --- Database Statistiche di Classe ---
+        // --- Database statistiche di classe ---
         const CLASS_DATA = {
             wizard:   { hp: 70,  mp: 120 },
             paladin:  { hp: 120, mp: 60 },
@@ -342,7 +342,7 @@ class Player {
             }
         };
     
-        // --- Assegnazione Statistiche ---
+        // --- Assegnazione statistiche ---
         this.hpLimit = CLASS_DATA[classType].hp;
         this.mpLimit = CLASS_DATA[classType].mp;
         this.hp = CLASS_DATA[classType].hp;
@@ -351,13 +351,13 @@ class Player {
         this.classType = classType;
         this.classModifiers = CLASS_MODIFIERS[classType];
     
-        // --- Assegnazione Immagini ---
+        // --- Assegnazione immagini ---
         this.backImage = new Image();
         this.backImage.src = "assets/images/" + classType + "_back.png";
         this.frontImage = new Image();
         this.frontImage.src = "assets/images/" + classType + "_front.png";
     
-        // --- Aggiornamento UI Iniziale ---
+        // --- Aggiornamento UI iniziale ---
         this.updateHPBar();
         this.updateMPBar();
     
@@ -365,7 +365,7 @@ class Player {
         headContainer.style.backgroundImage = 'url("' + this.frontImage.src + '")';
     }
 
-    // --- Gestione Barre UI ---
+    // --- Gestione barre UI ---
     
     // Aggiorna tutte le barre HP (in-game e stats)
     updateHPBar() {
@@ -388,7 +388,7 @@ class Player {
     }
     
 
-    // --- Gestione Danno e Morte ---
+    // --- Gestione danno e morte ---
 
     /**
      * Applica danno al giocatore e aggiorna la UI
@@ -465,6 +465,6 @@ function isWallAt(x, y) {
 
 /**
  * Creazione dell'unica istanza di Player
- * Viene esportata in modo che altri moduli (es. raycaster.js) possano importarla
+ * Viene esportata in modo che altri moduli possano importarla
  */
 export const player = new Player(23, 25, 90);

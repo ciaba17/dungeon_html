@@ -6,9 +6,9 @@
 // ===== IMPORTAZIONI DI MODULI ESTERNI =====
 // ====================================================================================
 
-import { globals } from '../utils/globals.js'; // Accesso alle variabili di stato globale (es. blocchi input)
+import { globals } from '../utils/globals.js'; // Accesso alle variabili di stato globale 
 import { contexts } from './renderer.js';      // Non usato direttamente in questo script, ma mantenuto per coerenza
-import { player } from '../game/player.js';    // Accesso all'oggetto giocatore per chiamare funzioni specifiche (es. interazione)
+import { player } from '../game/player.js';    // Accesso all'oggetto giocatore per chiamare funzioni specifiche 
 
 
 // ====================================================================================
@@ -20,7 +20,7 @@ import { player } from '../game/player.js';    // Accesso all'oggetto giocatore 
  * Viene esportata per essere consultata dal modulo 'player' e dalla logica di 'combat'
  */
 export const inputState = { 
-    // --- Input di Movimento e Esplorazione ---
+    // --- Input di movimento e esplorazione ---
     movement: {
         up: false,        // Tasto/Bottone per l'avanzamento
         down: false,      // Tasto/Bottone per l'indietreggiamento
@@ -30,7 +30,7 @@ export const inputState = {
         turnRight: false, // Tasto per la rotazione della visuale a destra
     },
 
-    // --- Input Specifici per la Modalità Combattimento ---
+    // --- Input specifici per la modalità combattimento ---
     combat: {
         sword: false,  // Scelta di attacco con la spada
         shield: false, // Scelta di difesa con lo scudo
@@ -58,7 +58,7 @@ export function inputHandler() {
 // ====================================================================================
 
 /**
- * Event Listener per i bottoni dell'interfaccia utente (UI) (es. su schermi touch)
+ * Event Listener per i bottoni dell'interfaccia utente (UI) 
  * Viene attivato solo dopo che il DOM è stato completamente caricato
  */
 document.addEventListener("DOMContentLoaded", () => {
@@ -68,10 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Gestione dei click sui bottoni di movimento e combattimento ---
     for (let button of buttons) {
         button.addEventListener("click", () => {
-            // Ignora il click se lo stato del gioco ha bloccato gli input di combattimento (es. durante l'animazione)
+            // Ignora il click se lo stato del gioco ha bloccato gli input di combattimento
             if (globals.combatInputLocked) return; 
 
-            // Estrae il tipo di input (es. 'sword', 'up') dall'ID del bottone
+            // Estrae il tipo di input dall'ID del bottone
             const input = button.id.replace("-btn", ""); 
             
             if (button.classList.contains("move-btn")) {
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /**
  * Event Listener per la pressione di un tasto (keydown)
  * Imposta a 'true' il flag corrispondente nella mappa inputState
- * Sennò, per le azioni istantanee (es. interazione), chiama direttamente la funzione
+ * Sennò, per le azioni istantanee, chiama direttamente la funzione
  */
 // --- Pressione tasti ---
 document.addEventListener('keydown', event => {
@@ -167,6 +167,6 @@ document.addEventListener('keyup', event => {
             inputState.movement.turnRight = false;
             break;
 
-        // Le azioni istantanee (es. interazione) non necessitano di gestione keyup
+        // Le azioni istantanee non necessitano di gestione keyup
     }
 });

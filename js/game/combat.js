@@ -53,7 +53,7 @@ const winsAgainst = {
 export function combat() {
     
     // ------------------------------------
-    // 1. SCELTA DEL GIOCATORE (ASPETTA INPUT)
+    // 1) SCELTA DEL GIOCATORE (ASPETTA INPUT)
     // ------------------------------------
     if (!combatState.player) {
         // Itera sugli input di combattimento per vedere se un tasto/bottone è stato premuto
@@ -81,7 +81,7 @@ export function combat() {
     }
 
     // ------------------------------------
-    // 2. SCELTA DEL NEMICO (RANDOM)
+    // 2) SCELTA DEL NEMICO (RANDOM)
     // ------------------------------------
     if (!combatState.enemy && !combatState.timer.running) {
         const moves = ["sword", "shield", "magic"];
@@ -96,7 +96,7 @@ export function combat() {
     }
 
     // ------------------------------------
-    // 3. DETERMINAZIONE DEL VINCITORE E APPLICAZIONE DANNO
+    // 3) DETERMINAZIONE DEL VINCITORE E APPLICAZIONE DANNO
     // ------------------------------------
     let resultKey;
     if (combatState.player === combatState.enemy) {
@@ -193,7 +193,7 @@ export function enterCombat(enemy) {
     const textContainer = document.getElementById("map-container");
     textContainer.appendChild(textboxContent);
 
-    // Aggiorna l'interfaccia (es. barra HP del nemico)
+    // Aggiorna l'interfaccia
     enemy.updateHPBar();
 }
 
@@ -233,9 +233,9 @@ export function exitCombat() {
 // ====================================================================================
 
 /**
- * Disegna la scena di combattimento (sfondo e sprite del nemico/giocatore).
- * Chiamata dal `renderer.js` quando `globals.gameState` è "combat".
- * @param {CanvasRenderingContext2D} ctx Il contesto di disegno principale (gameCtx).
+ * Disegna la scena di combattimento (sfondo e sprite del nemico/giocatore)
+ * Chiamata dal `renderer.js` quando `globals.gameState` è "combat"
+ * @param {CanvasRenderingContext2D} ctx Il contesto di disegno principale (gameCtx)
  */
 export function renderCombat(ctx) {
     const enemy = globals.enemyOnCombat;

@@ -11,7 +11,7 @@
  * per l'accesso globale nel gioco (musiche, effetti di combattimento, suoni ambientali)
  */
 export const sounds = {
-    // --- Suoni di Combattimento (suddivisi per attore e risultato) ---
+    // --- Suoni di combattimento (suddivisi per attore e risultato) ---
     combatSounds: {
         player: {
             // Suoni degli attacchi/azioni del Giocatore
@@ -36,7 +36,7 @@ export const sounds = {
     // --- Suoni inventario ---
     collectItem: new Audio("assets/audio/collect_item.mp3"), // Suono riprodotto quando si raccoglie un oggetto
 
-    // --- Musiche di Sottofondo e Suoni Ambientali ---
+    // --- Musiche di sottofondo e suoni ambientali ---
     bgMusic: new Audio("assets/audio/musics/bgMusic.mp3"), // Musica principale di esplorazione
     gate: new Audio("assets/audio/gate.mp3"),              // Suono per l'apertura/chiusura di cancelli o porte
     wind: new Audio("assets/audio/musics/wind.mp3"),       // Suono ambientale: vento
@@ -50,7 +50,7 @@ export const sounds = {
 
 // Imposta le proprietà di looping e volume basso per i suoni di sottofondo
 
-// --- Musica Principale ---
+// --- Musica principale ---
 sounds.bgMusic.loop = true;
 sounds.bgMusic.volume = 0.2;
 

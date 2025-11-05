@@ -8,7 +8,7 @@
 /**
  * Nasconde un elemento DOM aggiungendo la classe 'hidden'
  * Si presume che la classe 'hidden' imposti 'display: none' o 'visibility: hidden'
- * nel file CSS principale.
+ * nel file CSS principale
  * @param {HTMLElement} element L'elemento DOM da nascondere
  */
 export function hideElement(element) {

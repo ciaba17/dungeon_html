@@ -91,20 +91,20 @@ export class Enemy extends Entity {
         const dy = player.y - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // --- ENTRATA IN COMBATTIMENTO ----
+        // --- Entrata in combattimento ----
         if (distance <= globals.tileSize * 0.6) {
             enterCombat(this); 
             return;
         }
 
-        // --- FUORI PORTATA ---
+        // --- Fuori portata ---
         if (distance >= globals.tileSize * 10) {
             return
         }
 
-        // --- PATHFINDING PERIODICO ---
+        // --- Pathfinding periodico ---
         if (!this.moving) {
-            this.timer = createTimer(0.4); // Ricalcola path ogni 0.4 secondi.
+            this.timer = createTimer(0.4); // Ricalcola path ogni 0.4 secondi
             this.moving = true;
         }
 
@@ -123,7 +123,7 @@ export class Enemy extends Entity {
             this.timer.reset(); 
         }
 
-        // --- MOVIMENTO LUNGO IL PATH ---
+        // --- Movimento lungo il path ---
         if (this.path && this.path.length > 0) {
             const nextNode = this.path[0];
             const targetX = nextNode.x * globals.tileSize + globals.tileSize / 2;
@@ -221,7 +221,7 @@ let nodeGrid = []; // La griglia globale di nodi per il pathfinding
  * Crea la griglia di nodi (NodeMap) basata sulla mappa di gioco e definisce i vicini
  */
 export function createNodeMap() {
-    // --- 1. Creazione dei Nodi ---
+    // --- 1) Creazione dei nodi ---
     for (let y = 0; y < globals.maps.map.length; y++) {
         nodeGrid[y] = [];
         for (let x = 0; x < globals.maps.map[y].length; x++) {
@@ -230,7 +230,7 @@ export function createNodeMap() {
         }
     }
 
-    // --- 2. Connessione dei vicini (8 direzioni) ---
+    // --- 2) Connessione dei vicini (8 direzioni) ---
     for (let y = 0; y < globals.maps.map.length; y++) {
         for (let x = 0; x < globals.maps.map[y].length; x++) {
             let node = nodeGrid[y][x];
@@ -293,7 +293,7 @@ function findPath(startNode, targetNode) {
         openList.splice(indexMin, 1); 
         closedList.push(currentNode);
 
-        // --- Valuta i Vicini ---
+        // --- Valuta i vicini ---
         for (let neighborNode of currentNode.neighbors) {
             
             // Salta i vicini non camminabili o già controllati
@@ -348,7 +348,7 @@ function findPath(startNode, targetNode) {
 
 /**
  * Mappa le entità dalla griglia di livello (map) agli oggetti Entity, Npc o Enemy
- * @param {string} id L'ID della mappa da caricare (es. 'map1', 'dungeon')
+ * @param {string} id L'ID della mappa da caricare 
  */
 export function mapToEntities(id) {
     // Definizione di tutti i tipi di entità che possono essere piazzate sulla mappa

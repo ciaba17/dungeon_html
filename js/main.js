@@ -1,5 +1,5 @@
 // main.js - Punto di ingresso principale del gioco Raycasting RPG
-// Questo script gestisce l'inizializzazione del gioco e il ciclo di gioco (Game Loop).
+// Questo script gestisce l'inizializzazione del gioco e il ciclo di gioco (Game Loop)
 
 // ====================================================================================
 // ===== BLOCCO DI IMPORTAZIONI E MODULI =====
@@ -19,7 +19,7 @@ import { loadTextures } from './utils/globals.js';           // Funzione per il 
 import { mapToWalls } from './game/objects.js';              // Trasforma la mappa dati in oggetti (muri) per il raycasting
 import { mapToEntities } from './game/enemies.js';           // Inizializza le entità nemiche sulla mappa
 import { player } from './game/player.js';                   // Oggetto e logica del giocatore
-import { Enemy, createNodeMap } from './game/enemies.js';    // Definizioni e utilità per i nemici (es. pathfinding)
+import { Enemy, createNodeMap } from './game/enemies.js';    // Definizioni e utilità per i nemici 
 
 
 // ====================================================================================
@@ -137,9 +137,9 @@ function gameloop(currentTime) {
     updateFPS(delta);
 
     // --- Fasi principali del loop ---
-    handleInput();  // 1. Gestione degli input utente
-    updateGame();   // 2. Logica di gioco (movimento, IA, fisica, ecc.)
-    renderGame();   // 3. Disegno degli elementi grafici
+    handleInput();  // 1) Gestione degli input utente
+    updateGame();   // 2) Logica di gioco (movimento, IA, fisica, ecc.)
+    renderGame();   // 3) Disegno degli elementi grafici
 
     // Richiama il loop per il prossimo frame disponibile
     requestAnimationFrame(gameloop);
@@ -179,7 +179,7 @@ function updateGame() {
         case "combat":      // Stato di combattimento a turni o in tempo reale
             combat();
             break;
-        // Altri stati (es. "menu", "dialogue") verranno aggiunti qui
+        // Altri stati verranno aggiunti qui
     }
 }
 
@@ -189,7 +189,7 @@ function updateGame() {
 function updateExploration() {
     player.update(); // Aggiorna posizione e logica del giocatore
     
-    // Aggiorna la logica per tutte le entità (es. nemici in movimento o inseguimento)
+    // Aggiorna la logica per tutte le entità 
     for (const entity of globals.entities) {
         // Solo gli oggetti di tipo 'Enemy' eseguono la logica di inseguimento (IA)
         if (entity instanceof Enemy) entity.followPlayer(player);

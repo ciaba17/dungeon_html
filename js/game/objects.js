@@ -1,4 +1,4 @@
-// objects.js - Modulo che definisce le classi base per Muri, Entità, Oggetti e NPC, 
+// objects.js - Modulo che definisce le classi base per muri, entità, oggetti e NPC, 
 // e la logica per la proiezione degli sprite nel mondo 3D
 
 
@@ -206,8 +206,8 @@ export class Entity {
     }
 
     /**
-     * Disegna la rappresentazione 2D dell'entità sulla minimappa.
-     * @param {CanvasRenderingContext2D} ctx Il contesto di disegno della minimappa.
+     * Disegna la rappresentazione 2D dell'entità sulla minimappa
+     * @param {CanvasRenderingContext2D} ctx Il contesto di disegno della minimappa
      */
     draw2D(ctx) {
         ctx.fillStyle = "green";
@@ -223,7 +223,7 @@ export class Entity {
 // ====================================================================================
 
 /**
- * La classe GameObject estende Entity e aggiunge la logica di interazione e collezione.
+ * La classe GameObject estende Entity e aggiunge la logica di interazione e collezione
  */
 export class GameObject extends Entity {
     /**
@@ -232,11 +232,11 @@ export class GameObject extends Entity {
      * @param {number} z Offset Z.
      * @param {number} scale Scala.
      * @param {string} name Nome.
-     * @param {string} dialogueId ID del dialogo da mostrare all'interazione/collezione.
-     * @param {boolean} collectable Indica se l'oggetto scompare quando raccolto.
+     * @param {string} dialogueId ID del dialogo da mostrare all'interazione/collezione
+     * @param {boolean} collectable Indica se l'oggetto scompare quando raccolto
      */
     constructor(x, y, z, scale, name, dialogueId, collectable = false) {
-        // Gli oggetti sono sempre inizialmente interactable.
+        // Gli oggetti sono sempre inizialmente interactable
         super(x, y, z, scale, name, true);
         this.collectable = collectable
         if (this.collectable) this.collected = false; // Flag se è collezionabile
@@ -255,8 +255,8 @@ export class GameObject extends Entity {
         player.inventory.push(this.name);                            // Aggiunge all'inventario del player
         globals.entities = globals.entities.filter(e => e !== this); // Rimuove l'oggetto dal mondo
         
-        sounds.collectItem.play();                                     // Suono di raccoltayy
-        // Aggiorna l'UI dell'inventario.
+        sounds.collectItem.play(); // Suono di raccoltayy
+        // Aggiorna l'UI dell'inventario
         const inventoryUI = document.getElementById("inventory-slots");
         for (let slot of inventoryUI.getElementsByClassName("inventory-slot")) {
             if (!slot.dataset.filled) {
@@ -272,7 +272,7 @@ export class GameObject extends Entity {
 
     // Placeholder per interazioni complesse
     interact() {
-        // Logica futura: es. se non collectable, mostra un dialogo specifico
+        // Logica futura: mostra un dialogo specifico
     }
 }
 
@@ -283,24 +283,24 @@ export class GameObject extends Entity {
 
 /**
  * La classe Npc estende Entity e aggiunge elementi specifici per i personaggi
- * che interagiscono con il giocatore (es. testa per il dialogo).
+ * che interagiscono con il giocatore S
  */
 export class Npc extends Entity {
     /**
-     * @param {number} x Coordinata X.
-     * @param {number} y Coordinata Y.
-     * @param {number} z Offset Z.
-     * @param {number} scale Scala.
-     * @param {string} name Nome.
-     * @param {string} dialogueId ID del dialogo da mostrare all'interazione.
+     * @param {number} x Coordinata X
+     * @param {number} y Coordinata Y
+     * @param {number} z Offset Z
+     * @param {number} scale Scala
+     * @param {string} name Nome
+     * @param {string} dialogueId ID del dialogo da mostrare all'interazione
      */
     constructor(x, y, z, scale, name, dialogueId){
-        // Gli NPC sono sempre interactable.
+        // Gli NPC sono sempre interactable
         super(x, y, z, scale, name, true); 
 
         this.dialogueId = dialogueId;
 
-        // Texture della testa usata probabilmente nel box dialogo.
+        // Texture della testa usata probabilmente nel box dialogo
         this.headImage = new Image()
         this.headImage.src = "assets/images/" + this.name + "_head.png"
     }

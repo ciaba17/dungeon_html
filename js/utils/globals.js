@@ -15,7 +15,7 @@ export const globals = {
     VIEW_DISTANCE: 150, // Distanza di visibilità sulla minimappa
 
     // --- Stato del gioco ---
-    gameState: "exploration", // Stato attuale (es. "exploration", "combat", "gameover")
+    gameState: "exploration", // Stato attuale 
     enemyOnCombat: null,      // Riferimento all'oggetto Enemy attualmente in combattimento
 
     // --- Oggetti risorsa e riferimenti DOM (popolati all'avvio) ---

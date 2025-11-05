@@ -1,5 +1,5 @@
 // timer.js - Funzione factory per la creazione di un oggetto timer basato su deltaTime, 
-// che garantisce un conteggio del tempo coerente indipendentemente dagli FPS del gioco.
+// che garantisce un conteggio del tempo coerente indipendentemente dagli FPS del gioco
 
 /**
  * Crea e restituisce un nuovo oggetto timer

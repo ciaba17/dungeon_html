@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Evento 1: mouse enter (mostra descrizione/tooltip) ---
         btn.addEventListener('mouseenter', () => {
-            const cls = btn.dataset.class; // Recupera l'ID della classe (es. 'wizard') dal data-class
+            const cls = btn.dataset.class; // Recupera l'ID della classe dal data-class
             if(classData[cls]) {
                 infoBox.innerHTML = `<strong>${classData[cls].name}</strong><br>${classData[cls].description}`;
                 infoBox.style.display = 'block';
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             infoBox.style.display = 'none';
         });
 
-        // --- Evento 3: Click (selezione classe e apertura modal) ---
+        // --- Evento 3: click (selezione classe e apertura modal) ---
         btn.addEventListener('click', () => {
             selectedClass = btn.dataset.class;
             if(classData[selectedClass]) {
@@ -87,12 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Formattazione: Nome sempre in maiuscolo (come da richiesta originale)
         playerName = playerName.toUpperCase();
 
-        // --- 1. Salvataggio dati nel localStorage ---
+        // --- 1) Salvataggio dati nel localStorage ---
         // Essenziale per trasferire la scelta al modulo di gioco (player.js)
         localStorage.setItem("playerClass", selectedClass);
         localStorage.setItem("playerName", playerName);
 
-        // --- 2. Reindirizzamento ---
+        // --- 2) Reindirizzamento ---
         // Carica la pagina principale del gioco
         window.location.href = "game.html";
     });
