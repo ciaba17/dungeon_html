@@ -10,6 +10,7 @@ import { globals, textures } from '../utils/globals.js';           // Variabili 
 import { player } from './player.js';                              // L'oggetto Player (per il calcolo della distanza e dell'angolo)
 import { showDialogues } from './ui.js';                           // Funzione per mostrare i dialoghi all'interazione
 import { showElement, hideElement } from '../utils/cssHandler.js'; // Utilità UI
+import { sounds } from '../core/audio.js';
 
 
 // ====================================================================================
@@ -238,24 +239,30 @@ export class GameObject extends Entity {
         // Gli oggetti sono sempre inizialmente interactable.
         super(x, y, z, scale, name, true);
         this.collectable = collectable
-        if (this.collectable) this.collected = false; // Flag se è collezionabile.
+        if (this.collectable) this.collected = false; // Flag se è collezionabile
         this.dialogueId = dialogueId;
     }
 
-    /** Logica per "raccogliere" l'oggetto. */
+    /** Logica per "raccogliere" l'oggetto */
     collect() {
         this.collected = true;
-        this.onScreen = false; // Sparisce dal rendering.
+        this.onScreen = false; // Sparisce dal rendering
 
-        // Mostra dialogo quando raccolto.
+        // Mostra dialogo quando raccolto
         showDialogues(this.dialogueId);
 
-        // Aggiunge all'inventario del player.
-        player.inventory.push(this.name);
+        
+        player.inventory.push(this.name);                            // Aggiunge all'inventario del player
+        globals.entities = globals.entities.filter(e => e !== this); // Rimuove l'oggetto dal mondo
+        
+        sounds.collectItem.play();                                     // Suono di raccoltayy
+        // Aggiorna l'UI dell'inventario.
         const inventoryUI = document.getElementById("inventory-slots");
         for (let slot of inventoryUI.getElementsByClassName("inventory-slot")) {
             if (!slot.dataset.filled) {
                 slot.style.backgroundImage = `url('assets/images/${this.name}.png')`;
+                slot.style.backgroundSize = "contain";
+                slot.style.backgroundColor = "rgba(255, 255, 255, 0.4)";
                 slot.dataset.filled = "true";
                 break;
             }
@@ -263,23 +270,9 @@ export class GameObject extends Entity {
         
     }
 
-    // placeholder per interazioni complesse (qui è gestito dal collect se collectable)
+    // Placeholder per interazioni complesse
     interact() {
-        // Logica futura: es. se non collectable, mostra un dialogo specifico.
-    }
-
-    /** Sovrascrive draw2D per non disegnare oggetti già raccolti. */
-    draw2D(ctx) {
-        if (!this.collected) {
-            super.draw2D(ctx);
-        }
-    }
-
-    /** Sovrascrive draw3D per non disegnare oggetti già raccolti. */
-    draw3D(ctx) {
-        if (!this.collected) {
-            super.draw3D(ctx);
-        }
+        // Logica futura: es. se non collectable, mostra un dialogo specifico
     }
 }
 

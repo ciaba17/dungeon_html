@@ -11,28 +11,28 @@
     <div id="menu" class="menu-container">
         <h1 class="menu-title">Echoes of the Deep Dungeon</h1>
         <div class="menu-buttons">
-            <button id="start-btn" class="menu-btn">Inizia</button>
-            <button id="commands-btn" class="menu-btn">Comandi</button>
-            <button id="options-btn" class="menu-btn">Opzioni</button>
-            <button id="credits-btn" class="menu-btn">Crediti</button>
+            <button id="start-btn" class="menu-btn">Start</button>
+            <button id="commands-btn" class="menu-btn">Commands</button>
+            <button id="options-btn" class="menu-btn">Options</button>
+            <button id="credits-btn" class="menu-btn">Credits</button>
         </div>
     </div>
 
     <!-- Finestra Comandi -->
     <div id="commands-window" class="menu-window hidden">
         <button class="close-btn" id="close-commands">✕</button>
-        <h2>Comandi di Gioco</h2>
+        <h2>Commands</h2>
         <div class="menu-content">
             <img src="assets/images/exploration_controls.png" alt="Comandi di movimento" class="commands-img">
             <img src="assets/images/combat_controls.png" alt="Comandi di combattimento" class="commands-img">
-            <img src="assets/images/interazione.png" alt="Comandi di interazione" class="commands-img">
+            <img src="assets/images/interaction_controls.png" alt="Comandi di interazione" class="commands-img">
         </div>
     </div>
 
-    <!-- Finestra Opzioni -->
+    <!-- Finestra Opzioni, solo visive, non funzionano -->
     <div id="options-window" class="menu-window hidden">
         <button class="close-btn" id="close-options">✕</button>
-        <h2>Opzioni</h2>
+        <h2>Options</h2>
         <div class="menu-content options-content">
             <div class="option">
                 <label for="music-volume">Volume Musica</label>
@@ -48,22 +48,13 @@
                 <label for="brightness">Luminosità</label>
                 <input type="range" id="brightness" min="0" max="100" value="50">
             </div>
-
-            <div class="option">
-                <label for="resolution">Risoluzione</label>
-                <select id="resolution">
-                    <option>1920x1080</option>
-                    <option>1600x900</option>
-                    <option>1280x720</option>
-                </select>
-            </div>
         </div>
     </div>
 
     <!-- Finestra Crediti -->
     <div id="credits-window" class="menu-window hidden">
         <button class="close-btn" id="close-credits">✕</button>
-        <h2>Crediti</h2>
+        <h2>Credits</h2>
         <div class="menu-content credits-content">
             <div class="menu-content credits-content">
                 <h1>Made By:</h1>

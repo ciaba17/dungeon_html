@@ -101,62 +101,72 @@ document.addEventListener("DOMContentLoaded", () => {
 /**
  * Event Listener per la pressione di un tasto (keydown)
  * Imposta a 'true' il flag corrispondente nella mappa inputState
+ * Sennò, per le azioni istantanee (es. interazione), chiama direttamente la funzione
  */
+// --- Pressione tasti ---
 document.addEventListener('keydown', event => {
-    switch (event.key) {
+    const key = event.key.toLowerCase(); // Normalizza il tasto (gestisce maiuscole e minuscole)
+
+    switch (key) {
         // --- Movimento (traslazione) ---
-        case 'ArrowUp':
+        case 'arrowup':
             inputState.movement.up = true;
             break;
-        case 'ArrowDown':
+        case 'arrowdown':
             inputState.movement.down = true;
             break;
-        case 'ArrowLeft':
+        case 'arrowleft':
             inputState.movement.left = true;
             break;
-        case 'ArrowRight':
+        case 'arrowright':
             inputState.movement.right = true;
             break;
-        // --- Rotazione (Look) ---
+
+        // --- Rotazione (look) ---
         case 'z':
             inputState.movement.turnLeft = true;
             break;
         case 'x':
             inputState.movement.turnRight = true;
             break;
+
         // --- Interazione ---
-        case ' ': // Tasto spacebar
-            player.interact(); // L'interazione è un'azione istantanea, non un flag da mantenere premuto
+        case 'e': // Tasto E
+            player.interact(); // Azione istantanea, non ha un flag da mantenere premuto
             break;
     }
 });
 
 /**
- * Event listener per il rilascio di un tasto (keyup)
- * Imposta a 'false' il flag corrispondente per interrompere l'azione
+ * Event listener per il rilascio dei tasti (keyup)
+ * Imposta a 'false' i flag corrispondenti per interrompere l'azione
  */
 document.addEventListener('keyup', event => {
-    switch (event.key) {
+    const key = event.key.toLowerCase(); // Normalizza il tasto anche qui
+
+    switch (key) {
         // --- Movimento (traslazione) ---
-        case 'ArrowUp':
+        case 'arrowup':
             inputState.movement.up = false;
             break;
-        case 'ArrowDown':
+        case 'arrowdown':
             inputState.movement.down = false;
             break;
-        case 'ArrowLeft':
+        case 'arrowleft':
             inputState.movement.left = false;
             break;
-        case 'ArrowRight':
+        case 'arrowright':
             inputState.movement.right = false;
             break;
-        // --- Rotazione (look) ---
+
+        // --- Rotazione ---
         case 'z':
             inputState.movement.turnLeft = false;
             break;
         case 'x':
             inputState.movement.turnRight = false;
             break;
-        // Le azioni istantanee come 'interact' (Spacebar) non hanno bisogno di un keyup
+
+        // Le azioni istantanee (es. interazione) non necessitano di gestione keyup
     }
 });

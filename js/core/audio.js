@@ -33,13 +33,14 @@ export const sounds = {
         }
     },
 
+    // --- Suoni inventario ---
+    collectItem: new Audio("assets/audio/collect_item.mp3"), // Suono riprodotto quando si raccoglie un oggetto
 
     // --- Musiche di Sottofondo e Suoni Ambientali ---
     bgMusic: new Audio("assets/audio/musics/bgMusic.mp3"), // Musica principale di esplorazione
     gate: new Audio("assets/audio/gate.mp3"),              // Suono per l'apertura/chiusura di cancelli o porte
     wind: new Audio("assets/audio/musics/wind.mp3"),       // Suono ambientale: vento
     birds: new Audio("assets/audio/musics/birds.mp3"),     // Suono ambientale: uccelli
-
 }
 
 

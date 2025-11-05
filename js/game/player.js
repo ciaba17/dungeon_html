@@ -86,12 +86,12 @@ class Player {
                 this.moveIfFree(90);
                 inputState.movement.right = false;
             }
-            if (inputState.movement.turnLeft) {
+            if (inputState.movement.turnLeft  && !this.interacting) {
                 this.targetAngle = this.angle - 90;
                 this.rotating = true;
                 inputState.movement.turnLeft = false;
             }
-            if (inputState.movement.turnRight) {
+            if (inputState.movement.turnRight  && !this.interacting) {
                 this.targetAngle = this.angle + 90;
                 this.rotating = true;
                 inputState.movement.turnRight = false;
@@ -196,7 +196,7 @@ class Player {
             if (interactX === entity.x && interactY === entity.y && entity.interactable) { 
                 
                 // --- Caso 1: interazione con NPC ---
-                if (entity instanceof Npc && !this.interacting) {
+                if (entity instanceof Npc && !this.interacting && entity.interactable) {
                     this.enterInteract(entity); // Avvia il dialogo
 
                     // Controlla se il dialogo con l'NPC è colelgato ad eventi
@@ -219,6 +219,7 @@ class Player {
                     }
                     else entity.interact(); // Interazione generica
                 }
+                entity.interactable = false; // Previene interazioni multiple
             }
         }
     }
