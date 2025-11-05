@@ -173,8 +173,9 @@ class Player {
             this.enteredDungeon = true;
         }
 
+        // Fine Demo (raccolta di due chiavi)
         if (this.inventory.includes("key1") && this.inventory.includes("key2")) {
-            showDialogues("demo_end");
+            showDialogues("demo_end");  // Mostra il dialogo di fine demo
         }
     }
 
