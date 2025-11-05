@@ -117,7 +117,6 @@ export function combat() {
             damage = calculateDamage(false);
             player.takeDamage(damage);
         }
-        console.log(damage)
     }
     
     // --- Messaggio di Risultato e Audio ---

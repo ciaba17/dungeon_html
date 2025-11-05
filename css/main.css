@@ -5,13 +5,13 @@
 
 
 html,body {
-    cursor: crosshair; /* cursore personalizzato */
+    cursor: crosshair;
     margin: 0;
     padding: 0;
     background-color: rgba(0, 0, 0, 1);
-    color: #fff; /* colore del testo */
-    font-family: "Font"; /* font personalizzato */
-    user-select: none; /* impedisce la selezione del testo */
+    color: #fff;
+    font-family: "Font";
+    user-select: none;
     width: 100%;
     height: 100%;
     aspect-ratio: 16 / 9;
@@ -21,15 +21,15 @@ html,body {
 
 #game-container {
     display: flex; 
-    justify-content: center; /* centra orizzontalmente */
-    align-items: center; /* centra verticalmente */
+    justify-content: center;
+    align-items: center;
     width: 75%;
-    height: 75vh; /* altezza basata sulla viewport */
+    height: 75vh;
 }
 
 #game-area {
     height: 100%;
-    aspect-ratio: 4 / 3; /* mantiene il rapporto 4:3 */
+    aspect-ratio: 4 / 3;
     background-color: #ffffff;
 }
 
@@ -42,7 +42,7 @@ button {
     position: fixed;
     inset: 0;
     background: rgba(100, 0, 0, 0.85);
-    z-index: 9999; /* sopra a tutto */
+    z-index: 9999;
     display: none;
     justify-content: center;
     align-items: center;

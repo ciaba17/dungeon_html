@@ -42,7 +42,6 @@
 }
 
 
-/* ===== Finestre Generali ===== */
 .menu-window {
     position: absolute;
     top: 10%;
@@ -81,7 +80,6 @@
     border-top: 10vmin solid rgb(0, 0, 0, 0);
 }
 
-/* Opzioni */
 .options-content {
     align-items: stretch;
     width: 90%;
@@ -125,7 +123,6 @@
     display: none;
 }
 
-/* ======== Crediti ======== */
 .credits-content {
     display: flex;
     flex-direction: column;
