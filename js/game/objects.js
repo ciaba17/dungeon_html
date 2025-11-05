@@ -6,9 +6,9 @@
 // ===== IMPORTAZIONI DI MODULI ESTERNI =====
 // ====================================================================================
 
-import { globals, textures } from '../utils/globals.js'; // Variabili e texture globali.
-import { player } from './player.js';                   // L'oggetto Player (per il calcolo della distanza e dell'angolo).
-import { showDialogues } from './ui.js';                // Funzione per mostrare i dialoghi all'interazione.
+import { globals, textures } from '../utils/globals.js';           // Variabili e texture globali.
+import { player } from './player.js';                              // L'oggetto Player (per il calcolo della distanza e dell'angolo).
+import { showDialogues } from './ui.js';                           // Funzione per mostrare i dialoghi all'interazione.
 import { showElement, hideElement } from '../utils/cssHandler.js'; // Utilità UI.
 
 
@@ -119,7 +119,7 @@ export class Entity {
         
         this.interactable = interactable;
         this.onScreen = true; // Usato per il frustum culling.
-        this.distance = 0; // Distanza dal player, aggiornata prima del rendering.
+        this.distance = 0;    // Distanza dal player, aggiornata prima del rendering.
     }
 
     /**
@@ -154,7 +154,7 @@ export class Entity {
 
         // --- Proiezione 3D (Trasformazione della matrice 2D del Player) ---
         // Formula standard per la proiezione di uno sprite in 2.5D (simile al Wolfenstein 3D)
-        const invDet = 1 / (planeX * dirY - dirX * planeY); // Determinante inverso
+        const invDet = 1 / (planeX * dirY - dirX * planeY);       // Determinante inverso
         const transformX = invDet * (dirY * dX - dirX * dY);
         const transformY = invDet * (-planeY * dX + planeX * dY); // Profondità (depth)
 
@@ -197,7 +197,7 @@ export class Entity {
                 const textureX = Math.floor((x / spriteWidth) * textureWidth);
                 ctx.drawImage(
                     this.texture,
-                    textureX, 0, 1, this.texture.height, // Sorgente: 1px verticale dalla texture
+                    textureX, 0, 1, this.texture.height,    // Sorgente: 1px verticale dalla texture
                     screenX, spriteScreenY, 1, spriteHeight // Destinazione: 1px scalato a schermo
                 );
             }

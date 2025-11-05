@@ -6,16 +6,16 @@
 // ===== IMPORTAZIONI DI MODULI ESTERNI =====
 // ====================================================================================
 
-import { globals } from "../utils/globals.js";         // Variabili di stato globale del gioco.
-import { createTimer } from "../utils/timer.js";       // Utilità per la creazione di un timer per i turni.
-import { inputState } from "../core/input.js";         // Stato degli input utente per le mosse di combattimento.
-import { showDialogues } from "./ui.js";               // Funzione per mostrare messaggi (dialoghi) a schermo.
-import { sounds } from "../core/audio.js";             // Risorse audio per suoni e risultati di combattimento.
-import { player } from "./player.js";                  // L'oggetto Player.
-import { hideElement } from '../utils/cssHandler.js';  // Utilità per nascondere elementi UI.
-import { showElement } from '../utils/cssHandler.js';  // Utilità per mostrare elementi UI.
+import { globals } from "../utils/globals.js";                // Variabili di stato globale del gioco.
+import { createTimer } from "../utils/timer.js";              // Utilità per la creazione di un timer per i turni.
+import { inputState } from "../core/input.js";                // Stato degli input utente per le mosse di combattimento.
+import { showDialogues } from "./ui.js";                      // Funzione per mostrare messaggi (dialoghi) a schermo.
+import { sounds } from "../core/audio.js";                    // Risorse audio per suoni e risultati di combattimento.
+import { player } from "./player.js";                         // L'oggetto Player.
+import { hideElement } from '../utils/cssHandler.js';         // Utilità per nascondere elementi UI.
+import { showElement } from '../utils/cssHandler.js';         // Utilità per mostrare elementi UI.
 import { scaleCanvas, fitGameMap } from "../core/scaling.js"; // Funzioni per il ri-scaling dopo modifiche UI.
-import { contexts } from "../core/renderer.js";        // Contesti del Canvas per il ri-scaling.
+import { contexts } from "../core/renderer.js";               // Contesti del Canvas per il ri-scaling.
 
 
 // ====================================================================================
@@ -59,13 +59,13 @@ export function combat() {
         // Itera sugli input di combattimento per vedere se un tasto/bottone è stato premuto.
         for (const action in inputState.combat) {
             if (inputState.combat[action]) {
-                combatState.player = action; // Memorizza la mossa scelta.
+                combatState.player = action;                // Memorizza la mossa scelta.
 
                 showDialogues(`${action}_player`);          // Mostra il messaggio della mossa.
                 sounds.combatSounds.player[action]?.play(); // Riproduci il suono corrispondente.
 
-                inputState.combat[action] = false; // Resetta l'input per evitare multi-click.
-                combatState.timer = createTimer(3); // Avvia il timer di attesa.
+                inputState.combat[action] = false;          // Resetta l'input per evitare multi-click.
+                combatState.timer = createTimer(3);         // Avvia il timer di attesa.
                 break;
             }
         }
@@ -88,10 +88,10 @@ export function combat() {
         // Scelta casuale della mossa del nemico.
         combatState.enemy = moves[Math.floor(Math.random() * moves.length)];
 
-        showDialogues(`${combatState.enemy}_enemy`);        // Mostra il messaggio della mossa nemica.
+        showDialogues(`${combatState.enemy}_enemy`);          // Mostra il messaggio della mossa nemica.
         sounds.combatSounds.enemy[combatState.enemy]?.play(); // Riproduci il suono del nemico.
 
-        combatState.timer.reset(); // Resetta il timer per l'attesa del risultato.
+        combatState.timer.reset();                            // Resetta il timer per l'attesa del risultato.
         return;
     }
 
@@ -250,8 +250,8 @@ export function renderCombat(ctx) {
 
     ctx.drawImage(
         enemy.texture,
-        globals.SCREEN_WIDTH / 2 - enemyTextureW / 2,     // Centrato orizzontalmente
-        globals.SCREEN_HEIGHT / 2 - enemyTextureH,       // Posizionato nella metà superiore
+        globals.SCREEN_WIDTH / 2 - enemyTextureW / 2, // Centrato orizzontalmente
+        globals.SCREEN_HEIGHT / 2 - enemyTextureH,    // Posizionato nella metà superiore
         enemyTextureW,
         enemyTextureH
     );
@@ -261,8 +261,8 @@ export function renderCombat(ctx) {
     const playerTextureH = player.backImage.height / 2;
     ctx.drawImage(
         player.backImage,
-        globals.SCREEN_WIDTH / 4 - playerTextureW / 2,   // Leggermente spostato a sinistra dal centro
-        globals.SCREEN_HEIGHT - playerTextureH,          // Posizionato in basso
+        globals.SCREEN_WIDTH / 4 - playerTextureW / 2, // Leggermente spostato a sinistra dal centro
+        globals.SCREEN_HEIGHT - playerTextureH,        // Posizionato in basso
         playerTextureW,
         playerTextureH
     );

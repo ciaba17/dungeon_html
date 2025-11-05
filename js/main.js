@@ -201,8 +201,8 @@ function updateExploration() {
  * Esegue le operazioni di disegno e rendering.
  */
 function renderGame() {
-    raycast();     // Calcola le intersezioni dei raggi con i muri e aggiorna il buffer 3D.
-    render();      // Disegna il mondo 3D e la minimappa sui rispettivi canvas.
+    raycast();                 // Calcola le intersezioni dei raggi con i muri e aggiorna il buffer 3D.
+    render();                  // Disegna il mondo 3D e la minimappa sui rispettivi canvas.
     drawFPS(contexts.gameCtx); // Disegna l'indicatore FPS in sovrimpressione.
 }
 
@@ -245,7 +245,7 @@ function drawFPS(ctx) {
  */
 window.addEventListener("DOMContentLoaded", async () => {
     console.log("🚀 Avvio del gioco in corso...");
-    await initGame(); // Prima: inizializzazione di tutte le risorse.
+    await initGame();                // Prima: inizializzazione di tutte le risorse.
     requestAnimationFrame(gameloop); // Poi: avvio del ciclo di gioco.
     console.log("🎮 Gioco avviato: 'main.js' ha completato il setup.");
 });

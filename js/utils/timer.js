@@ -9,9 +9,9 @@
 export function createTimer(duration) { 
     return {
         // --- Proprietà Interne ---
-        time: 0,                   // Tempo accumulato (in secondi, come delta)
-        duration: duration,        // Durata target (in secondi, come specificato nel parametro)
-        running: true,             // Stato attuale del timer
+        time: 0,            // Tempo accumulato (in secondi, come delta)
+        duration: duration, // Durata target (in secondi, come specificato nel parametro)
+        running: true,      // Stato attuale del timer
 
         // --- Metodi ---
 

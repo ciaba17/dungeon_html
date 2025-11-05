@@ -8,9 +8,9 @@
 
 // Classi base degli oggetti, presumibilmente da './objects.js'.
 import { Entity, Npc, GameObject } from './objects.js'; 
-import { globals, textures } from '../utils/globals.js';  // Variabili e texture globali.
-import { createTimer } from '../utils/timer.js';          // Utilità per la temporizzazione del ricalcolo del path.
-import { enterCombat, exitCombat } from './combat.js';    // Funzioni per la transizione tra stati di gioco.
+import { globals, textures } from '../utils/globals.js'; // Variabili e texture globali.
+import { createTimer } from '../utils/timer.js';         // Utilità per la temporizzazione del ricalcolo del path.
+import { enterCombat, exitCombat } from './combat.js';   // Funzioni per la transizione tra stati di gioco.
 
 
 // ====================================================================================
@@ -30,11 +30,11 @@ class Node {
     constructor(x, y, walkable) {
         this.x = x;
         this.y = y;
-        this.g = 0; // Costo dal nodo di partenza (g(n)).
-        this.h = 0; // Euristica: costo stimato al nodo target (h(n)).
-        this.f = 0; // Costo totale: f(n) = g(n) + h(n).
+        this.g = 0;          // Costo dal nodo di partenza (g(n)).
+        this.h = 0;          // Euristica: costo stimato al nodo target (h(n)).
+        this.f = 0;          // Costo totale: f(n) = g(n) + h(n).
         this.walkable = walkable;
-        this.parent = null; // Il nodo precedente nel percorso ottimale.
+        this.parent = null;  // Il nodo precedente nel percorso ottimale.
         this.neighbors = []; // Nodi adiacenti (vicini).
     }
 

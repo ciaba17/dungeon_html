@@ -13,8 +13,8 @@ import { showElement, hideElement } from "../utils/cssHandler.js";
 import { sounds } from "../core/audio.js";
 
 // --- Costanti di Movimento ---
-const SPEED = 3 * globals.tileSize;     // Velocità di movimento (unità al secondo)
-const ROTATION_SPEED = 180;             // Velocità di rotazione (gradi al secondo)
+const SPEED = 3 * globals.tileSize; // Velocità di movimento (unità al secondo)
+const ROTATION_SPEED = 180;         // Velocità di rotazione (gradi al secondo)
 
 
 // ====================================================================================
@@ -36,7 +36,7 @@ class Player {
 
         // --- Dati Giocatore (da localStorage) ---
         this.name = localStorage.getItem("playerName");
-        this.updateNameUI(); // Aggiorna l'elemento DOM del nome
+        this.updateNameUI();                // Aggiorna l'elemento DOM del nome
         this.classType = localStorage.getItem("playerClass");
         this.initClassType(this.classType); // Inizializza stats specifiche per la classe
 
@@ -213,7 +213,7 @@ class Player {
                 if (entity instanceof GameObject) { 
                     if (entity.collectable) {
                         this.enterInteract(entity, true); // Avvia dialogo (è un oggetto)
-                        entity.collect(); // Raccoglie l'oggetto
+                        entity.collect();                 // Raccoglie l'oggetto
                     }
                     else entity.interact(); // Interazione generica
                 }

@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedClass = btn.dataset.class;
             if(classData[selectedClass]) {
                 modal.classList.remove("hidden"); // Rimuove la classe 'hidden' per mostrare il modal
-                nameInput.focus(); // Porta il focus sull'input per una migliore UX
+                nameInput.focus();                // Porta il focus sull'input per una migliore UX
             }
         });
     });
