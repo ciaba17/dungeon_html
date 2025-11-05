@@ -1,5 +1,5 @@
-// classSelection.js - Gestisce l'interfaccia utente sulla pagina di selezione del personaggio (class.html).
-// Cattura la classe scelta e il nome del giocatore, salvandoli nel localStorage.
+// classSelection.js - Gestisce l'interfaccia utente sulla pagina di selezione del personaggio (class.html)
+// Cattura la classe scelta e il nome del giocatore, salvandoli nel localStorage
 
 // ====================================================================================
 // ===== ESECUZIONE PRINCIPALE (DOMContentLoaded) =====
@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById("player-name-input"); // L'input del nome
     const confirmBtn = document.getElementById("confirm-name-btn"); // Bottone di conferma nel modal
 
-    let selectedClass = null; // Variabile per memorizzare la classe scelta.
+    let selectedClass = null; // Variabile per memorizzare la classe scelta
 
-    // --- Dati delle Classi ---
+    // --- Dati delle classi ---
     const classData = {
         wizard: { 
             name: "Wizard", 
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // L'infoBox è l'elemento adiacente (tooltip o descrizione)
         const infoBox = btn.nextElementSibling; 
 
-        // --- Evento 1: Mouse Enter (Mostra Descrizione/Tooltip) ---
+        // --- Evento 1: mouse enter (mostra descrizione/tooltip) ---
         btn.addEventListener('mouseenter', () => {
             const cls = btn.dataset.class; // Recupera l'ID della classe (es. 'wizard') dal data-class
             if(classData[cls]) {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // --- Evento 2: Mouse Leave (Nasconde Descrizione/Tooltip) ---
+        // --- Evento 2: mouse leave (nasconde descrizione/tooltip) ---
         btn.addEventListener('mouseleave', () => {
             infoBox.style.display = 'none';
         });

@@ -2,13 +2,13 @@
 // che garantisce un conteggio del tempo coerente indipendentemente dagli FPS del gioco.
 
 /**
- * Crea e restituisce un nuovo oggetto Timer.
- * * @param {number} duration La durata del timer in secondi.
- * @returns {Object} Un oggetto timer con metodi 'update' e 'reset'.
+ * Crea e restituisce un nuovo oggetto timer
+ * * @param {number} duration La durata del timer in secondi
+ * @returns {Object} Un oggetto timer con metodi 'update' e 'reset'
  */
 export function createTimer(duration) { 
     return {
-        // --- Proprietà Interne ---
+        // --- Proprietà interne ---
         time: 0,            // Tempo accumulato (in secondi, come delta)
         duration: duration, // Durata target (in secondi, come specificato nel parametro)
         running: true,      // Stato attuale del timer
@@ -16,8 +16,8 @@ export function createTimer(duration) {
         // --- Metodi ---
 
         /**
-         * Aggiorna lo stato del timer.
-         * * @param {number} delta Il tempo trascorso dall'ultimo frame (deltaTime) in secondi.
+         * Aggiorna lo stato del timer
+         * * @param {number} delta Il tempo trascorso dall'ultimo frame (deltaTime) in secondi
          */
         update(delta) {
             if (!this.running) return;
@@ -31,7 +31,7 @@ export function createTimer(duration) {
         },
 
         /**
-         * Resetta il timer, riportando il tempo a zero e riavviandolo.
+         * Resetta il timer, riportando il tempo a zero e riavviandolo
          */
         reset() {
             this.time = 0;

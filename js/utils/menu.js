@@ -1,5 +1,5 @@
 // menu.js - Gestisce la logica di interazione del menu principale index.html: 
-// navigazione verso la selezione classe e gestione delle finestre modali (pop-up).
+// Navigazione verso la selezione classe e gestione delle finestre modali (pop-up)
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ====================================================================================
 
     /**
-     * Avvia il flusso di gioco reindirizzando alla pagina di selezione della classe.
+     * Avvia il flusso di gioco reindirizzando alla pagina di selezione della classe
      */
     startBtn.addEventListener("click", () => {
         // Reindirizza l'utente alla schermata successiva (selezione classe/nome)
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ====================================================================================
 
     /**
-     * Configura gli event listener per mostrare e nascondere una specifica finestra modale.
-     * @param {HTMLElement} openBtn Il pulsante che apre la finestra.
-     * @param {HTMLElement} windowElement La finestra modale (elemento DOM).
-     * @param {HTMLElement} closeBtn Il pulsante o l'icona per chiudere la finestra.
+     * Configura gli event listener per mostrare e nascondere una specifica finestra modale
+     * @param {HTMLElement} openBtn Il pulsante che apre la finestra
+     * @param {HTMLElement} windowElement La finestra modale (elemento DOM)
+     * @param {HTMLElement} closeBtn Il pulsante o l'icona per chiudere la finestra
      */
     function setupModal(openBtn, windowElement, closeBtn) {
         // Mostra la finestra modale (rimuove la classe 'hidden')
