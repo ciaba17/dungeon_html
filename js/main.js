@@ -243,6 +243,5 @@ function drawFPS(ctx) {
  */
 window.addEventListener("DOMContentLoaded", async () => {
     await initGame();                // Prima: inizializzazione di tutte le risorse.
-    await initGame();                // Prima: inizializzazione di tutte le risorse.
     requestAnimationFrame(gameloop); // Poi: avvio del ciclo di gioco.
 });
