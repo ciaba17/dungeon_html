@@ -455,7 +455,6 @@ function isWallAt(x, y) {
 
 /**
  * Creazione dell'unica istanza di Player. 
- * Viene esportata in modo che altri moduli (es. raycaster.js) possano importarla.
- * Player(x, y, angle) -> Es. Tile (23, 25) con angolo di 0 gradi.
+ * Viene esportata in modo che altri moduli (es. raycaster.js) possano importarla
  */
-export const player = new Player(23, 25, 0);
+export const player = new Player(23, 25, 90);
