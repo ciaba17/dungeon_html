@@ -5,20 +5,20 @@
     width: 75%;
     height: 25%;
     background-color: rgba(0, 0, 0);
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo... */
+    box-sizing: border-box;
 }
 
 #player-head {
     position: absolute;
     bottom: 0%;
     left: 0%;
-    width: 16%; /* larghezza dell'immagine */
-    height: 100%; /* altezza dell'immagine */
-    background-size: cover; /* Copre tutta l'area */
-    background-position: center; /* Centra l'immagine */
-    border: 0.8vmin double #fff; /* double per il doppio bordo */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo... */
-    background-clip: padding-box; /* Impedisce che lo sfondo tocchi il bordo */
+    width: 16%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border: 0.8vmin double #fff;
+    box-sizing: border-box;
+    background-clip: padding-box;
 }
 
 #info-container {
@@ -28,15 +28,15 @@
     height: 100%;
     padding: 1%;
     background-color: rgba(0, 0, 0, 1);
-    border: 0.8vmin double #fff; /* Double per il doppio bordo */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    border: 0.8vmin double #fff;
+    box-sizing: border-box;
     overflow: hidden;
 }
 
 #textbox-content {
-    white-space: normal;          /* Permette di andare a capo */
-    overflow-wrap: break-word;    /* Forza l'andata a capo se la parola è troppo lunga */
-    word-break: break-word;  
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
     font-size: 6vmin;
 }
 
@@ -46,7 +46,7 @@
     right: 0%;
     width: 25%;
     height: 100%;
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    box-sizing: border-box;
 }
 
 #move-controls {
@@ -54,11 +54,11 @@
     width: 100%;
     height: 30%;
     background-color: rgba(0, 0, 0);
-    border: 0.8vmin double #fff; /* Double per il doppio bordo */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
-    display: flex; /* Usa Flexbox per il layout */
-    flex-direction: column; /* Disposizione verticale */
-    justify-content: center; /* Centra verticalmente */
+    border: 0.8vmin double #fff;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 3%;
     gap: 2%;
 }
@@ -67,45 +67,44 @@
     position: relative;
     width: 100%;
     height: 100%;
-    display: flex; /* Usa Flexbox per il layout */
-    justify-content: center; /* Centra orizzontalmente */
-    align-items: center; /* Centra verticalmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #interact-btn {
-    width: 90%; /* Larghezza del bottone */
-    height: 90%; /* Altezza del bottone */
-    background-color: rgb(0, 0, 0); /* Colore di sfondo leggermente visibile */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    width: 90%;
+    height: 90%;
+    background-color: rgb(0, 0, 0);
+    box-sizing: border-box;
     font-size: 6vmin;
     color: #fff;
-    cursor: pointer; /* Cambia il cursore quando si passa sopra il bottone */
-    border: 0.4vmin double #fff; /* Bordo bianco */
-    display: flex; /* Usa Flexbox per il layout */
-    justify-content: center; /* Centra orizzontalmente */
-    
+    cursor: pointer;
+    border: 0.4vmin double #fff;
+    display: flex;
+    justify-content: center;
 }
 
 #controls-up, #controls-down {
-    display: flex; /* Usa Flexbox per il layout */
-    justify-content: space-around; /* Spazio uniforme tra i bottoni */
+    display: flex;
+    justify-content: space-around;
     width: 100%;
     height: 40%;
     gap: 2%;
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    box-sizing: border-box;
 }
 
 .move-btn {
     position: relative;
-    width: 40%; /* Larghezza del bottone */
-    background-color: rgb(0, 0, 0); /* Colore di sfondo leggermente visibile */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    width: 40%;
+    background-color: rgb(0, 0, 0);
+    box-sizing: border-box;
     font-size: 6vmin;
     color: #fff;
-    cursor: pointer; /* Cambia il cursore quando si passa sopra il bottone */
-    border: 0.4vmin double #fff; /* Bordo bianco */
+    cursor: pointer;
+    border: 0.4vmin double #fff;
 
-    cursor: pointer;  /* mantiene il cursore a mano */
+    cursor: pointer; 
 }
 
 #combat-controls {
@@ -113,11 +112,11 @@
     width: 100%;
     height: 30%;
     background-color: rgba(0, 0, 0);
-    border: 0.8vmin double #fff; /* Double per il doppio bordo */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
-    display: flex; /* Usa Flexbox per il layout */
-    justify-content: space-around; /* Spazio uniforme tra i bottoni */
-    align-items: center; /* Centra verticalmente */
+    border: 0.8vmin double #fff;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     padding: 3%;
     gap: 2%;
 }
@@ -126,16 +125,16 @@
     position: relative;
     width: 30%; /* Larghezza del bottone */
     background-color: rgb(0, 0, 0);
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    box-sizing: border-box;
     font-size: 4vmin;
     color: #fff;
-    cursor: pointer; /* Cambia il cursore quando si passa sopra il bottone */
-    border: 0.4vmin double #fff; /* Bordo bianco */
-    cursor: pointer;  /* mantiene il cursore a mano */
+    cursor: pointer;
+    border: 0.4vmin double #fff;
+    cursor: pointer;
     aspect-ratio: 1 / 1;
     
-    background-size: cover; /* Copre tutta l'area */
-    background-position: center; /* Centra l'immagine */
+    background-size: cover;
+    background-position: center;
 }
 
 #map-container {
@@ -143,8 +142,8 @@
     width: 100%;
     height: 40%;
     background-color: rgba(0, 0, 0);
-    border: 0.8vmin double #fff; /* Double per il doppio bordo */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    border: 0.8vmin double #fff;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -164,8 +163,8 @@
     width: 100%;
     height: 30%;
     background-color: rgba(0, 0, 0);
-    border: 0.8vmin double #fff; /* Double per il doppio bordo */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    border: 0.8vmin double #fff;
+    box-sizing: border-box;
 }
 
 #inventory-title {
@@ -175,8 +174,8 @@
     height: 16%;
     background-color: rgba(0, 0, 0);
     border-bottom: 0.8vmin double #fff;
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
-    text-align:center; /* Centra il testo orizzontalmente */
+    box-sizing: border-box;
+    text-align:center; 
     font-size: 3.6vmin;
 }
 
@@ -185,21 +184,21 @@
     top: 16%;
     width: 100%;
     height: 84%;
-    display: flex; /* Usa Flexbox per il layout */
-    flex-wrap: wrap; /* Permette di andare a capo se necessario */
-    justify-content: space-around; /* Spazio uniforme tra gli slot */
-    align-items: center; /* Centra gli slot verticalmente */
-    padding: 1vmin; /* Spazio interno */
-    gap: 1vmin; /* Spazio tra gli slot */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1vmin; 
+    gap: 1vmin;
+    box-sizing: border-box;
     
 }
 
 .inventory-slot {
-    width: 21%; /* Larghezza dello slot */
-    background-color: rgba(0, 0, 0, 0.1); /* Colore di sfondo leggermente visibile */
-    border: 0.2vmin solid #fff; /* Bordo bianco */
-    box-sizing: border-box; /* Larghezza dichiarata include gia padding, bordo...  */
+    width: 21%;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 0.2vmin solid #fff;
+    box-sizing: border-box;
     aspect-ratio: 1 / 1; /* sempre quadrato */
 }
 
@@ -286,7 +285,7 @@
     font-family: "Courier New", monospace;
     display: flex;
     align-items: center;
-    justify-content: center; /* centrati */
+    justify-content: center;
     padding: 2vmin 0;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -302,7 +301,7 @@
     gap: 0.4vmin;
     border-right: 1px solid #fff; /* linea di divisione al centro */
     padding: 1vmin;
-    width: 50%; /* metà esatta dell'hud */
+    width: 50%; /* metà dell'hud */
     text-align: left;
 }
 
@@ -329,8 +328,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 50%; /* metà esatta dell'hud */
-    padding-left: 3vmin; /* separazione interna dalla linea */
+    width: 50%; /* metà dell'hud */
+    padding-left: 3vmin; /* linea di divisione al centro */
 }
 
 #status-block,
@@ -392,15 +391,12 @@
 .death-message h1 {
     font-size: 6vmin;
     margin-bottom: 2vmin;
-    text-transform: uppercase;
 }
 
 #death-text {
-    font-size: 1.5rem;            /* dimensione ben visibile */
+    font-size: 3.2vmin; 
     text-align: center;
-    text-shadow: 0 0 10px rgba(255, 0, 0, 0.6); /* bagliore rosso */
     margin-top: 20px;
-    animation: fadeIn 1.5s ease-in-out;
 }
 
 #retry-btn {
