@@ -128,6 +128,8 @@ export function enterCombat(enemy) {
     textboxContent.style.textAlign = "center";
     const textContainer = document.getElementById("map-container");
     textContainer.appendChild(textboxContent);
+
+    enemy.updateHPBar();
 }
 
 export function exitCombat() {
@@ -145,10 +147,8 @@ export function exitCombat() {
     hideElement(document.getElementById("combat-stats"));
 
     // Riporta il textbox nel suo contenitore originale (se necessario)
-    const originalContainer = document.getElementById("ui-container");
-    if (originalContainer && !originalContainer.contains(textboxContent)) {
-        originalContainer.appendChild(textboxContent);
-    }
+    const originalContainer = document.getElementById("info-container");
+    originalContainer.appendChild(textboxContent);
 
     // Riresiza tutto
     scaleCanvas(globals.gameCanvas, contexts.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);

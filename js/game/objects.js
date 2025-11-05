@@ -19,22 +19,12 @@ class Wall {
             textures.blankTexture,// 0
             textures.wallTexture, // 1
             textures.outside1_1, // 2
-            textures.outside1_2, // 3
-            textures.outside1_3, // 4
-            textures.outside2_1, // 5
-            textures.outside2_2, // 6
-            textures.outside2_3, // 7
-            textures.outside3_1, // 8
-            textures.outside3_2, // 9
-            textures.outside3_3, // 10
-            textures.gate, // 11
-            textures.errorTexture, // 19
-            textures.errorTexture, // 20
-            textures.errorTexture, // 21
+            textures.gate, // 3
+            textures.errorTexture, // 3
 
         ];
 
-        this.texture = textureList[textureId] || textures.errorTexture; // fallback
+        this.texture = textureList[textureId] || textures.blankTexture; // fallback
     }
 
 

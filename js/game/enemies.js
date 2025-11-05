@@ -30,7 +30,7 @@ export class Enemy extends Entity {
         this.hp = hp;
         this.hpLimit = hp;
         this.updateHPBar();
-        this.baseDamage = 20;
+        this.baseDamage = baseDamage;
         this.speed = speed;
     }
 
@@ -94,10 +94,11 @@ export class Enemy extends Entity {
             if (Math.abs(this.x - targetX) < 0.1 && Math.abs(this.y - targetY) < 0.1) {
                 this.path.shift();
             }
+            this.updateHPBar();
         }   
     }
 
-    updateHPBar() { // DA RIVEDERE TESTO
+    updateHPBar() {
         const fill = document.getElementById("enemy-hp-fill");
         const text = document.getElementById("enemy-hp-text");
         const percent = (this.hp / this.hpLimit) * 100;
@@ -252,12 +253,13 @@ function findPath(startNode, targetNode) {
 export function mapToEntities(id) {
     const ENTITY_TYPES = {
         1: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"dungeon_keeper", dialogueId:"dungeon_keeper" }},
-        2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Skeleton", hp:60, baseDamage:10, speed:10 }},
-        3: { class: Enemy, defaults: { x:0, y:0, z:0, scale:0.5, name:"Rat", hp:15, baseDamage:3, speed:30 }},
-        4: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key1", dialogueId:"", interactable:true }},
-        5: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"Key2", dialogueId:"", interactable:true }},
-        6: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"Tree", interactable:false }},
-        7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"HoodedMan", dialogueId:"hooded_man_dialogue" }},
+        2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"skeleton", hp:60, baseDamage:10, speed:35 }},
+        3: { class: Enemy, defaults: { x:0, y:0, z:0, scale:0.5, name:"rat", hp:15, baseDamage:5, speed:100 }},
+        4: { class: GameObject, defaults: { x:0, y:-15, z:0, scale:0.2, name:"key1", dialogueId:"object_collected", collectable:true }},
+        5: { class: GameObject, defaults: { x:0, y:-15, z:0, scale:0.2, name:"key2", dialogueId:"demo_end", collectable:true }},
+        6: { class: Entity, defaults: { x:0, y:0, z:0, scale:1, name:"tree", interactable:false }},
+        7: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"hooded_man", dialogueId:"hooded_man" }},
+        // Ipotetici entità future
         8: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Zombie", hp:50, baseDamage:8, speed:30 }},
         9: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"Goblin", hp:30, baseDamage:6, speed:30 }},
         10: { class: GameObject, defaults: { x:0, y:0, z:0, scale:0.5, name:"AncientScroll", dialogueId:"", interactable:true }},
@@ -279,17 +281,17 @@ export function mapToEntities(id) {
             if (!entityConfig) continue;
 
             const EntityClass = entityConfig.class;
-            const params = { ...entityConfig.defaults };
+            const params = { ...entityConfig.defaults }; // Copia i parametri di default in un nuovo oggetto
 
             let entity;
             j++;
             i++;
             if (EntityClass === Enemy) {
-                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.hp || 50, params.baseDamage || 10);
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.hp || 50, params.baseDamage || 10, params.speed || 25);
             } else if (EntityClass === Npc) {
                 entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.dialogueId || "");
             } else {
-                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name);
+                entity = new EntityClass(j, i, params.z || 0, params.scale, params.name, params.dialogueId, params.collectable);
             }
             j--;
             i--;

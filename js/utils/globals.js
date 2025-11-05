@@ -33,8 +33,8 @@ export const globals = {
 
     combatInputLocked: false,
     
-    floorColor: "rgba(101, 242, 0, 0.97)",
-    ceilingColor: "rgba(0, 202, 242, 1)"
+    ceilingColor: "rgb(86, 152, 232)",
+    floorColor: "rgb(67, 112, 11)",
 };
 
 
@@ -44,18 +44,8 @@ export const textures = {
     blankTexture: new Image(),
     wallTexture: new Image(),
     outside1_1: new Image(),
-    outside1_2: new Image(),
-    outside1_3: new Image(),
-    outside2_1: new Image(),
-    outside2_2: new Image(),
-    outside2_3: new Image(),
-    outside3_1: new Image(),
-    outside3_2: new Image(),
-    outside3_3: new Image(),
     gate: new Image(),
     errorTexture: new Image(),
-    monster: new Image(),
-    key: new Image(),
 };
 
 for (let key in textures) {

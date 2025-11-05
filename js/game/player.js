@@ -3,6 +3,7 @@ import { Npc, walls, GameObject, mapToWalls } from "./objects.js";
 import { globals } from "../utils/globals.js";
 import { showDialogues } from "./ui.js";
 import { showElement, hideElement } from "../utils/cssHandler.js";
+import { sounds } from "../core/audio.js";
 
 const SPEED = 3 * globals.tileSize;     // unità al secondo
 const ROTATION_SPEED = 180;             // gradi al secondo
@@ -18,8 +19,10 @@ class Player {
         this.updateNameUI();
         this.classType = localStorage.getItem("playerClass");
         this.initClassType(this.classType);
+
         this.baseDamage = 20;
         this.inventory;
+        this.inventory = [];
 
         
         // Movimento attivo
@@ -102,10 +105,10 @@ class Player {
             if (this.angle >= 360) this.angle -= 360;
         }
 
-        this.checkPositionEvents(); // Guarda gli eventi legati alla posizione del giocatore
+        this.checkEvents(); // Guarda gli eventi legati alla posizione del giocatore
     }
 
-    checkPositionEvents() {
+    checkEvents() {
         const col = Math.floor(this.x / globals.tileSize);
         const row = Math.floor(this.y / globals.tileSize);
 
@@ -115,10 +118,20 @@ class Player {
             globals.maps.map[30][23] = [1,11];
             globals.maps.map[30][24] = [1,11];
             mapToWalls("map");
-            globals.floorColor = "rgb(0,0,0)"
-            globals.ceilingColor = "rgb(0,0,0)"
+            globals.floorColor = "rgb(0,0,0)";
+            globals.ceilingColor = "rgb(0,0,0)";
+            sounds.bgMusic.play();
+            sounds.gate.play();
+            sounds.wind.pause();
+            sounds.birds.pause();
             this.enteredDungeon = true;
         }
+
+        if (this.inventory.includes("key1") && this.inventory.includes("key2")) {
+            // Fine demo
+        }
+
+
     }
 
     interact() {
@@ -139,6 +152,7 @@ class Player {
                             globals.maps.map[30][23] = [0,0];
                             globals.maps.map[30][24] = [0,0];
                             mapToWalls("map");
+                            sounds.gate.play();
                             break;
                     }
 

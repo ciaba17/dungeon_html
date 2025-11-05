@@ -20,12 +20,15 @@ export const sounds = {
 
 
     bgMusic: new Audio("assets/audio/musics/bgMusic.mp3"),
+    gate: new Audio("assets/audio/gate.mp3"),
+    wind: new Audio("assets/audio/musics/wind.mp3"),
+    birds: new Audio("assets/audio/musics/birds.mp3"),
+
 }
 
-
-
+sounds.bgMusic.loop = true;
 sounds.bgMusic.volume = 0.05;
-// Fa partire la bg music ad un qualsiasi click della pagina
-document.addEventListener('click', () => {
-    sounds.bgMusic.play()
-});
+sounds.wind.loop = true;
+sounds.wind.volume = 0.05;
+sounds.birds.loop = true;
+sounds.birds.volume = 0.05;

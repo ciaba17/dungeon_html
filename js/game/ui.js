@@ -61,6 +61,13 @@ export function showDialogues(id) {
         } else { // Tutti i dialoghi sono finiti
             if (player.interactingWithNpc) player.exitInteract(); // Disattiva interazione con NPC
             if (id !== "blank_dialogue") showDialogues("blank_dialogue") // Se il testo prima non gia stato messo per resettare: resetta con dialogo vuoto
+            if (id === "demo_end") { // Alla fine del gioco
+                // Ricarica la pagina dopo qualche secondo
+                setTimeout(() => {
+                    // Torna alla pagina principale
+                location.href = "index.html";
+                }, 5000); // 5 secondi
+            }
         }
     }
 

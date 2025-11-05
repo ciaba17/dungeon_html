@@ -9,6 +9,7 @@ import { contexts, render } from './core/renderer.js';
 import { scaleCanvas, fitGameMap } from './core/scaling.js';
 import { Enemy, createNodeMap } from './game/enemies.js';
 import { combat } from './game/combat.js';
+import { sounds } from './core/audio.js';
 
 
 // ===== INIZIALIZZAZIONE DEL GIOCO =====
@@ -26,6 +27,10 @@ async function initGame() {
 
     // --- Scaling ---
     setupScaling();
+
+    // Playa i suoni iniziali
+    sounds.wind.play();
+    sounds.birds.play();
 }
 
 

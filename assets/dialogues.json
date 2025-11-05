@@ -3,6 +3,13 @@
         ""
     ],
 
+    "demo_end": [
+        "Thank you for playing this demo!",
+        "We know it's just a buggy taste...",
+        "next time we will do even better, we promise!"
+    ],
+
+
     "object_collected": [
         "Object collected!"
     ],
@@ -13,6 +20,15 @@
         "Yet I see your heart does not falter.",
         "Hear this: what lies within is not meant for all.",
         "Are you ready? Then let the gate open for you..."
+    ],
+
+    "hooded_man": [
+        "Heh… so you seek passage, do you?",
+        "I too need a key… but it is not whole.",
+        "Bring me both halves, and I might let you step forward first.",
+        "Fail… or betray me, and the shadows will enjoy your company.",
+        "Do you understand? Two pieces, one task, one reward.",
+        "Enough talk. Now go!"
     ],
 
     "death_messages": [
