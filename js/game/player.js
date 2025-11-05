@@ -1,5 +1,5 @@
-// player.js - Definisce la classe Player, la logica di movimento, interazione e stato.
-// Esporta l'istanza 'player' utilizzata globalmente dagli altri moduli.
+// player.js - Definisce la classe Player, la logica di movimento, interazione e stato
+// Esporta l'istanza 'player' utilizzata globalmente dagli altri moduli
 
 // ====================================================================================
 // ===== IMPORTAZIONI E COSTANTI =====
@@ -23,34 +23,34 @@ const ROTATION_SPEED = 180;         // Velocità di rotazione (gradi al secondo)
 
 class Player {
     /**
-     * @param {number} x Coordinata X della tile di spawn.
-     * @param {number} y Coordinata Y della tile di spawn.
-     * @param {number} angle Angolo di partenza in gradi.
+     * @param {number} x Coordinata X della tile di spawn
+     * @param {number} y Coordinata Y della tile di spawn
+     * @param {number} angle Angolo di partenza in gradi
      */
     constructor(x, y, angle) {
-        // --- Posizione e Angolo ---
-        // Centra il player all'interno della tile (es. 1.5, 2.5)
+        // --- Posizione e angolo ---
+        // Centra il player all'interno della tile
         this.x = (x + 1) * globals.tileSize - globals.tileSize / 2;
         this.y = (y + 1) * globals.tileSize - globals.tileSize / 2;
         this.angle = angle; // in gradi
 
-        // --- Dati Giocatore (da localStorage) ---
+        // --- Dati giocatore (da localStorage) ---
         this.name = localStorage.getItem("playerName");
         this.updateNameUI();                // Aggiorna l'elemento DOM del nome
         this.classType = localStorage.getItem("playerClass");
         this.initClassType(this.classType); // Inizializza stats specifiche per la classe
 
-        // --- Statistiche e Inventario ---
+        // --- Statistiche e inventario ---
         this.baseDamage = 20;
         this.inventory; // (Questa riga è ridondante ma mantenuta per fedeltà all'originale)
         this.inventory = [];
 
-        // --- Stato Movimento (per interpolazione) ---
+        // --- Stato movimento (per interpolazione) ---
         this.moving = false;
         this.rotating = false;
         this.interactingWithNpc = false;
 
-        // Obiettivi (Target) per il movimento interpolato
+        // Obiettivi (target) per il movimento interpolato
         this.targetX = this.x;
         this.targetY = this.y;
         this.targetAngle = this.angle;
@@ -64,12 +64,12 @@ class Player {
     // ====================================================================================
 
     /**
-     * Funzione principale del Player, chiamata ad ogni frame dal gameloop.
-     * Gestisce la lettura degli input e l'interpolazione di movimento e rotazione.
+     * Funzione principale del Player, chiamata ad ogni frame dal gameloop
+     * Gestisce la lettura degli input e l'interpolazione di movimento e rotazione
      */
     update() {
-        // --- 1. Lettura Input (solo se il player è fermo) ---
-        // Imposta i 'target' per il movimento/rotazione.
+        // --- 1. Lettura input (solo se il player è fermo) ---
+        // Imposta i 'target' per il movimento/rotazione
         if (!this.moving && !this.rotating) {
             if (inputState.movement.up) {
                 this.moveIfFree(0);
@@ -99,8 +99,8 @@ class Player {
             }
         }
 
-        // --- 2. Movimento (Interpolazione Smooth) ---
-        // Esegue lo spostamento effettivo verso il targetX/targetY.
+        // --- 2. Movimento (interpolazione smooth) ---
+        // Esegue lo spostamento effettivo verso il targetX/targetY
         if (this.moving) {
             const dX = this.targetX - this.x;
             const dY = this.targetY - this.y;
@@ -120,10 +120,10 @@ class Player {
         }
 
         // --- 3. Rotazione (Interpolazione Smooth) ---
-        // Esegue la rotazione effettiva verso il targetAngle.
+        // Esegue la rotazione effettiva verso il targetAngle
         if (this.rotating) {
             let diff = this.targetAngle - this.angle;
-            // Normalizza l'angolo per il percorso più breve (es. da 350° a 10° non fa 340°, ma +20°)
+            // Normalizza l'angolo per il percorso più breve 
             if (diff > 180) diff -= 360;
             if (diff < -180) diff += 360;
 
@@ -135,12 +135,12 @@ class Player {
                 this.angle += Math.sign(diff) * step;
             }
 
-            // Mantiene l'angolo nell'intervallo [0, 360)
+            // Mantiene l'angolo nell'intervallo (0, 360)
             if (this.angle < 0) this.angle += 360;
             if (this.angle >= 360) this.angle -= 360;
         }
 
-        // --- 4. Controllo Eventi ---
+        // --- 4. Controllo eventi ---
         this.checkEvents(); 
     }
 
@@ -155,7 +155,7 @@ class Player {
         const col = Math.floor(this.x / globals.tileSize);
         const row = Math.floor(this.y / globals.tileSize);
 
-        // Esempio: Entrata nel dungeon (modifica la mappa dinamicamente)
+        // Esempio: entrata nel dungeon (modifica la mappa dinamicamente)
         if (row > 30 && !this.enteredDungeon) {
             // Chiude il passaggio (modificando il tipo di tile nella griglia logica)
             globals.maps.map[30][22] = [1,11];
@@ -173,14 +173,14 @@ class Player {
             this.enteredDungeon = true;
         }
 
-        // Fine Demo (raccolta di due chiavi)
+        // Fine demo (raccolta di due chiavi)
         if (this.inventory.includes("key1") && this.inventory.includes("key2")) {
             showDialogues("demo_end");  // Mostra il dialogo di fine demo
         }
     }
 
     /**
-     * Gestisce l'interazione con Entità (NPC o GameObject) nella tile di fronte al player.
+     * Gestisce l'interazione con Entità (NPC o GameObject) nella tile di fronte al player
      */
     interact() {
         // Calcola la posizione (coordinate mondo) di fronte al giocatore
@@ -190,11 +190,11 @@ class Player {
 
         // Controlla se c'è un'entità interagibile in quella posizione
         for (let entity of globals.entities) {
-            // NOTA: Questo controllo confronta coordinate esatte (float), 
-            // che è molto restrittivo. La logica originale è mantenuta.
+            /* NOTA: Questo controllo confronta coordinate esatte (float), 
+               che è molto restrittivo. La logica originale è mantenuta */
             if (interactX === entity.x && interactY === entity.y && entity.interactable) { 
                 
-                // --- Caso 1: Interazione con NPC ---
+                // --- Caso 1: interazione con NPC ---
                 if (entity instanceof Npc && !this.interactingWithNpc) {
                     this.enterInteract(entity); // Avvia il dialogo
 
@@ -210,7 +210,7 @@ class Player {
                     }
                 }
 
-                // --- Caso 2: Interazione con GameObject ---
+                // --- Caso 2: interazione con GameObject ---
                 if (entity instanceof GameObject) { 
                     if (entity.collectable) {
                         this.enterInteract(entity, true); // Avvia dialogo (è un oggetto)
@@ -223,9 +223,9 @@ class Player {
     }
 
     /**
-     * Inizializza l'interfaccia utente per l'interazione (mostra dialogo, nasconde stats).
-     * @param {Entity} entity L'entità con cui si interagisce.
-     * @param {boolean} isObject True se l'entità è un oggetto.
+     * Inizializza l'interfaccia utente per l'interazione (mostra dialogo, nasconde stats)
+     * @param {Entity} entity L'entità con cui si interagisce
+     * @param {boolean} isObject True se l'entità è un oggetto
      */
     enterInteract(entity, isObject = false) {
         this.interactingWithNpc = true; // Blocca il movimento
@@ -247,7 +247,7 @@ class Player {
     }
 
     /**
-     * Termina l'interazione e ripristina l'interfaccia utente (UI).
+     * Termina l'interazione e ripristina l'interfaccia utente (UI)
      */
     exitInteract() {
         this.interactingWithNpc = false; // Sblocca il movimento
@@ -267,8 +267,8 @@ class Player {
     // ====================================================================================
     
     /**
-     * Tenta di muovere il player di una tile se la destinazione non è un muro.
-     * @param {number} angleOffset Offset dell'angolo rispetto alla direzione in avanti (0, 90, 180, -90).
+     * Tenta di muovere il player di una tile se la destinazione non è un muro
+     * @param {number} angleOffset Offset dell'angolo rispetto alla direzione in avanti (0, 90, 180, -90)
      */
     moveIfFree(angleOffset) {
         // Calcola la posizione (coordinate mondo) della tile target
@@ -289,7 +289,7 @@ class Player {
     // ====================================================================================
 
     /**
-     * Aggiorna gli elementi HTML del nome del giocatore (in-game e stats).
+     * Aggiorna gli elementi HTML del nome del giocatore (in-game e stats)
      */
     updateNameUI() {
         const combatName = document.getElementById("player-name");
@@ -301,8 +301,8 @@ class Player {
 
     /**
      * Inizializza le statistiche (HP, MP), i modificatori e le immagini
-     * in base alla classe scelta dal giocatore.
-     * @param {string} classType L'identificativo della classe (es. "wizard").
+     * in base alla classe scelta dal giocatore
+     * @param {string} classType L'identificativo della classe (es. "wizard")
      */
     initClassType(classType) {    
         // --- Database Statistiche di Classe ---
@@ -358,7 +358,7 @@ class Player {
 
     // --- Gestione Barre UI ---
     
-    /** Aggiorna tutte le barre HP (in-game e stats). */
+    // Aggiorna tutte le barre HP (in-game e stats)
     updateHPBar() {
         const fills = document.querySelectorAll(".player-hp-fill");
         const texts = document.querySelectorAll(".player-hp-text");
@@ -368,7 +368,7 @@ class Player {
         texts.forEach(t => t.textContent = `${this.hp} / ${this.hpLimit}`);
     }
     
-    /** Aggiorna tutte le barre MP (in-game e stats). */
+    // Aggiorna tutte le barre MP (in-game e stats)
     updateMPBar() {
         const fills = document.querySelectorAll(".player-mp-fill");
         const texts = document.querySelectorAll(".player-mp-text");
@@ -382,8 +382,8 @@ class Player {
     // --- Gestione Danno e Morte ---
 
     /**
-     * Applica danno al giocatore e aggiorna la UI.
-     * @param {number} amount La quantità di danno da subire.
+     * Applica danno al giocatore e aggiorna la UI
+     * @param {number} amount La quantità di danno da subire
      */
     takeDamage(amount) {
         this.hp -= amount;
@@ -393,7 +393,7 @@ class Player {
         if (this.hp <= 0) this.die();
     }
 
-    /** Gestisce la logica di Game Over. */
+    // Gestisce la logica di Game Over 
     die() { 
         // Mostra la schermata di morte
         showElement(document.getElementById("death-screen"));
@@ -415,8 +415,8 @@ class Player {
     // ====================================================================================
     
     /**
-     * Disegna la rappresentazione 2D del giocatore sulla minimappa.
-     * @param {CanvasRenderingContext2D} context Il contesto di rendering 2D della minimappa.
+     * Disegna la rappresentazione 2D del giocatore sulla minimappa
+     * @param {CanvasRenderingContext2D} context Il contesto di rendering 2D della minimappa
      */
     draw2D(context) {
         // Disegna il punto (cerchio) del player
@@ -425,7 +425,7 @@ class Player {
         context.arc(this.x, this.y, 10, 0, Math.PI * 2);
         context.fill();
     }
-} // --- Fine della Classe Player ---
+} // --- Fine della classe player ---
 
 
 // ====================================================================================
@@ -433,10 +433,10 @@ class Player {
 // ====================================================================================
 
 /**
- * Controlla se le coordinate X, Y nel mondo si trovano su un muro.
- * @param {number} x Coordinata X nel mondo.
- * @param {number} y Coordinata Y nel mondo.
- * @returns {boolean} True se la posizione è un muro.
+ * Controlla se le coordinate X, Y nel mondo si trovano su un muro
+ * @param {number} x Coordinata X nel mondo
+ * @param {number} y Coordinata Y nel mondo
+ * @returns {boolean} True se la posizione è un muro
  */
 function isWallAt(x, y) {
     const col = Math.floor(x / globals.tileSize);
@@ -455,7 +455,7 @@ function isWallAt(x, y) {
 // ====================================================================================
 
 /**
- * Creazione dell'unica istanza di Player. 
+ * Creazione dell'unica istanza di Player
  * Viene esportata in modo che altri moduli (es. raycaster.js) possano importarla
  */
 export const player = new Player(23, 25, 90);

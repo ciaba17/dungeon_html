@@ -1,34 +1,34 @@
 // objects.js - Modulo che definisce le classi base per Muri, Entità, Oggetti e NPC, 
-// e la logica per la proiezione degli sprite nel mondo 3D.
+// e la logica per la proiezione degli sprite nel mondo 3D
 
 
 // ====================================================================================
 // ===== IMPORTAZIONI DI MODULI ESTERNI =====
 // ====================================================================================
 
-import { globals, textures } from '../utils/globals.js';           // Variabili e texture globali.
-import { player } from './player.js';                              // L'oggetto Player (per il calcolo della distanza e dell'angolo).
-import { showDialogues } from './ui.js';                           // Funzione per mostrare i dialoghi all'interazione.
-import { showElement, hideElement } from '../utils/cssHandler.js'; // Utilità UI.
+import { globals, textures } from '../utils/globals.js';           // Variabili e texture globali
+import { player } from './player.js';                              // L'oggetto Player (per il calcolo della distanza e dell'angolo)
+import { showDialogues } from './ui.js';                           // Funzione per mostrare i dialoghi all'interazione
+import { showElement, hideElement } from '../utils/cssHandler.js'; // Utilità UI
 
 
 // ====================================================================================
 // ===== SEZIONE 1: CLASSE WALL (MURI STATICHE) =====
 // ====================================================================================
 
-export let walls = []; // Array globale di tutti gli oggetti Muro.
+export let walls = []; // Array globale di tutti gli oggetti Muro
 
 /**
- * La classe Wall rappresenta un singolo blocco muro sulla mappa 2D.
+ * La classe Wall rappresenta un singolo blocco muro sulla mappa 2D
  */
 class Wall {
     /**
-     * @param {number} x Coordinata mondo X della tile.
-     * @param {number} y Coordinata mondo Y della tile.
-     * @param {number} textureId ID numerico della texture da assegnare.
+     * @param {number} x Coordinata mondo X della tile
+     * @param {number} y Coordinata mondo Y della tile
+     * @param {number} textureId ID numerico della texture da assegnare
      */
     constructor(x, y, textureId) {
-        // Le coordinate sono già scalate per la dimensione della tile (tileSize) dalla funzione mapToWalls.
+        // Le coordinate sono già scalate per la dimensione della tile (tileSize) dalla funzione mapToWalls
         this.x = x; 
         this.y = y;
         this.texture = textures.errorTexture;
@@ -36,11 +36,11 @@ class Wall {
     }
 
     /**
-     * Assegna la texture corretta in base all'ID fornito.
-     * @param {number} textureId L'ID della texture.
+     * Assegna la texture corretta in base all'ID fornito
+     * @param {number} textureId L'ID della texture
      */
     setTexture(textureId) {
-        // Mappa gli ID numerici con gli oggetti Image pre-caricati.
+        // Mappa gli ID numerici con gli oggetti Image pre-caricati
         const textureList = [
             textures.blankTexture, // 0
             textures.wallTexture,  // 1
@@ -54,8 +54,8 @@ class Wall {
 
 
     /**
-     * Disegna la rappresentazione 2D del muro sulla minimappa.
-     * @param {CanvasRenderingContext2D} ctx Il contesto di disegno della minimappa.
+     * Disegna la rappresentazione 2D del muro sulla minimappa
+     * @param {CanvasRenderingContext2D} ctx Il contesto di disegno della minimappa
      */
     draw2D(ctx) {
         ctx.fillStyle = "white";
@@ -64,8 +64,8 @@ class Wall {
 }
 
 /**
- * Inizializza l'array `walls` creando istanze della classe Wall dalla mappa caricata.
- * @param {string} id L'ID della mappa da caricare.
+ * Inizializza l'array `walls` creando istanze della classe Wall dalla mappa caricata
+ * @param {string} id L'ID della mappa da caricare
  */
 export function mapToWalls(id) {
     const map = globals.maps[id]; 
@@ -75,8 +75,8 @@ export function mapToWalls(id) {
         for (let j = 0; j < map[i].length; j++) {
             const [tipo, texture] = map[i][j]; // Destruttura [tipo_base, tipo_extra/textureId]
 
-            if (tipo === 1) { // 1 rappresenta un muro nel livello base
-                // Le coordinate mondo vengono calcolate qui.
+            if (tipo === 1) { // 1 Rappresenta un muro nel livello base
+                // Le coordinate mondo vengono calcolate qui
                 walls.push(new Wall(
                     j * globals.tileSize, 
                     i * globals.tileSize, 
@@ -93,24 +93,24 @@ export function mapToWalls(id) {
 // ====================================================================================
 
 /**
- * La classe Entity è la base per tutti gli oggetti dinamici del mondo (Nemici, Oggetti, NPC).
- * Contiene la logica per la proiezione 3D e il disegno 2D sulla minimappa.
+ * La classe Entity è la base per tutti gli oggetti dinamici del mondo (Nemici, Oggetti, NPC)
+ * Contiene la logica per la proiezione 3D e il disegno 2D sulla minimappa
  */
 export class Entity {
     /**
-     * @param {number} x Coordinata X della tile di spawn.
-     * @param {number} y Coordinata Y della tile di spawn.
-     * @param {number} z Offset verticale (per centratura in altezza).
-     * @param {number} scale Fattore di scala dello sprite.
-     * @param {string} name Nome dell'entità (usato per caricare la texture).
-     * @param {boolean} interactable Indica se l'entità può essere interagita.
+     * @param {number} x Coordinata X della tile di spawn
+     * @param {number} y Coordinata Y della tile di spawn
+     * @param {number} z Offset verticale (per centratura in altezza)
+     * @param {number} scale Fattore di scala dello sprite
+     * @param {string} name Nome dell'entità (usato per caricare la texture)
+     * @param {boolean} interactable Indica se l'entità può essere interagita
      */
     constructor(x, y, z = 0, scale, name, interactable) {
         // Centra l'entità all'interno della tile [x, y]
         this.x = x * globals.tileSize - globals.tileSize / 2; 
         this.y = y * globals.tileSize - globals.tileSize / 2;
         this.z = z - 12; // Regolazione Z (verticale)
-        this.scale = scale / 10; // Riduce la scala per un fattore visivo.
+        this.scale = scale / 10; // Riduce la scala per un fattore visivo
         this.name = name;
         
         // Caricamento della texture (presume il percorso standard)
@@ -118,13 +118,13 @@ export class Entity {
         this.texture.src = "assets/images/" + this.name + ".png"
         
         this.interactable = interactable;
-        this.onScreen = true; // Usato per il frustum culling.
-        this.distance = 0;    // Distanza dal player, aggiornata prima del rendering.
+        this.onScreen = true; // Usato per il frustum culling
+        this.distance = 0;    // Distanza dal player, aggiornata prima del rendering
     }
 
     /**
      * Calcola la distanza euclidea dal giocatore. Essenziale per l'ordinamento (Z-buffering)
-     * e la proiezione 3D.
+     * e la proiezione 3D
      */
     updateDistance() {
         const dX = this.x - player.x;
@@ -133,9 +133,9 @@ export class Entity {
     }
 
     /**
-     * Disegna la rappresentazione 3D dello sprite (basato sul raycasting).
-     * Implementa la proiezione prospettica e il Z-buffering.
-     * @param {CanvasRenderingContext2D} ctx Il contesto di disegno 3D (gameCtx).
+     * Disegna la rappresentazione 3D dello sprite (basato sul raycasting)
+     * Implementa la proiezione prospettica e il Z-buffering
+     * @param {CanvasRenderingContext2D} ctx Il contesto di disegno 3D (gameCtx)
      */
     draw3D(ctx) {
         // Distanza dal piano di proiezione (costante del renderer)
@@ -144,7 +144,7 @@ export class Entity {
         let dX = this.x - player.x; // Distanza relativa X
         let dY = this.y - player.y; // Distanza relativa Y
 
-        // Vettori di direzione (dir) e piano (plane) del giocatore.
+        // Vettori di direzione (dir) e piano (plane) del giocatore
         const dirX = Math.cos(player.angle * Math.PI / 180);
         const dirY = Math.sin(player.angle * Math.PI / 180);
 
@@ -152,48 +152,48 @@ export class Entity {
         const planeX = -Math.sin(player.angle * Math.PI / 180) * fovScale;  
         const planeY = Math.cos(player.angle * Math.PI / 180) * fovScale;
 
-        // --- Proiezione 3D (Trasformazione della matrice 2D del Player) ---
+        // --- Proiezione 3D (trasformazione della matrice 2D del player) ---
         // Formula standard per la proiezione di uno sprite in 2.5D (simile al Wolfenstein 3D)
         const invDet = 1 / (planeX * dirY - dirX * planeY);       // Determinante inverso
         const transformX = invDet * (dirY * dX - dirX * dY);
         const transformY = invDet * (-planeY * dX + planeX * dY); // Profondità (depth)
 
-        // Se transformY <= 0, lo sprite è dietro il giocatore, non va disegnato.
+        // Se transformY <= 0, lo sprite è dietro il giocatore, non va disegnato
         if (transformY <= 0) return; 
         
-        const depth = Math.max(transformY, 0.1); // Evita divisioni per zero o profondità troppo piccole.
+        const depth = Math.max(transformY, 0.1); // Evita divisioni per zero o profondità troppo piccole
 
-        // --- Calcolo Dimensione dello Sprite Proiettato ---
-        // L'altezza e la larghezza sono inversamente proporzionali alla profondità (depth).
+        // --- Calcolo dimensione dello sprite proiettato ---
+        // L'altezza e la larghezza sono inversamente proporzionali alla profondità (depth)
         let spriteHeight = this.texture.height / depth * distanceProjectionPlane * this.scale;
         let spriteWidth  = this.texture.width  / depth * distanceProjectionPlane * this.scale;
 
-        // --- Calcolo Posizione a Schermo ---
-        // La posizione centrale X dello sprite sullo schermo.
+        // --- Calcolo posizione a schermo ---
+        // La posizione centrale X dello sprite sullo schermo
         const spriteScreenX = (globals.SCREEN_WIDTH / 2) * (1 + transformX / transformY) - spriteWidth / 2;
-        // La posizione Y (verticale), considerando l'offset Z.
+        // La posizione Y (verticale), considerando l'offset Z
         const spriteScreenY = globals.SCREEN_HEIGHT / 2 - (this.z * distanceProjectionPlane / transformY) - spriteHeight / 2;
 
-        // Frustum Culling: non disegnare se è completamente fuori schermo.
+        // Frustum Culling: non disegnare se è completamente fuori schermo
         if (spriteScreenX + spriteWidth < 0 || spriteScreenX > globals.SCREEN_WIDTH) return;
 
 
-        // --- Z-Buffering (Disegno a Colonne) ---
-        // Disegna lo sprite colonna per colonna, confrontando la profondità dello sprite (transformY) 
-        // con la distanza del muro (wallSlices) in quella colonna.
+        // --- Z-Buffering (disegno a colonne) ---
+        /* Disegna lo sprite colonna per colonna, confrontando la profondità dello sprite (transformY) 
+           con la distanza del muro (wallSlices) in quella colonna */
         const textureWidth = this.texture.width;
         for (let x = 0; x < spriteWidth; x++) {
 
             let screenX = Math.floor(spriteScreenX + x);
             if (screenX < 0 || screenX >= globals.SCREEN_WIDTH) continue;
             
-            // Trova la slice di muro corrispondente a questa colonna dello schermo 3D.
+            // Trova la slice di muro corrispondente a questa colonna dello schermo 3D
             const sliceIndex = Math.floor(screenX * globals.wallSlices.length / globals.SCREEN_WIDTH);
             if (!globals.wallSlices[sliceIndex]) continue;
             
-            // Z-Buffer Check: se la profondità dello sprite è MINORE della distanza del muro, disegna lo sprite.
+            // Z-Buffer Check: se la profondità dello sprite è MINORE della distanza del muro, disegna lo sprite
             if (transformY < globals.wallSlices[sliceIndex].distance) {
-                // Calcola l'indice X da cui prelevare 1px di texture.
+                // Calcola l'indice X da cui prelevare 1px di texture
                 const textureX = Math.floor((x / spriteWidth) * textureWidth);
                 ctx.drawImage(
                     this.texture,

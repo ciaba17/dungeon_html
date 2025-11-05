@@ -1,16 +1,16 @@
 // enemies.js - Modulo Core che gestisce la logica delle Entità Nemiche (IA, HP, Danno) 
-// e implementa il sistema di Pathfinding A* (A-Star) e l'inizializzazione delle entità dalla mappa.
+// e implementa il sistema di Pathfinding A* (A-Star) e l'inizializzazione delle entità dalla mappa
 
 
 // ====================================================================================
 // ===== IMPORTAZIONI DI MODULI ESTERNI =====
 // ====================================================================================
 
-// Classi base degli oggetti, presumibilmente da './objects.js'.
+// Classi base degli oggetti, presumibilmente da './objects.js'
 import { Entity, Npc, GameObject } from './objects.js'; 
-import { globals, textures } from '../utils/globals.js'; // Variabili e texture globali.
-import { createTimer } from '../utils/timer.js';         // Utilità per la temporizzazione del ricalcolo del path.
-import { enterCombat, exitCombat } from './combat.js';   // Funzioni per la transizione tra stati di gioco.
+import { globals, textures } from '../utils/globals.js'; // Variabili e texture globali
+import { createTimer } from '../utils/timer.js';         // Utilità per la temporizzazione del ricalcolo del path
+import { enterCombat, exitCombat } from './combat.js';   // Funzioni per la transizione tra stati di gioco
 
 
 // ====================================================================================
@@ -19,28 +19,28 @@ import { enterCombat, exitCombat } from './combat.js';   // Funzioni per la tran
 
 /**
  * La classe Node rappresenta una singola cella (tile) sulla griglia della mappa,
- * essenziale per l'algoritmo A*.
+ * essenziale per l'algoritmo A*
  */
 class Node {
     /**
-     * @param {number} x Coordinata X della cella sulla griglia.
-     * @param {number} y Coordinata Y della cella sulla griglia.
-     * @param {boolean} walkable Indica se la cella è attraversabile.
+     * @param {number} x Coordinata X della cella sulla griglia
+     * @param {number} y Coordinata Y della cella sulla griglia
+     * @param {boolean} walkable Indica se la cella è attraversabile
      */
     constructor(x, y, walkable) {
         this.x = x;
         this.y = y;
-        this.g = 0;          // Costo dal nodo di partenza (g(n)).
-        this.h = 0;          // Euristica: costo stimato al nodo target (h(n)).
-        this.f = 0;          // Costo totale: f(n) = g(n) + h(n).
+        this.g = 0;          // Costo dal nodo di partenza (g(n))
+        this.h = 0;          // Euristica: costo stimato al nodo target (h(n))
+        this.f = 0;          // Costo totale: f(n) = g(n) + h(n)
         this.walkable = walkable;
-        this.parent = null;  // Il nodo precedente nel percorso ottimale.
-        this.neighbors = []; // Nodi adiacenti (vicini).
+        this.parent = null;  // Il nodo precedente nel percorso ottimale
+        this.neighbors = []; // Nodi adiacenti (vicini)
     }
 
     /**
-     * Aggiunge un nodo adiacente alla lista dei vicini (per il Pathfinding).
-     * @param {Node} node Il nodo vicino.
+     * Aggiunge un nodo adiacente alla lista dei vicini (per il Pathfinding)
+     * @param {Node} node Il nodo vicino
      */
     addNeighbor(node) {
         this.neighbors.push(node);
@@ -54,18 +54,18 @@ class Node {
 
 /**
  * La classe Enemy estende la classe base Entity e aggiunge logiche specifiche
- * come il Pathfinding, HP e gestione del combattimento.
+ * come il Pathfinding, HP e gestione del combattimento
  */
 export class Enemy extends Entity {
     /**
-     * @param {number} x Coordinata mondo X iniziale.
-     * @param {number} y Coordinata mondo Y iniziale.
-     * @param {number} z Livello (altezza) del nemico.
-     * @param {number} scale Scala dello sprite.
-     * @param {string} name Nome del nemico.
-     * @param {number} hp Punti vita attuali.
-     * @param {number} baseDamage Danno base inflitto.
-     * @param {number} speed Velocità di movimento.
+     * @param {number} x Coordinata mondo X iniziale
+     * @param {number} y Coordinata mondo Y iniziale
+     * @param {number} z Livello (altezza) del nemico
+     * @param {number} scale Scala dello sprite
+     * @param {string} name Nome del nemico
+     * @param {number} hp Punti vita attuali
+     * @param {number} baseDamage Danno base inflitto
+     * @param {number} speed Velocità di movimento
      */
     constructor(x, y, z, scale, name, hp, baseDamage, speed) {
         // Chiama il costruttore della classe Entity
@@ -74,7 +74,7 @@ export class Enemy extends Entity {
         this.timer;          
         this.path;           
 
-        // Statistiche di Combattimento
+        // Statistiche di combattimento
         this.hp = hp;
         this.hpLimit = hp;       
         this.updateHPBar();      
@@ -83,8 +83,8 @@ export class Enemy extends Entity {
     }
 
     /**
-     * Logica IA principale: calcola il percorso per seguire il giocatore e verifica la distanza di ingaggio.
-     * @param {Object} player L'oggetto Player da inseguire.
+     * Logica IA principale: calcola il percorso per seguire il giocatore e verifica la distanza di ingaggio
+     * @param {Object} player L'oggetto player da inseguire
      */
     followPlayer(player) {
         const dx = player.x - this.x;
@@ -155,7 +155,7 @@ export class Enemy extends Entity {
         }   
     }
 
-    /** Aggiorna visualmente la barra HP. */
+    // Aggiorna visualmente la barra HP
     updateHPBar() {
         const fill = document.getElementById("enemy-hp-fill");
         const text = document.getElementById("enemy-hp-text");
@@ -164,7 +164,7 @@ export class Enemy extends Entity {
         text.textContent = `${this.hp} / ${this.hpLimit}`;
     }
 
-    /** Subisce danno e verifica la morte. */
+    // Subisce danno e verifica la morte
     takeDamage(amount) {
         this.hp -= amount;
         if (this.hp < 0) this.hp = 0;
@@ -173,14 +173,14 @@ export class Enemy extends Entity {
         if (this.hp <= 0) this.die();
     }
 
-    /** Logica eseguita alla morte del nemico. */
+    // Logica eseguita alla morte del nemico
     die() {
         exitCombat(); 
         const index = globals.entities.indexOf(this); 
-        if (index !== -1) globals.entities.splice(index, 1); // Rimuove dall'array globale.
+        if (index !== -1) globals.entities.splice(index, 1); // Rimuove dall'array globale
     }
 
-    /** Disegna lo sprite del nemico in modalità combattimento. */
+    // Disegna lo sprite del nemico in modalità combattimento
     drawOnCombat(ctx) {
         ctx.drawImage(this.texture, 
             globals.SCREEN_WIDTH / 2 - this.texture.width / 2, 
@@ -195,10 +195,10 @@ export class Enemy extends Entity {
 // ====================================================================================
 
 /**
- * Controlla se la coordinata mondo specificata si trova all'interno di un muro.
- * @param {number} x Coordinata mondo X.
- * @param {number} y Coordinata mondo Y.
- * @returns {boolean} True se c'è un muro nella posizione.
+ * Controlla se la coordinata mondo specificata si trova all'interno di un muro
+ * @param {number} x Coordinata mondo X
+ * @param {number} y Coordinata mondo Y
+ * @returns {boolean} True se c'è un muro nella posizione
  */
 function isWallAt(x, y) {
     const col = Math.floor(x / globals.tileSize);
@@ -215,10 +215,10 @@ function isWallAt(x, y) {
 // ===== SEZIONE 4: GRIGLIA, PATHFINDING A* E INIZIALIZZAZIONE =====
 // ====================================================================================
 
-let nodeGrid = []; // La griglia globale di nodi per il Pathfinding.
+let nodeGrid = []; // La griglia globale di nodi per il pathfinding
 
 /**
- * Crea la griglia di nodi (Node Map) basata sulla mappa di gioco e definisce i vicini.
+ * Crea la griglia di nodi (NodeMap) basata sulla mappa di gioco e definisce i vicini
  */
 export function createNodeMap() {
     // --- 1. Creazione dei Nodi ---
@@ -226,17 +226,17 @@ export function createNodeMap() {
         nodeGrid[y] = [];
         for (let x = 0; x < globals.maps.map[y].length; x++) {
             const [tipo, texture] = globals.maps.map[y][x];
-            nodeGrid[y][x] = new Node(x, y, tipo === 0); // camminabile se tipo = 0
+            nodeGrid[y][x] = new Node(x, y, tipo === 0); // Camminabile se tipo = 0
         }
     }
 
-    // --- 2. Connessione dei Vicini (8 direzioni) ---
+    // --- 2. Connessione dei vicini (8 direzioni) ---
     for (let y = 0; y < globals.maps.map.length; y++) {
         for (let x = 0; x < globals.maps.map[y].length; x++) {
             let node = nodeGrid[y][x];
             if (!node.walkable) continue;
 
-            // Le 8 direzioni (ortogonali e diagonali).
+            // Le 8 direzioni (ortogonali e diagonali)
             let dirs = [
                 [1, 0], [-1, 0], [0, 1], [0, -1],
                 [1, 1], [1, -1], [-1, 1], [-1, -1] 
@@ -254,21 +254,21 @@ export function createNodeMap() {
 }
 
 /**
- * Implementa l'algoritmo di Pathfinding A* (A-Star).
- * @param {Node} startNode Il nodo di partenza.
- * @param {Node} targetNode Il nodo di destinazione.
- * @returns {Array<Node>} Il percorso ottimale (escluso il nodo di partenza).
+ * Implementa l'algoritmo di Pathfinding A* (A-Star)
+ * @param {Node} startNode Il nodo di partenza
+ * @param {Node} targetNode Il nodo di destinazione
+ * @returns {Array<Node>} Il percorso ottimale (escluso il nodo di partenza)
  */
 function findPath(startNode, targetNode) {
     // Inizializza i valori di startNode per l'A*
     startNode.g = 0;
-    // Euristica (h): distanza euclidea (straight-line distance).
+    // Euristica (h): distanza euclidea (straight-line distance)
     startNode.h = Math.sqrt((targetNode.x - startNode.x)**2 + (targetNode.y - startNode.y)**2);
     startNode.f = startNode.g + startNode.h;
 
-    let openList = [startNode];  // Nodi da valutare.
-    let closedList = [];         // Nodi già valutati.
-    let currentNode = startNode; // Inizia con il nodo di partenza.
+    let openList = [startNode];  // Nodi da valutare
+    let closedList = [];         // Nodi già valutati
+    let currentNode = startNode; // Inizia con il nodo di partenza
     
     // Ciclo principale A*
     while (openList.length > 0) {
@@ -284,9 +284,9 @@ function findPath(startNode, targetNode) {
             }
         }
         
-        // Caso: Percorso Trovato (currentNode è il target)
+        // Caso: percorso trovato (currentNode è il target)
         if (currentNode.x === targetNode.x && currentNode.y === targetNode.y) { 
-            break; // Esci dal ciclo.
+            break; // Esci dal ciclo
         } 
 
         // Rimuovi il nodo corrente da openList e aggiungilo a closedList
@@ -300,7 +300,7 @@ function findPath(startNode, targetNode) {
             if (!neighborNode.walkable || closedList.includes(neighborNode)) 
                 continue
             
-            // Calcolo del costo: 1 per ortogonale, Math.SQRT2 per diagonale.
+            // Calcolo del costo: 1 per ortogonale, Math.SQRT2 per diagonale
             let dx = Math.abs(currentNode.x - neighborNode.x);
             let dy = Math.abs(currentNode.y - neighborNode.y);
             let cost = (dx === 1 && dy === 1) ? Math.SQRT2 : 1;
@@ -326,13 +326,13 @@ function findPath(startNode, targetNode) {
         }
     }
 
-    // --- Ricostruzione del Percorso ---
+    // --- Ricostruzione del percorso ---
     let bestPath = [];
     while (currentNode !== startNode && currentNode.parent !== null) {
         bestPath.push(currentNode);
         currentNode = currentNode.parent;
     }
-    bestPath.reverse(); // Il percorso va dal target al punto di partenza, quindi va invertito.
+    bestPath.reverse(); // Il percorso va dal target al punto di partenza, quindi va invertito
     
     // Pulisce i nodi per il prossimo calcolo (essenziale per resetare g, h, f e parent)
     for (let node of closedList) {
@@ -347,11 +347,11 @@ function findPath(startNode, targetNode) {
 
 
 /**
- * Mappa le entità dalla griglia di livello (map) agli oggetti Entity, Npc o Enemy.
- * @param {string} id L'ID della mappa da caricare (es. 'map1', 'dungeon').
+ * Mappa le entità dalla griglia di livello (map) agli oggetti Entity, Npc o Enemy
+ * @param {string} id L'ID della mappa da caricare (es. 'map1', 'dungeon')
  */
 export function mapToEntities(id) {
-    // Definizione di tutti i tipi di entità che possono essere piazzate sulla mappa.
+    // Definizione di tutti i tipi di entità che possono essere piazzate sulla mappa
     const ENTITY_TYPES = {
         1: { class: Npc, defaults: { x:0, y:0, z:0, scale:0.5, name:"dungeon_keeper", dialogueId:"dungeon_keeper" }},
         2: { class: Enemy, defaults: { x:0, y:0, z:0, scale:1, name:"skeleton", hp:60, baseDamage:10, speed:35 }},
@@ -369,26 +369,26 @@ export function mapToEntities(id) {
     };
 
     const map = globals.maps[id];
-    globals.entities = globals.entities || []; // Inizializza l'array se non esiste.
+    globals.entities = globals.entities || []; // Inizializza l'array se non esiste
 
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[i].length; j++) {
             const [tipoBase, tipoExtra] = map[i][j];
 
-            if (tipoBase !== 0) continue; // Si cercano entità solo nelle tile di tipo 0 (camminabili).
-            if (tipoExtra === 0 || tipoExtra === null || tipoExtra === undefined) continue; // Tile vuoto.
+            if (tipoBase !== 0) continue; // Si cercano entità solo nelle tile di tipo 0 (camminabili)
+            if (tipoExtra === 0 || tipoExtra === null || tipoExtra === undefined) continue; // Tile vuoto
 
             const entityConfig = ENTITY_TYPES[tipoExtra];
             if (!entityConfig) continue;
 
             const EntityClass = entityConfig.class;
-            // Copia i parametri di default per evitare modifiche all'oggetto originale.
+            // Copia i parametri di default per evitare modifiche all'oggetto originale
             const params = { ...entityConfig.defaults }; 
 
             let entity;
             
-            // Le coordinate i e j rappresentano la tile. Aggiungendo 0.5 (o 1) si centra l'entità.
-            // Usa i++ e j++ per allineare le coordinate effettive dell'entità a quelle della griglia.
+            // Le coordinate i e j rappresentano la tile. Aggiungendo 0.5 (o 1) si centra l'entità
+            // Usa i++ e j++ per allineare le coordinate effettive dell'entità a quelle della griglia
             j++; 
             i++; 
             
@@ -408,7 +408,7 @@ export function mapToEntities(id) {
                 entity = new EntityClass(
                     j, i, 
                     params.z || 0, params.scale, params.name, 
-                    params.dialogueId, params.collectable // Se collectable non è definito, viene passato undefined.
+                    params.dialogueId, params.collectable // Se collectable non è definito, viene passato undefined
                 );
             }
             j--;

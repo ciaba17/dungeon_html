@@ -1,21 +1,21 @@
-// combat.js - Modulo dedicato alla gestione completa del sistema di combattimento a turni (simil "Sasso-Carta-Forbice").
-// Contiene la logica per l'inizio, la gestione dei turni, il calcolo del danno e l'uscita dal combattimento.
+// combat.js - modulo dedicato alla gestione completa del sistema di combattimento a turni (simil "sasso-carta-forbice")
+// Contiene la logica per l'inizio, la gestione dei turni, il calcolo del danno e l'uscita dal combattimento
 
 
 // ====================================================================================
 // ===== IMPORTAZIONI DI MODULI ESTERNI =====
 // ====================================================================================
 
-import { globals } from "../utils/globals.js";                // Variabili di stato globale del gioco.
-import { createTimer } from "../utils/timer.js";              // Utilità per la creazione di un timer per i turni.
-import { inputState } from "../core/input.js";                // Stato degli input utente per le mosse di combattimento.
-import { showDialogues } from "./ui.js";                      // Funzione per mostrare messaggi (dialoghi) a schermo.
-import { sounds } from "../core/audio.js";                    // Risorse audio per suoni e risultati di combattimento.
-import { player } from "./player.js";                         // L'oggetto Player.
-import { hideElement } from '../utils/cssHandler.js';         // Utilità per nascondere elementi UI.
-import { showElement } from '../utils/cssHandler.js';         // Utilità per mostrare elementi UI.
-import { scaleCanvas, fitGameMap } from "../core/scaling.js"; // Funzioni per il ri-scaling dopo modifiche UI.
-import { contexts } from "../core/renderer.js";               // Contesti del Canvas per il ri-scaling.
+import { globals } from "../utils/globals.js";                // Variabili di stato globale del gioco
+import { createTimer } from "../utils/timer.js";              // Utilità per la creazione di un timer per i turni
+import { inputState } from "../core/input.js";                // Stato degli input utente per le mosse di combattimento
+import { showDialogues } from "./ui.js";                      // Funzione per mostrare messaggi (dialoghi) a schermo
+import { sounds } from "../core/audio.js";                    // Risorse audio per suoni e risultati di combattimento
+import { player } from "./player.js";                         // L'oggetto Player
+import { hideElement } from '../utils/cssHandler.js';         // Utilità per nascondere elementi UI
+import { showElement } from '../utils/cssHandler.js';         // Utilità per mostrare elementi UI
+import { scaleCanvas, fitGameMap } from "../core/scaling.js"; // Funzioni per il ri-scaling dopo modifiche UI
+import { contexts } from "../core/renderer.js";               // Contesti del Canvas per il ri-scaling
 
 
 // ====================================================================================
@@ -23,22 +23,22 @@ import { contexts } from "../core/renderer.js";               // Contesti del Ca
 // ====================================================================================
 
 /**
- * Stato interno che traccia lo svolgimento del combattimento turno per turno.
+ * Stato interno che traccia lo svolgimento del combattimento turno per turno
  */
 const combatState = {
-    player: null, // Mossa scelta dal giocatore (es. "sword", "magic").
-    enemy: null,  // Mossa scelta dal nemico (es. "sword", "magic").
-    timer: null,  // Timer per l'attesa tra la mossa del giocatore e quella del nemico.
+    player: null, // Mossa scelta dal giocatore 
+    enemy: null,  // Mossa scelta dal nemico 
+    timer: null,  // Timer per l'attesa tra la mossa del giocatore e quella del nemico
 };
 
 /**
- * Regole del gioco "Sasso-Carta-Forbice" del combattimento.
- * Definisce quale mossa vince contro un'altra.
+ * Regole del gioco "sasso-carta-forbice" del combattimento
+ * Definisce quale mossa vince contro un'altra
  */
 const winsAgainst = {
-    sword: "magic",  // La Spada vince contro la Magia.
-    shield: "sword", // Lo Scudo vince contro la Spada.
-    magic: "shield", // La Magia vince contro lo Scudo.
+    sword: "magic",  // La spada vince contro la magia
+    shield: "sword", // Lo scudo vince contro la spada
+    magic: "shield", // La magia vince contro lo scudo
 };
 
 
@@ -48,7 +48,7 @@ const winsAgainst = {
 
 /**
  * Funzione di aggiornamento del combattimento. Viene chiamata ad ogni frame dal Game Loop
- * finché `globals.gameState` è "combat".
+ * finché `globals.gameState` è "combat"
  */
 export function combat() {
     
@@ -56,20 +56,20 @@ export function combat() {
     // 1. SCELTA DEL GIOCATORE (ASPETTA INPUT)
     // ------------------------------------
     if (!combatState.player) {
-        // Itera sugli input di combattimento per vedere se un tasto/bottone è stato premuto.
+        // Itera sugli input di combattimento per vedere se un tasto/bottone è stato premuto
         for (const action in inputState.combat) {
             if (inputState.combat[action]) {
-                combatState.player = action;                // Memorizza la mossa scelta.
+                combatState.player = action;                // Memorizza la mossa scelta
 
-                showDialogues(`${action}_player`);          // Mostra il messaggio della mossa.
-                sounds.combatSounds.player[action]?.play(); // Riproduci il suono corrispondente.
+                showDialogues(`${action}_player`);          // Mostra il messaggio della mossa
+                sounds.combatSounds.player[action]?.play(); // Riproduci il suono corrispondente
 
-                inputState.combat[action] = false;          // Resetta l'input per evitare multi-click.
-                combatState.timer = createTimer(3);         // Avvia il timer di attesa.
+                inputState.combat[action] = false;          // Resetta l'input per evitare multi-click
+                combatState.timer = createTimer(3);         // Avvia il timer di attesa
                 break;
             }
         }
-        return; // Ritorna, in attesa del prossimo frame o dell'input.
+        return; // Ritorna, in attesa del prossimo frame o dell'input
     }
 
     // ------------------------------------
@@ -88,10 +88,10 @@ export function combat() {
         // Scelta casuale della mossa del nemico.
         combatState.enemy = moves[Math.floor(Math.random() * moves.length)];
 
-        showDialogues(`${combatState.enemy}_enemy`);          // Mostra il messaggio della mossa nemica.
-        sounds.combatSounds.enemy[combatState.enemy]?.play(); // Riproduci il suono del nemico.
+        showDialogues(`${combatState.enemy}_enemy`);          // Mostra il messaggio della mossa nemica
+        sounds.combatSounds.enemy[combatState.enemy]?.play(); // Riproduci il suono del nemico
 
-        combatState.timer.reset();                            // Resetta il timer per l'attesa del risultato.
+        combatState.timer.reset();                            // Resetta il timer per l'attesa del risultato
         return;
     }
 
@@ -119,22 +119,22 @@ export function combat() {
         }
     }
     
-    // --- Messaggio di Risultato e Audio ---
+    // --- Messaggio di risultato e audio ---
     showDialogues(resultKey);
     sounds.combatSounds.result[resultKey]?.play(); 
     
-    // --- Reset e Preparazione per il Prossimo Turno ---
+    // --- Reset e preparazione per il prossimo turno ---
     combatState.player = null;
     combatState.enemy = null;
-    globals.combatInputLocked = false; // Sblocca l'input per il prossimo turno.
+    globals.combatInputLocked = false; // Sblocca l'input per il prossimo turno
     
-    // Pulisci l'inputState per sicurezza.
+    // Pulisci l'inputState per sicurezza
     for (const action in inputState.combat) {
         inputState.combat[action] = false;
     }
     
-    // La funzione di calcolo del danno è stata spostata in fondo.
-    // L'esecuzione del codice non prosegue se l'input del giocatore non è ancora arrivato (vedi inizio funzione).
+    // La funzione di calcolo del danno è stata spostata in fondo
+    // L'esecuzione del codice non prosegue se l'input del giocatore non è ancora arrivato (vedi inizio funzione)
 }
 
 
@@ -143,10 +143,10 @@ export function combat() {
 // ------------------------------------
 
 /**
- * Calcola il danno inflitto in base a chi sta attaccando e alla mossa utilizzata.
- * NOTA DIDATTICA: Questa funzione è un placeholder e richiede logica RPG più complessa.
- * @param {boolean} isPlayerAttacking True se il giocatore sta attaccando.
- * @returns {number} Il valore del danno inflitto.
+ * Calcola il danno inflitto in base a chi sta attaccando e alla mossa utilizzata
+ * NOTA DIDATTICA: Questa funzione è un placeholder e richiede logica RPG più complessa
+ * @param {boolean} isPlayerAttacking True se il giocatore sta attaccando
+ * @returns {number} Il valore del danno inflitto
  */
 function calculateDamage(isPlayerAttacking = true) {
     let damage;
@@ -168,47 +168,47 @@ function calculateDamage(isPlayerAttacking = true) {
 // ====================================================================================
 
 /**
- * Inizializza la modalità di combattimento quando il giocatore incontra un nemico.
- * @param {Object} enemy L'entità nemica con cui si entra in combattimento.
+ * Inizializza la modalità di combattimento quando il giocatore incontra un nemico
+ * @param {Object} enemy L'entità nemica con cui si entra in combattimento
  */
 export function enterCombat(enemy) {
     globals.gameState = "combat";
-    globals.enemyOnCombat = enemy; // Memorizza il nemico attuale.
+    globals.enemyOnCombat = enemy; // Memorizza il nemico attuale
 
-    // --- Aggiornamento UI: Nascondi controlli di movimento, mostra quelli di combattimento ---
+    // --- Aggiornamento UI: nascondi controlli di movimento, mostra quelli di combattimento ---
     hideElement(document.getElementById("move-controls"));
     showElement(document.getElementById("combat-controls"));
     
-    // --- Aggiornamento UI: Minimappa e Box Statistiche ---
+    // --- Aggiornamento UI: minimappa e box statistiche ---
     hideElement(globals.mapCanvas);
     hideElement(document.getElementById("stats-overview"));
     showElement(document.getElementById("combat-stats"));
 
-    // --- Aggiornamento UI: Gestione Testo (Spostamento e Centratura) ---
+    // --- Aggiornamento UI: gestione testo (spostamento e centratura) ---
     const textboxContent = document.getElementById("textbox-content");
     showElement(textboxContent);
     textboxContent.style.textAlign = "center";
     
-    // Sposta il textbox nella posizione centrale per il combattimento (ad esempio nel container della mappa).
+    // Sposta il textbox nella posizione centrale per il combattimento (ad esempio nel container della mappa)
     const textContainer = document.getElementById("map-container");
     textContainer.appendChild(textboxContent);
 
-    // Aggiorna l'interfaccia (es. barra HP del nemico).
+    // Aggiorna l'interfaccia (es. barra HP del nemico)
     enemy.updateHPBar();
 }
 
 /**
- * Riporta il gioco alla modalità Esplorazione dopo che il combattimento è terminato.
+ * Riporta il gioco alla modalità Esplorazione dopo che il combattimento è terminato
  */
 export function exitCombat() {
     globals.gameState = "exploration";
-    globals.enemyOnCombat = null; // Rimuove il riferimento al nemico sconfitto.
+    globals.enemyOnCombat = null; // Rimuove il riferimento al nemico sconfitto
 
-    // --- Aggiornamento UI: Mostra controlli di movimento, nascondi quelli di combattimento ---
+    // --- Aggiornamento UI: mostra controlli di movimento, nascondi quelli di combattimento ---
     showElement(document.getElementById("move-controls"));
     hideElement(document.getElementById("combat-controls"));
     
-    // --- Aggiornamento UI: Minimappa e Box Statistiche ---
+    // --- Aggiornamento UI: minimappa e box statistiche ---
     showElement(globals.mapCanvas);
     showElement(document.getElementById("stats-overview"));
     hideElement(document.getElementById("combat-stats"));
@@ -216,12 +216,12 @@ export function exitCombat() {
     const textboxContent = document.getElementById("textbox-content");
     hideElement(textboxContent);
     
-    // --- Aggiornamento UI: Riporta il textbox nel contenitore originale ---
+    // --- Aggiornamento UI: riporta il textbox nel contenitore originale ---
     const originalContainer = document.getElementById("info-container");
     originalContainer.appendChild(textboxContent);
 
-    // --- Ricalcolo dello Scaling ---
-    // Necessario perché la visibilità degli elementi UI è cambiata (potrebbe influenzare il layout).
+    // --- Ricalcolo dello scaling ---
+    // Necessario perché la visibilità degli elementi UI è cambiata (potrebbe influenzare il layout)
     scaleCanvas(globals.gameCanvas, contexts.gameCtx, globals.SCREEN_WIDTH, globals.SCREEN_HEIGHT);
     fitGameMap(); 
     scaleCanvas(globals.mapCanvas, contexts.mapCtx, globals.MAP_WIDTH, globals.MAP_HEIGHT);

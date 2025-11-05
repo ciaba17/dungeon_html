@@ -1,5 +1,5 @@
-// audio.js - Modulo per la gestione e l'esportazione di tutte le risorse audio del gioco.
-// Qui vengono caricati (istanziti) i file audio e configurate le loro proprietà di base (volume, loop).
+// audio.js - Modulo per la gestione e l'esportazione di tutte le risorse audio del gioco
+// Qui vengono caricati (istanziti) i file audio e configurate le loro proprietà di base (volume, loop)
 
 
 // ====================================================================================
@@ -8,7 +8,7 @@
 
 /**
  * Esporta l'oggetto `sounds` che contiene tutte le istanze di Audio() caricate 
- * per l'accesso globale nel gioco (musiche, effetti di combattimento, suoni ambientali).
+ * per l'accesso globale nel gioco (musiche, effetti di combattimento, suoni ambientali)
  */
 export const sounds = {
     // --- Suoni di Combattimento (suddivisi per attore e risultato) ---
@@ -35,7 +35,7 @@ export const sounds = {
 
 
     // --- Musiche di Sottofondo e Suoni Ambientali ---
-    bgMusic: new Audio("assets/audio/musics/bgMusic.mp3"),  // Musica principale di esplorazione
+    bgMusic: new Audio("assets/audio/musics/bgMusic.mp3"), // Musica principale di esplorazione
     gate: new Audio("assets/audio/gate.mp3"),              // Suono per l'apertura/chiusura di cancelli o porte
     wind: new Audio("assets/audio/musics/wind.mp3"),       // Suono ambientale: vento
     birds: new Audio("assets/audio/musics/birds.mp3"),     // Suono ambientale: uccelli
@@ -47,13 +47,13 @@ export const sounds = {
 // ===== CONFIGURAZIONE INIZIALE DELLE PROPRIETÀ AUDIO =====
 // ====================================================================================
 
-// Imposta le proprietà di looping e volume basso per i suoni di sottofondo.
+// Imposta le proprietà di looping e volume basso per i suoni di sottofondo
 
 // --- Musica Principale ---
 sounds.bgMusic.loop = true;
 sounds.bgMusic.volume = 0.2;
 
-// --- Suoni Ambientali (Devono ripetersi e avere volume contenuto) ---
+// --- Suoni ambientali (devono ripetersi e avere volume contenuto) ---
 sounds.wind.loop = true;
 sounds.wind.volume = 0.2;
 sounds.birds.loop = true;

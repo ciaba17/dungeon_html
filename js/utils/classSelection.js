@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             infoBox.style.display = 'none';
         });
 
-        // --- Evento 3: Click (Selezione Classe e Apertura Modal) ---
+        // --- Evento 3: Click (selezione classe e apertura modal) ---
         btn.addEventListener('click', () => {
             selectedClass = btn.dataset.class;
             if(classData[selectedClass]) {
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ====================================================================================
 
     /**
-     * Gestisce la conferma del nome, salva i dati e avvia il gioco.
+     * Gestisce la conferma del nome, salva i dati e avvia il gioco
      */
     confirmBtn.addEventListener('click', () => {
         let playerName = nameInput.value.trim(); // Rimuove spazi bianchi iniziali/finali
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Formattazione: Nome sempre in maiuscolo (come da richiesta originale)
         playerName = playerName.toUpperCase();
 
-        // --- 1. Salvataggio Dati nel localStorage ---
+        // --- 1. Salvataggio dati nel localStorage ---
         // Essenziale per trasferire la scelta al modulo di gioco (player.js)
         localStorage.setItem("playerClass", selectedClass);
         localStorage.setItem("playerName", playerName);
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "game.html";
     });
 
-    // --- Funzionalità Aggiuntiva: Chiusura Modal con ESC ---
+    // --- Funzionalità aggiuntiva: chiusura modals con ESC ---
     document.addEventListener('keydown', e => {
         if(e.key === "Escape") {
             modal.classList.add("hidden"); // Nasconde il modal
